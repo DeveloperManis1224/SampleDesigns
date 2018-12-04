@@ -1,9 +1,15 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,10 +21,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.app.android.deal.club.sampledesigns.DBHelper;
+import com.app.android.deal.club.sampledesigns.DataAdapter;
+import com.app.android.deal.club.sampledesigns.DataModel;
 import com.app.android.deal.club.sampledesigns.R;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    ArrayList<DataModel> dataModal=new ArrayList<DataModel>();
+    RecyclerView List_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +43,38 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!prefs.getBoolean("firstTime", false)) {
+            DBHelper db = new DBHelper(HomeActivity.this);
+            db.sampleData();
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("firstTime", true);
+            editor.commit();
+        }
+
+
+        List_view=(RecyclerView)findViewById(R.id.list_view);
+        RecyclerView.LayoutManager lytMgr=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        List_view.setLayoutManager(lytMgr);
+
+        DBHelper db_helper=new DBHelper(HomeActivity.this);
+
+        SQLiteDatabase SqlDb=db_helper.getReadableDatabase();
+        DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm");
+        String date = df.format(Calendar.getInstance().getTime());
+        String query1="select * from "+DBHelper.TABLE_NAME +" ORDER BY "+DBHelper.ID + " DESC";
+        Cursor cur=SqlDb.rawQuery(query1,null);
+
+        if(cur.moveToFirst())
+        {
+            do {
+                dataModal.add(new DataModel(cur.getString(cur.getColumnIndex("title")),cur.getString(cur.getColumnIndex("time_date"))));
+            }while (cur.moveToNext());
+        }
+        DataAdapter adad=new DataAdapter(dataModal);
+        List_view.setAdapter(adad);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
