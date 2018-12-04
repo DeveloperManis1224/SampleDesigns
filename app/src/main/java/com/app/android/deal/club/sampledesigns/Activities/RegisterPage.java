@@ -17,6 +17,6 @@ public class RegisterPage extends AppCompatActivity {
 
 
     public void onRegisterClick(View view) {
-        startActivity(new Intent(RegisterPage.this,HomePage.class));
+        startActivity(new Intent(RegisterPage.this,HomeActivity.class));
     }
 }

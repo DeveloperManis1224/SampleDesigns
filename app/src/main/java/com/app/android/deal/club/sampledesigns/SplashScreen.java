@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.app.android.deal.club.sampledesigns.Activities.HomeActivity;
-import com.app.android.deal.club.sampledesigns.Activities.HomePage;
 import com.app.android.deal.club.sampledesigns.Activities.LoginPage;
 
 public class SplashScreen extends AppCompatActivity {
