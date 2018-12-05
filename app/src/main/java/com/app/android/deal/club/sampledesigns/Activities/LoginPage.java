@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -64,11 +65,12 @@ public class LoginPage extends AppCompatActivity {
 
     private void checkLoginUser() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://www.candyrestaurant.com/punchapi/login.php";
+        String url = "http://adinn.candyrestaurant.com/api/login";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.e("RESPONSE-LOGIN",""+response);
                         Toast.makeText(LoginPage.this, ""+response, Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
@@ -80,7 +82,7 @@ public class LoginPage extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("username", mUsername.getText().toString().trim());
+                params.put("email", mUsername.getText().toString().trim());
                 params.put("password", mPassword.getText().toString().trim());
                 return params;
             }

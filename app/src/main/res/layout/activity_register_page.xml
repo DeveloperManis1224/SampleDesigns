@@ -55,6 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Name"
+                    android:id="@+id/reg_edt_name"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:textSize="14dp"
@@ -71,6 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Phone"
+                    android:id="@+id/reg_edt_phone"
                     android:textSize="14dp"
                     android:inputType="phone" />
 
@@ -86,6 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Company Name"
+                    android:id="@+id/reg_edt_company_name"
                     android:textSize="14dp"
                     android:inputType="textCapSentences" />
 
@@ -100,6 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Address"
+                    android:id="@+id/reg_edt_address"
                     android:textSize="14dp"
                     android:inputType="textCapSentences" />
 
@@ -115,6 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Email"
+                    android:id="@+id/reg_edt_email"
                     android:textSize="14dp"
                     android:inputType="textEmailAddress" />
 
@@ -131,6 +136,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
+                    android:id="@+id/reg_password"
                     android:textSize="14dp"
                     android:inputType="textPassword" />
 

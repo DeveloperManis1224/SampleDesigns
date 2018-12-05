@@ -36,6 +36,7 @@ public class HomeActivity extends AppCompatActivity
 
     ArrayList<DataModel> dataModal=new ArrayList<DataModel>();
     RecyclerView List_view;
+    RecyclerView List_view1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,6 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.getBoolean("firstTime", false)) {
             DBHelper db = new DBHelper(HomeActivity.this);
@@ -53,20 +52,18 @@ public class HomeActivity extends AppCompatActivity
             editor.putBoolean("firstTime", true);
             editor.commit();
         }
-
-
         List_view=(RecyclerView)findViewById(R.id.list_view);
+        List_view1 =(RecyclerView) findViewById(R.id.list_view1);
         RecyclerView.LayoutManager lytMgr=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.LayoutManager lytMgr1=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         List_view.setLayoutManager(lytMgr);
-
+        List_view1.setLayoutManager(lytMgr1);
         DBHelper db_helper=new DBHelper(HomeActivity.this);
-
         SQLiteDatabase SqlDb=db_helper.getReadableDatabase();
         DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm");
         String date = df.format(Calendar.getInstance().getTime());
         String query1="select * from "+DBHelper.TABLE_NAME +" ORDER BY "+DBHelper.ID + " DESC";
         Cursor cur=SqlDb.rawQuery(query1,null);
-
         if(cur.moveToFirst())
         {
             do {
@@ -75,7 +72,7 @@ public class HomeActivity extends AppCompatActivity
         }
         DataAdapter adad=new DataAdapter(dataModal);
         List_view.setAdapter(adad);
-
+        List_view1.setAdapter(adad);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,9 +87,9 @@ public class HomeActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.nav_user_name);
         navUsername.setText("login");
@@ -103,14 +100,16 @@ public class HomeActivity extends AppCompatActivity
             }
         });
     }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("EXIT", true);
+            startActivity(intent);
         }
     }
 
@@ -142,17 +141,18 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_home) {
+            startActivity(new Intent(HomeActivity.this,HomeActivity.class));
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_services) {
+            startActivity(new Intent(HomeActivity.this,Services.class));
+        } else if (id == R.id.nav_products) {
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_wishlist) {
+
+        } else if (id == R.id.nav_about_us) {
 
         }
 
@@ -160,4 +160,5 @@ public class HomeActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
