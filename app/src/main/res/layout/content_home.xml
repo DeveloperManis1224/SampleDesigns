@@ -15,32 +15,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+            <com.smarteist.autoimageslider.SliderLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_alignParentTop="true"
+                android:id="@+id/imageSlider"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:padding="5dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
                 android:textColor="@color/colorAccent"
                 android:text="Best Banners"/>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:id="@+id/list_view"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:padding="5dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
                 android:textColor="@color/colorAccent"
                 android:text="Recent Products"/>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:id="@+id/list_view1"/>
 
         </LinearLayout>

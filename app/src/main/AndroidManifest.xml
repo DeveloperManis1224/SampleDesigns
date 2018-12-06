@@ -30,7 +30,11 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".Activities.Services" />
-        <activity android:name=".Activities.PrdouctActivity"></activity>
+        <activity android:name=".Activities.PrdouctActivity"
+            android:theme="@style/AppTheme"
+            android:label="Products"/>
+        <activity android:name=".Activities.AboutUs" />
+        <activity android:name=".Activities.WishList"></activity>
     </application>
 
 </manifest>

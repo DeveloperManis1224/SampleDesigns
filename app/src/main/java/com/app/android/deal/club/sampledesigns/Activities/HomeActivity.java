@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,35 +23,68 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.app.android.deal.club.sampledesigns.Adapters.RecentProductAdapter;
 import com.app.android.deal.club.sampledesigns.DBHelper;
 import com.app.android.deal.club.sampledesigns.DataAdapter;
 import com.app.android.deal.club.sampledesigns.DataModel;
+import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
+import com.app.android.deal.club.sampledesigns.Utils.Constants;
+import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
+import com.smarteist.autoimageslider.SliderLayout;
+import com.smarteist.autoimageslider.SliderView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ArrayList<DataModel> dataModal=new ArrayList<DataModel>();
+    ArrayList<RecentPrdocutData> productDataList = new ArrayList<>();
+    ArrayList<RecentPrdocutData> bestDataList = new ArrayList<>();
     RecyclerView List_view;
     RecyclerView List_view1;
+    SessionManager session;
+
+    SliderLayout sliderLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        session = new SessionManager();
+        sliderLayout = findViewById(R.id.imageSlider);
+        sliderLayout.setIndicatorAnimation(SliderLayout.Animations.SLIDE); //set indicator animation by using SliderLayout.Animations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+        sliderLayout.setScrollTimeInSec(3);
+        //set scroll delay in seconds :
+
+        setSliderViews();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.getBoolean("firstTime", false)) {
-            DBHelper db = new DBHelper(HomeActivity.this);
-            db.sampleData();
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("firstTime", true);
             editor.commit();
@@ -58,21 +95,10 @@ public class HomeActivity extends AppCompatActivity
         RecyclerView.LayoutManager lytMgr1=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         List_view.setLayoutManager(lytMgr);
         List_view1.setLayoutManager(lytMgr1);
-        DBHelper db_helper=new DBHelper(HomeActivity.this);
-        SQLiteDatabase SqlDb=db_helper.getReadableDatabase();
-        DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm");
-        String date = df.format(Calendar.getInstance().getTime());
-        String query1="select * from "+DBHelper.TABLE_NAME +" ORDER BY "+DBHelper.ID + " DESC";
-        Cursor cur=SqlDb.rawQuery(query1,null);
-        if(cur.moveToFirst())
-        {
-            do {
-                dataModal.add(new DataModel(cur.getString(cur.getColumnIndex("title")),cur.getString(cur.getColumnIndex("time_date"))));
-            }while (cur.moveToNext());
-        }
-        DataAdapter adad=new DataAdapter(dataModal);
-        List_view.setAdapter(adad);
-        List_view1.setAdapter(adad);
+
+        getRecentProducts();
+        getBestFitings();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,13 +118,72 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setItemIconTintList(null);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.nav_user_name);
-        navUsername.setText("login");
-        navUsername.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(view.getContext(),LoginPage.class));
+        TextView navEmail = (TextView) headerView.findViewById(R.id.nav_email);
+        if(session.getPreferences(HomeActivity.this, Constants.LOGIN_STATUS).equalsIgnoreCase(Constants.LOGOUT))
+        {
+            navUsername.setText("Login");
+            navEmail.setVisibility(View.GONE);
+            navUsername.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(view.getContext(),LoginPage.class));
+                }
+            });
+        }
+        else if(session.getPreferences(HomeActivity.this, Constants.LOGIN_STATUS).equalsIgnoreCase(Constants.LOGIN))
+        {
+            navUsername.setText("Welcome "+session.getPreferences(HomeActivity.this,Constants.CURRENT_USER_NAME)+",");
+            navEmail.setVisibility(View.VISIBLE);
+            navEmail.setText(session.getPreferences(HomeActivity.this,Constants.CURRENT_USER_EMAIL));
+        }
+        else
+        {
+            navUsername.setText("Login");
+            navEmail.setVisibility(View.GONE);
+            navUsername.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(view.getContext(),LoginPage.class));
+                }
+            });
+        }
+    }
+
+    private void setSliderViews() {
+
+        for (int i = 0; i <= 2; i++) {
+
+            SliderView sliderView = new SliderView(this);
+
+            switch (i) {
+                case 0:
+                    sliderView.setImageDrawable(R.drawable.slider1);
+                    sliderView.setDescription("");
+                    break;
+                case 1:
+                    sliderView.setImageDrawable(R.drawable.slider2);
+                    sliderView.setDescription("");
+                   break;
+                case 2:
+                    sliderView.setImageDrawable(R.drawable.slider3);
+                    sliderView.setDescription("");
+                    break;
+
             }
-        });
+
+            sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+            sliderView.setDescription("setDescription " + (i + 1));
+            final int finalI = i;
+            sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                @Override
+                public void onSliderClick(SliderView sliderView) {
+                    Toast.makeText(HomeActivity.this, "This is slider " + (finalI + 1), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            //at last add this view in your layout :
+            sliderLayout.addSliderView(sliderView);
+        }
     }
     @Override
     public void onBackPressed() {
@@ -106,9 +191,9 @@ public class HomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("EXIT", true);
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
     }
@@ -122,13 +207,12 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        int id = item.getItemId();
         if (id == R.id.action_settings) {
+            session.setPreferences(HomeActivity.this,Constants.LOGIN_STATUS,Constants.LOGOUT);
+            startActivity(new Intent(HomeActivity.this,HomeActivity.class));
+            Toast.makeText(this, "Logout Successfull", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -138,27 +222,147 @@ public class HomeActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_home) {
             startActivity(new Intent(HomeActivity.this,HomeActivity.class));
-
         } else if (id == R.id.nav_services) {
             startActivity(new Intent(HomeActivity.this,Services.class));
         } else if (id == R.id.nav_products) {
-
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class));
         } else if (id == R.id.nav_share) {
-
+            Intent i=new Intent(android.content.Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(android.content.Intent.EXTRA_SUBJECT,"playstore link ");
+            i.putExtra(android.content.Intent.EXTRA_TEXT, ": Coming soon...");
+            startActivity(Intent.createChooser(i,"Share via"));
         } else if (id == R.id.nav_wishlist) {
-
+            startActivity(new Intent(HomeActivity.this,AboutUs.class));
         } else if (id == R.id.nav_about_us) {
-
+            startActivity(new Intent(HomeActivity.this,AboutUs.class));
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private void getRecentProducts() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://adinn.candyrestaurant.com/api/product";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("RESPONSE-HOME_Recent",""+response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+                            {
+                                JSONArray jsonArray = jsonObject.getJSONArray("products");
+
+                                for(int i = 0; i < jsonArray.length(); i++ )
+                                {
+                                    JSONObject resObject = jsonArray.getJSONObject(i);
+                                    String uId = resObject.getString("id");
+                                    String productName = resObject.getString("name");
+                                    String price = resObject.getString("price");
+                                    String size = resObject.getString("size");
+                                    String sft = resObject.getString("sft");
+                                    String type = resObject.getString("type");
+                                    String printingCost = resObject.getString("printing_cost");
+                                    String mountingCost = resObject.getString("mounting_cost");
+                                    String totalCost = resObject.getString("total_cost");
+                                    String description = resObject.getString("Description");
+                                    String image = resObject.getString("image");
+                                    String stateId = resObject.getString("state_id");
+                                    String city_id = resObject.getString("city_id");
+                                    String categoryId = resObject.getString("category_id");
+                                    String sts = resObject.getString("status");
+                                    productDataList.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
+                                    ,totalCost,description,image,stateId,city_id,categoryId,sts));
+
+                                    RecentProductAdapter radapter = new RecentProductAdapter(productDataList);
+                                    List_view.setAdapter(radapter);
+                                }
+
+                            }
+                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+                            {
+                                Toast.makeText(HomeActivity.this, ""+stsMessage,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE-HOME_Recent",""+error.getMessage());
+                Toast.makeText(HomeActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    private void getBestFitings() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://adinn.candyrestaurant.com/api/product";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("RESPONSE-HOME_Recent",""+response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+                            {
+                                JSONArray jsonArray = jsonObject.getJSONArray("products");
+                                for(int i = 0; i < jsonArray.length(); i++ )
+                                {
+                                    JSONObject resObject = jsonArray.getJSONObject(i);
+                                    String uId = resObject.getString("id");
+                                    String productName = resObject.getString("name");
+                                    String price = resObject.getString("price");
+                                    String size = resObject.getString("size");
+                                    String sft = resObject.getString("sft");
+                                    String type = resObject.getString("type");
+                                    String printingCost = resObject.getString("printing_cost");
+                                    String mountingCost = resObject.getString("mounting_cost");
+                                    String totalCost = resObject.getString("total_cost");
+                                    String description = resObject.getString("Description");
+                                    String image = resObject.getString("image");
+                                    String stateId = resObject.getString("state_id");
+                                    String city_id = resObject.getString("city_id");
+                                    String categoryId = resObject.getString("category_id");
+                                    String sts = resObject.getString("status");
+                                    bestDataList.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
+                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
+                                    RecentProductAdapter radapter = new RecentProductAdapter(bestDataList);
+                                    List_view1.setAdapter(radapter);
+                                }
+                            }
+                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+                            {
+                                Toast.makeText(HomeActivity.this, ""+stsMessage,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE-HOME_Recent",""+error.getMessage());
+                Toast.makeText(HomeActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
     }
 
 }

@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -17,8 +16,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.android.deal.club.sampledesigns.R;
+import com.app.android.deal.club.sampledesigns.Utils.Constants;
+import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +28,7 @@ import java.util.Map;
 public class LoginPage extends AppCompatActivity {
 
     TextInputEditText mUsername, mPassword;
+    SessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,7 @@ public class LoginPage extends AppCompatActivity {
     private void init() {
         mUsername = findViewById(R.id.edt_username);
         mPassword = findViewById(R.id.edt_password);
+        session = new SessionManager();
     }
 
     private boolean isValid()
@@ -71,11 +73,36 @@ public class LoginPage extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.e("RESPONSE-LOGIN",""+response);
-                        Toast.makeText(LoginPage.this, ""+response, Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+                            {
+                                JSONObject resObject = jsonObject.getJSONObject("user");
+                                session.setPreferences(LoginPage.this,Constants.LOGIN_STATUS,Constants.LOGIN);
+                                session.setPreferences(LoginPage.this,Constants.CURRENT_USER_ID,resObject.getString("id"));
+                                session.setPreferences(LoginPage.this,Constants.CURRENT_USER_NAME,resObject.getString("name"));
+                                session.setPreferences(LoginPage.this,Constants.CURRENT_USER_EMAIL,resObject.getString("email"));
+                                session.setPreferences(LoginPage.this,Constants.CURRENT_USER_PHONE,resObject.getString("phone"));
+                                session.setPreferences(LoginPage.this,Constants.USER_COMAPNY_NAME,resObject.getString("company_name"));
+                                session.setPreferences(LoginPage.this,Constants.USER_ADDRESS,resObject.getString("address"));
+                                startActivity(new Intent(LoginPage.this,HomeActivity.class));
+                                Toast.makeText(LoginPage.this, "Login Successfull", Toast.LENGTH_SHORT).show();
+                            }
+                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+                            {
+                                Toast.makeText(LoginPage.this, ""+stsMessage,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE-LOGIN_ERROR",""+error.getMessage());
                 Toast.makeText(LoginPage.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         }) {
@@ -86,6 +113,14 @@ public class LoginPage extends AppCompatActivity {
                 params.put("password", mPassword.getText().toString().trim());
                 return params;
             }
+
+//                @Override
+//                public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("Content-Type", "application-json");
+//                return params;
+            //}
+
         };
         queue.add(stringRequest);
     }

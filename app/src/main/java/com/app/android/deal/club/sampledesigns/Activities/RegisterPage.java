@@ -16,13 +16,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.android.deal.club.sampledesigns.R;
+import com.app.android.deal.club.sampledesigns.Utils.Constants;
+import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterPage extends AppCompatActivity {
     private TextInputEditText mName,mPhone,mCompanyName, mEmail, mAddress,mPassword;
-
+    SessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,7 @@ public class RegisterPage extends AppCompatActivity {
         mEmail = findViewById(R.id.reg_edt_email);
         mAddress = findViewById(R.id.reg_edt_address);
         mPassword = findViewById(R.id.reg_password);
+        session = new SessionManager();
     }
     private boolean isValid()
     {
@@ -91,8 +97,31 @@ public class RegisterPage extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.e("RESPONSE-REGISTER",""+response);
-                        Toast.makeText(RegisterPage.this, ""+response, Toast.LENGTH_SHORT).show();
-                        //startActivity(new Intent(RegisterPage.this,HomeActivity.class));
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+                            {
+                                JSONObject resObject = jsonObject.getJSONObject("user");
+                                session.setPreferences(RegisterPage.this,Constants.LOGIN_STATUS,Constants.LOGIN);
+                                session.setPreferences(RegisterPage.this,Constants.CURRENT_USER_ID,resObject.getString("id"));
+                                session.setPreferences(RegisterPage.this,Constants.CURRENT_USER_NAME,resObject.getString("name"));
+                                session.setPreferences(RegisterPage.this,Constants.CURRENT_USER_EMAIL,resObject.getString("email"));
+                                session.setPreferences(RegisterPage.this,Constants.CURRENT_USER_PHONE,resObject.getString("phone"));
+                                session.setPreferences(RegisterPage.this,Constants.USER_COMAPNY_NAME,resObject.getString("company_name"));
+                                session.setPreferences(RegisterPage.this,Constants.USER_ADDRESS,resObject.getString("address"));
+                                startActivity(new Intent(RegisterPage.this,HomeActivity.class));
+                                Toast.makeText(RegisterPage.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                            }
+                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+                            {
+                                Toast.makeText(RegisterPage.this, ""+stsMessage,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
