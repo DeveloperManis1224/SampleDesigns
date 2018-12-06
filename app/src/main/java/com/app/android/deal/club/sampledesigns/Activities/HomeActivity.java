@@ -168,7 +168,6 @@ public class HomeActivity extends AppCompatActivity
                     sliderView.setImageDrawable(R.drawable.slider3);
                     sliderView.setDescription("");
                     break;
-
             }
 
             sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);

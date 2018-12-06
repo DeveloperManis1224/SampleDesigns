@@ -20,28 +20,78 @@
                 android:layout_height="200dp"
                 android:layout_alignParentTop="true"
                 android:id="@+id/imageSlider"/>
-            <TextView
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
+                android:orientation="vertical"
                 android:paddingTop="5dp"
-                android:paddingLeft="5dp"
-                android:textColor="@color/colorAccent"
-                android:text="Best Banners"/>
+                android:paddingLeft="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/colorAccent"
+                    android:text="Best Banners"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-25dp"
+                    android:gravity="right"
+                    android:layout_marginRight="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        android:layout_margin="5dp"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/more_button_lyt"
+                        android:text="More"/>
+                </LinearLayout>
+
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:id="@+id/list_view"/>
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
+                android:orientation="vertical"
                 android:paddingTop="5dp"
-                android:paddingLeft="5dp"
-                android:textColor="@color/colorAccent"
-                android:text="Recent Products"/>
+                android:paddingLeft="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/colorAccent"
+                    android:text="Recent Banners"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-25dp"
+                    android:gravity="right"
+                    android:layout_marginRight="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/more_button_lyt"
+                        android:text="More"/>
+                </LinearLayout>
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
