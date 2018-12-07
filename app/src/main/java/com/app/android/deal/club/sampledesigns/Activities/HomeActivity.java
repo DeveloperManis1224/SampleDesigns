@@ -324,21 +324,21 @@ public class HomeActivity extends AppCompatActivity
                                 for(int i = 0; i < jsonArray.length(); i++ )
                                 {
                                     JSONObject resObject = jsonArray.getJSONObject(i);
-                                    String uId = resObject.getString("id");
-                                    String productName = resObject.getString("name");
-                                    String price = resObject.getString("price");
-                                    String size = resObject.getString("size");
-                                    String sft = resObject.getString("sft");
-                                    String type = resObject.getString("type");
-                                    String printingCost = resObject.getString("printing_cost");
-                                    String mountingCost = resObject.getString("mounting_cost");
-                                    String totalCost = resObject.getString("total_cost");
-                                    String description = resObject.getString("Description");
-                                    String image = resObject.getString("image");
-                                    String stateId = resObject.getString("state_id");
-                                    String city_id = resObject.getString("city_id");
-                                    String categoryId = resObject.getString("category_id");
-                                    String sts = resObject.getString("status");
+                                    String uId = resObject.getString(Constants.PRODUCT_ID);
+                                    String productName = resObject.getString(Constants.PRODUCT_NAME);
+                                    String price = resObject.getString(Constants.PRODUCT_NAME);
+                                    String size = resObject.getString(Constants.PRODUCT_SIZE);
+                                    String sft = resObject.getString(Constants.PRODUCT_SFT);
+                                    String type = resObject.getString(Constants.PRODUCT_TYPE);
+                                    String printingCost = resObject.getString(Constants.PRINTING_COST);
+                                    String mountingCost = resObject.getString(Constants.MOUNTING_COST);
+                                    String totalCost = resObject.getString(Constants.TOTAL_COST);
+                                    String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
+                                    String image = resObject.getString(Constants.PRODUCT_IMAGE);
+                                    String stateId = resObject.getString(Constants.STATE_ID);
+                                    String city_id = resObject.getString(Constants.CITY_ID);
+                                    String categoryId = resObject.getString(Constants.CATEGORY_ID);
+                                    String sts = resObject.getString(Constants.PRODUCT_STATUS);
                                     bestDataList.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
                                             ,totalCost,description,image,stateId,city_id,categoryId,sts));
                                     RecentProductAdapter radapter = new RecentProductAdapter(bestDataList);

@@ -12,6 +12,21 @@ public class Constants  {
     public static final String USER_COMAPNY_NAME = "usercompanyname";
     public static final String USER_ADDRESS = "useraddress";
 
+    public static final String PRODUCT_ID = "id";
+    public static final String PRODUCT_NAME = "name";
+    public static final String PRODUCT_SIZE = "size";
+    public static final String PRODUCT_SFT = "sft";
+    public static final String PRODUCT_TYPE = "type";
+    public static final String PRINTING_COST = "printing_cost";
+    public static final String MOUNTING_COST = "mounting_cost";
+    public static final String TOTAL_COST = "total_cost";
+    public static final String PRODUCT_DESCRIPTION= "Description";
+    public static final String PRODUCT_IMAGE = "image";
+    public static final String STATE_ID = "state_id";
+    public static final String CITY_ID= "city_id";
+    public static final String CATEGORY_ID = "category_id";
+    public static final String PRODUCT_STATUS = "status";
+
     public static final String RESULT_SUCCESS = "1";
     public static final String RESULT_FAILED = "0";
 
