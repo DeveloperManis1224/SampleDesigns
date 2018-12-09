@@ -14,6 +14,7 @@ import com.app.android.deal.club.sampledesigns.Activities.ProductDetails;
 import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
+import com.bumptech.glide.Glide;
 
 import java.math.BigDecimal;
 import java.text.Format;
@@ -45,7 +46,7 @@ public class RecentProductAdapter  extends RecyclerView.Adapter<RecentProductAda
         try {
             holder.productAddress.setText(obj_arr.get(position).get_productName());
             holder.productCost.setText(getIndianRupee(obj_arr.get(position).get_totalCost()));
-
+            Glide.with(holder.productImage.getContext()).load(Constants.APP_BASE_URL+obj_arr.get(position).get_image()).into(holder.productImage);
             holder.lyt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

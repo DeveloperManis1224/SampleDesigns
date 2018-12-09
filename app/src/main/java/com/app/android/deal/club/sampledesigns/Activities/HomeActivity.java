@@ -308,7 +308,7 @@ public class HomeActivity extends AppCompatActivity
 
     private void getBestFitings() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://adinn.candyrestaurant.com/api/product";
+        String url = "http://adinn.candyrestaurant.com/api/best-product";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

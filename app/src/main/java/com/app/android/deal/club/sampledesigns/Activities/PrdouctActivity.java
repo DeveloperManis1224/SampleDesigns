@@ -89,6 +89,7 @@ public class PrdouctActivity extends AppCompatActivity {
                                     catIdList.add(id);
                                     ArrayAdapter aa = new ArrayAdapter(PrdouctActivity.this,android.R.layout.simple_spinner_item,spinList);
                                     aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
                                     categoryListSpinner.setAdapter(aa);
                                 }
                             }

@@ -7,10 +7,21 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Logout</string>
+
+    <string name="Rs">\u20B9</string>
+    <string name="filled_bullet">\u25CF</string>
+    <string name="linear_bullet">\u25CB</string>
+    <string name="rect_bullet">\u25A0</string>
+    <string name="blank_rect">\u25A1</string>
+    <string name="true_tick">\u2713</string>
+    <string name="star">\u2605</string>
+
     <string name="services_head">*\t    We have around 2000 Billboard/Hoarding &amp; Other Media from Tamilnadu.\n
 *\t  We have 125 Media owner and their sites,Which are available in the Booking platform.\n
 *\t  Our Sites Help the client based on online booking platform delivers a Reasonable cost with Excellent services.
 </string>
     <string name="hoadings">\t  Adinn Advertising Services is an innovation-driven,full-service marketing
         communication company based in Tamilnadu having major presence in both urban and rural markets of South India</string>
+
+
 </resources>
