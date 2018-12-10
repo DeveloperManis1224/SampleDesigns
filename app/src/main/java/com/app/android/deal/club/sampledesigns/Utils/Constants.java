@@ -28,6 +28,12 @@ public class Constants  {
     public static final String CATEGORY_ID = "category_id";
     public static final String PRODUCT_STATUS = "status";
 
+    public static final String PAGE_FROM = "from";
+    public static final String PAGE_HOME = "home";
+    public static final String PAGE_SERVICE = "service";
+    public static final String PAGE_BEST_BANNERS = "best";
+    public static final String PAGE_RECENT_BANNERS = "recent";
+
     public static final String RESULT_SUCCESS = "1";
     public static final String RESULT_FAILED = "0";
 

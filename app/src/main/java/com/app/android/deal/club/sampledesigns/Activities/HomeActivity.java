@@ -66,8 +66,9 @@ public class HomeActivity extends AppCompatActivity
     RecyclerView List_view;
     RecyclerView List_view1;
     SessionManager session;
-
     SliderLayout sliderLayout;
+
+    TextView mRecentBanner, mBestBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,22 @@ public class HomeActivity extends AppCompatActivity
         sliderLayout = findViewById(R.id.imageSlider);
         sliderLayout.setIndicatorAnimation(SliderLayout.Animations.SLIDE); //set indicator animation by using SliderLayout.Animations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
         sliderLayout.setScrollTimeInSec(3);
+
+        mRecentBanner = findViewById(R.id.btn_recent_banners);
+        mBestBanner  = findViewById(R.id.btn_best_banners);
+
+        mRecentBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).putExtra(Constants.PAGE_FROM,Constants.PAGE_RECENT_BANNERS));
+            }
+        });
+        mBestBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).putExtra(Constants.PAGE_FROM,Constants.PAGE_BEST_BANNERS));
+            }
+        });
         //set scroll delay in seconds :
 
         setSliderViews();
@@ -227,7 +244,7 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_services) {
             startActivity(new Intent(HomeActivity.this,Services.class));
         } else if (id == R.id.nav_products) {
-            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class));
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).putExtra(Constants.PAGE_FROM,Constants.PAGE_HOME));
         } else if (id == R.id.nav_share) {
             Intent i=new Intent(android.content.Intent.ACTION_SEND);
             i.setType("text/plain");
@@ -235,8 +252,11 @@ public class HomeActivity extends AppCompatActivity
             i.putExtra(android.content.Intent.EXTRA_TEXT, ": Coming soon...");
             startActivity(Intent.createChooser(i,"Share via"));
         } else if (id == R.id.nav_wishlist) {
-            startActivity(new Intent(HomeActivity.this,AboutUs.class));
-        } else if (id == R.id.nav_about_us) {
+            startActivity(new Intent(HomeActivity.this,WishList.class));
+        }
+        else if (id == R.id.nav_contact_us) {
+            startActivity(new Intent(HomeActivity.this,ContactUs.class));
+        }else if (id == R.id.nav_about_us) {
             startActivity(new Intent(HomeActivity.this,AboutUs.class));
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

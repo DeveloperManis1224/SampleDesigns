@@ -43,13 +43,13 @@
                     android:textStyle="bold"
                     android:text="Display cost"/>
             </LinearLayout>
-            <!--<com.like.LikeButton-->
-                <!--app:icon_type="heart"-->
-                <!--app:is_enabled="false"-->
-                <!--app:icon_size="25dp"-->
-                <!--android:id="@+id/star_button"-->
-                <!--android:layout_width="100dp"-->
-                <!--android:layout_height="100dp"/>-->
+            <com.like.LikeButton
+                app:icon_type="heart"
+                app:is_enabled="false"
+                app:icon_size="25dp"
+                android:id="@+id/star_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

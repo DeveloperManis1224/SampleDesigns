@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.app.android.deal.club.sampledesigns.R;
+import com.app.android.deal.club.sampledesigns.Utils.Constants;
 
 public class Services extends AppCompatActivity {
 
@@ -16,6 +17,6 @@ public class Services extends AppCompatActivity {
     }
 
     public void onClickSeeMore(View view) {
-        startActivity(new Intent(Services.this,PrdouctActivity.class));
+        startActivity(new Intent(Services.this,PrdouctActivity.class).putExtra(Constants.PAGE_FROM,Constants.PAGE_SERVICE));
     }
 }

@@ -1,16 +1,16 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
-import android.content.Intent;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -39,12 +39,28 @@ public class PrdouctActivity extends AppCompatActivity {
     ArrayList<String> catIdList = new ArrayList<>();
     ArrayList<RecentPrdocutData> productData = new ArrayList<>();
     RecyclerView list_view_product;
+    TextView hintSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prdouct);
         categoryListSpinner = findViewById(R.id.spin_category);
         list_view_product = findViewById(R.id.product_list_view);
+        hintSearch = findViewById(R.id.hint_search);
+
+        if(getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_BEST_BANNERS))
+        {
+
+        }
+        else if(getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_RECENT_BANNERS))
+        {
+
+        }
+        else if(getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_SERVICE))
+        {
+
+        }
+
         list_view_product.setLayoutManager(new GridLayoutManager(this, 2));
         spinList.add("Select Category");
         catIdList.add("11111");
@@ -65,6 +81,8 @@ public class PrdouctActivity extends AppCompatActivity {
         });
 
     }
+
+
     private void getCategorySpinnerValues() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/category";
@@ -89,7 +107,6 @@ public class PrdouctActivity extends AppCompatActivity {
                                     catIdList.add(id);
                                     ArrayAdapter aa = new ArrayAdapter(PrdouctActivity.this,android.R.layout.simple_spinner_item,spinList);
                                     aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
                                     categoryListSpinner.setAdapter(aa);
                                 }
                             }
@@ -114,6 +131,8 @@ public class PrdouctActivity extends AppCompatActivity {
 
 
     private void getCategoryDetails(final String categoryId) {
+       list_view_product.setAdapter(null);
+       productData.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/category-product";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -149,6 +168,7 @@ public class PrdouctActivity extends AppCompatActivity {
                                     productData.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
                                             ,totalCost,description,image,stateId,city_id,categoryId,sts));
                                     RecentProductAdapter radapter = new RecentProductAdapter(productData);
+                                    radapter.notifyDataSetChanged();
                                     list_view_product.setAdapter(radapter);
                                 }
                             }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".Activities.ContactUs">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:padding="10dp"
+            android:text="\t 29, 1st Cross Street, Vanamamalai Nagar,\n\t By-pass Road, Madurai-625010, Tamil Nadu"
+            android:drawableLeft="@drawable/home_icon"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:padding="10dp"
+            android:text="\t +91 452 4344800\n\t+91 452 4344801"
+            android:drawableLeft="@drawable/phone_icon"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:padding="10dp"
+            android:text="\t Mrs. Shobana 7373785025\n\tMr. Vinoth 7373785048"
+            android:drawableLeft="@drawable/mobile_icon"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:padding="10dp"
+            android:text="\t info@adinn.co.in"
+            android:drawableLeft="@drawable/email_icon"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:padding="10dp"
+            android:text="\t Monday to Friday – 9:00 a.m. to 6:30 p.m.\n\t Saturday – 9:00 a.m. to 5:30 p.m."
+            android:drawableLeft="@drawable/timinig_icon"/>
+    </LinearLayout>
+</LinearLayout>
