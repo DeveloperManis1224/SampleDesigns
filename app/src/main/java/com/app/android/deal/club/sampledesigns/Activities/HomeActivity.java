@@ -188,12 +188,13 @@ public class HomeActivity extends AppCompatActivity
             }
 
             sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
-            sliderView.setDescription("setDescription " + (i + 1));
+            //sliderView.setDescription("setDescription " + (i + 1));
+            sliderView.setDescription("");
             final int finalI = i;
             sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                 @Override
                 public void onSliderClick(SliderView sliderView) {
-                    Toast.makeText(HomeActivity.this, "This is slider " + (finalI + 1), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(HomeActivity.this, "This is slider " + (finalI + 1), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -280,8 +281,17 @@ public class HomeActivity extends AppCompatActivity
                             if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
                             {
                                 JSONArray jsonArray = jsonObject.getJSONArray("products");
+                                int val = 0;
+                                if(jsonArray.length() <10)
+                                {
+                                    val = jsonArray.length();
+                                }
+                                else
+                                {
+                                    val = 10;
+                                }
 
-                                for(int i = 0; i < jsonArray.length(); i++ )
+                                for(int i = 0; i < val; i++ )
                                 {
                                     JSONObject resObject = jsonArray.getJSONObject(i);
                                     String uId = resObject.getString("id");

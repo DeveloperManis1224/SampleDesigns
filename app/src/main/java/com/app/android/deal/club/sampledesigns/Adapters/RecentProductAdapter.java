@@ -9,13 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.app.android.deal.club.sampledesigns.Activities.ProductDetails;
 import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
 import com.bumptech.glide.Glide;
-
 import java.math.BigDecimal;
 import java.text.Format;
 import java.text.NumberFormat;
@@ -23,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class RecentProductAdapter  extends RecyclerView.Adapter<RecentProductAdapter.MyViewHolder> {
+
     public static ArrayList<RecentPrdocutData> obj_arr=new ArrayList<>();
 
     public RecentProductAdapter(ArrayList<RecentPrdocutData> objs) {
