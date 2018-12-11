@@ -17,6 +17,10 @@
             android:icon="@drawable/icon_products"
             android:title="Products" />
         <item
+            android:id="@+id/nav_cart"
+            android:icon="@drawable/shop_cart"
+            android:title="My Cart" />
+        <item
             android:id="@+id/nav_wishlist"
             android:icon="@drawable/icon_wishlist"
             android:title="My Wishlist" />

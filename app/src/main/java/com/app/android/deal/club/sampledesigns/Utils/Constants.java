@@ -34,7 +34,8 @@ public class Constants  {
     public static final String PAGE_BEST_BANNERS = "best";
     public static final String PAGE_RECENT_BANNERS = "recent";
 
+    public static final String PRODUCT_NOT_AVAILABLE = "1";
+    public static final String PRODUCT_AVAILABLE = "0";
     public static final String RESULT_SUCCESS = "1";
     public static final String RESULT_FAILED = "0";
-
 }

@@ -49,9 +49,11 @@
             android:name=".Activities.ProductDetails"
             android:label="Product Details"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.ContactUs"
+        <activity
+            android:name=".Activities.ContactUs"
             android:label="Contact Us"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Activities.CartActivity"></activity>
     </application>
 
 </manifest>

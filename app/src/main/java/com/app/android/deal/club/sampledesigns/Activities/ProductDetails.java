@@ -1,21 +1,36 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.app.android.deal.club.sampledesigns.R;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
+import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
 import com.bumptech.glide.Glide;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProductDetails extends AppCompatActivity {
 
@@ -27,6 +42,8 @@ public class ProductDetails extends AppCompatActivity {
     private LikeButton mButton;
     private TextView mCheckAvailable, mAddCart;
 
+    SessionManager session;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +53,7 @@ public class ProductDetails extends AppCompatActivity {
     }
     private void init()
     {
+        session = new SessionManager();
         mButton = findViewById(R.id.star_button);
         mCheckAvailable = findViewById(R.id.check_available);
         mAddCart = findViewById(R.id.add_cart_txt);
@@ -49,6 +67,8 @@ public class ProductDetails extends AppCompatActivity {
         mDescription = findViewById(R.id.d_txt_description);
         mProductStatus = findViewById(R.id.d_dis_cost);
         mProductImage = findViewById(R.id.produ_img);
+
+
         productId = getIntent().getExtras().getString(Constants.PRODUCT_ID);
         productName = getIntent().getExtras().getString(Constants.PRODUCT_NAME);
         productType = getIntent().getExtras().getString(Constants.PRODUCT_TYPE);
@@ -74,46 +94,43 @@ public class ProductDetails extends AppCompatActivity {
         mDescription.setText(getString(R.string.filled_bullet) +" Description     :"+productDescription);
         mProductStatus.setText(getString(R.string.filled_bullet) +" Status          :"+productSts);
 
-        Glide.with(ProductDetails.this).
-                load(Constants.APP_BASE_URL+productImage).into(mProductImage);
+        Glide.with(ProductDetails.this)
+                .load(Constants.APP_BASE_URL+productImage)
+                .into(mProductImage);
 
         mButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
+                addWishList();
                 likeButton.setLiked(true);
-                Toast.makeText(ProductDetails.this, "Product added to wishlist...", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(ProductDetails.this, "Product added to wishlist...", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void unLiked(LikeButton likeButton) {
+                removeWishList();
                 likeButton.setLiked(false);
-                Toast.makeText(ProductDetails.this, "Product removed from wishlist...", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(ProductDetails.this, "Product removed from wishlist...", Toast.LENGTH_SHORT).show();
             }
         });
 
         mCheckAvailable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //code here
                int mYear = 0;
                int mMonth = 0 ;
                int mDay = 0;
-                // Get Current Date
                 final Calendar c = Calendar.getInstance();
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
                 DatePickerDialog datePickerDialog = new DatePickerDialog(ProductDetails.this,
                         new DatePickerDialog.OnDateSetListener() {
 
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-
+                                checkAvailability();
                                 mCheckAvailable.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -123,8 +140,177 @@ public class ProductDetails extends AppCompatActivity {
         mAddCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                addCart();
+                Toast.makeText(ProductDetails.this, "" , Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    private void removeWishList()
+    {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://adinn.candyrestaurant.com/api/register";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("RESPONSE-REGISTER",""+response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+                            {
+                                Toast.makeText(ProductDetails.this, "Product removed from Wishlist...", Toast.LENGTH_SHORT).show();
+                            }
+                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+                            {
+                                Toast.makeText(ProductDetails.this, ""+stsMessage,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ProductDetails.this, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", "");
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
+    private void checkAvailability()
+    {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://adinn.candyrestaurant.com/api/register";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("RESPONSE-REGISTER",""+response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+                            {
+
+                                Toast.makeText(ProductDetails.this, "", Toast.LENGTH_SHORT).show();
+                            }
+                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+                            {
+                                Toast.makeText(ProductDetails.this, ""+stsMessage,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ProductDetails.this, "Product Added Failed", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", "");
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
+    private void addWishList()
+    {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://adinn.candyrestaurant.com/api/register";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("RESPONSE-REGISTER",""+response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+                            {
+                                Toast.makeText(ProductDetails.this, "Product added to Wishlist", Toast.LENGTH_SHORT).show();
+                            }
+                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+                            {
+                                Toast.makeText(ProductDetails.this, ""+stsMessage,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ProductDetails.this, "Product Added Failed", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", "");
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
+    private void addCart()
+    {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://adinn.candyrestaurant.com/api/cart";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("RESPONSE-REGISTER",""+response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+                            {
+                                Toast.makeText(ProductDetails.this, "Product Added Successfully", Toast.LENGTH_SHORT).show();
+                            }
+                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+                            {
+                                Toast.makeText(ProductDetails.this, ""+stsMessage,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ProductDetails.this, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("product_id", productId);
+                params.put("user_id", session.getPreferences(ProductDetails.this,Constants.CURRENT_USER_ID));
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
+
 }

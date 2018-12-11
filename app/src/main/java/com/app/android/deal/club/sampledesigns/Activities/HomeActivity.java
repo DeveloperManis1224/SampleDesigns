@@ -265,7 +265,6 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-
     private void getRecentProducts() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/product";
@@ -311,11 +310,9 @@ public class HomeActivity extends AppCompatActivity
                                     String sts = resObject.getString("status");
                                     productDataList.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
                                     ,totalCost,description,image,stateId,city_id,categoryId,sts));
-
                                     RecentProductAdapter radapter = new RecentProductAdapter(productDataList);
                                     List_view.setAdapter(radapter);
                                 }
-
                             }
                             else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
                             {
