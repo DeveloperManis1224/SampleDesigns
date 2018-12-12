@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity
     ArrayList<DataModel> dataModal=new ArrayList<DataModel>();
     ArrayList<RecentPrdocutData> productDataList = new ArrayList<>();
     ArrayList<RecentPrdocutData> bestDataList = new ArrayList<>();
-    RecyclerView List_view;
+    RecyclerView List_view, category_listview, menu_listview;
     RecyclerView List_view1;
     SessionManager session;
     SliderLayout sliderLayout;
@@ -108,8 +108,20 @@ public class HomeActivity extends AppCompatActivity
         }
         List_view=(RecyclerView)findViewById(R.id.list_view);
         List_view1 =(RecyclerView) findViewById(R.id.list_view1);
+        category_listview = findViewById(R.id.category_list);
+        menu_listview = findViewById(R.id.menu_list);
+
         RecyclerView.LayoutManager lytMgr=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView.LayoutManager lytMgr1=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+        //category
+        RecyclerView.LayoutManager cat_lytmgr=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        //menu
+        RecyclerView.LayoutManager menu_lytMgr=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        category_listview.setLayoutManager(cat_lytmgr);
+        menu_listview.setLayoutManager(menu_lytMgr);
+
+
         List_view.setLayoutManager(lytMgr);
         List_view1.setLayoutManager(lytMgr1);
 
