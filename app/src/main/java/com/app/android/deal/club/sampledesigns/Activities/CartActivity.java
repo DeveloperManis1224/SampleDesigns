@@ -1,5 +1,6 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import com.app.android.deal.club.sampledesigns.Adapters.RecentProductAdapter;
 import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
+import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,15 +29,25 @@ import java.util.ArrayList;
 public class CartActivity extends AppCompatActivity {
     RecyclerView List_view;
     ArrayList<RecentPrdocutData> cartDataList = new ArrayList<>();
+    SessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
+        session = new SessionManager();
         List_view=(RecyclerView)findViewById(R.id.list_view);
         RecyclerView.LayoutManager lytMgr=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         List_view.setLayoutManager(lytMgr);
-        getCartList();
+        if(session.getPreferences(CartActivity.this,Constants.LOGIN_STATUS).equalsIgnoreCase(Constants.LOGIN))
+        {
+            getCartList();
+        }
+        else
+        {
+            startActivity(new Intent(CartActivity.this,LoginPage.class));
+            Toast.makeText(this, "Please login and check your cart list", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

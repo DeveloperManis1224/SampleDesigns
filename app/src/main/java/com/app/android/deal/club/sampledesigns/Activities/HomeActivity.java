@@ -113,6 +113,7 @@ public class HomeActivity extends AppCompatActivity
         List_view.setLayoutManager(lytMgr);
         List_view1.setLayoutManager(lytMgr1);
 
+        Log.e("UserId",""+session.getPreferences(HomeActivity.this,Constants.CURRENT_USER_ID));
         getRecentProducts();
         getBestFitings();
 
@@ -235,7 +236,6 @@ public class HomeActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -245,13 +245,16 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_services) {
             startActivity(new Intent(HomeActivity.this,Services.class));
         } else if (id == R.id.nav_products) {
-            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).putExtra(Constants.PAGE_FROM,Constants.PAGE_HOME));
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).
+                    putExtra(Constants.PAGE_FROM,Constants.PAGE_HOME));
         } else if (id == R.id.nav_share) {
             Intent i=new Intent(android.content.Intent.ACTION_SEND);
             i.setType("text/plain");
-            i.putExtra(android.content.Intent.EXTRA_SUBJECT,"playstore link ");
+            i.putExtra(android.content.Intent.EXTRA_SUBJECT,"Playstore link");
             i.putExtra(android.content.Intent.EXTRA_TEXT, ": Coming soon...");
             startActivity(Intent.createChooser(i,"Share via"));
+        }  else if (id == R.id.nav_cart) {
+            startActivity(new Intent(HomeActivity.this,CartActivity.class));
         } else if (id == R.id.nav_wishlist) {
             startActivity(new Intent(HomeActivity.this,WishList.class));
         }

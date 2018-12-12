@@ -178,6 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:id="@+id/lyt_desc"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/layout_bg"
@@ -202,58 +203,58 @@
                     android:textColor="@android:color/black"
                     android:text="HoadingId"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingLeft="8dp"
-                    android:id="@+id/d_txt_category"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="Category"/>
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingTop="4dp"-->
+                    <!--android:paddingLeft="8dp"-->
+                    <!--android:id="@+id/d_txt_category"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:textColor="@android:color/black"-->
+                    <!--android:text="Category"/>-->
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingLeft="8dp"
-                    android:id="@+id/d_txt_media_type"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="Media Type"/>
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingTop="4dp"-->
+                    <!--android:paddingLeft="8dp"-->
+                    <!--android:id="@+id/d_txt_media_type"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:textColor="@android:color/black"-->
+                    <!--android:text="Media Type"/>-->
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingLeft="8dp"
-                    android:id="@+id/d_txt_lighting_type"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="Lighting Type"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingLeft="8dp"
-                    android:id="@+id/d_txt_state"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="State"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingLeft="8dp"
-                    android:id="@+id/d_txt_district"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="District"/>
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingTop="4dp"-->
+                    <!--android:paddingLeft="8dp"-->
+                    <!--android:id="@+id/d_txt_lighting_type"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:textColor="@android:color/black"-->
+                    <!--android:text="Lighting Type"/>-->
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingTop="4dp"-->
+                    <!--android:paddingLeft="8dp"-->
+                    <!--android:id="@+id/d_txt_state"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:textColor="@android:color/black"-->
+                    <!--android:text="State"/>-->
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingTop="4dp"-->
+                    <!--android:paddingLeft="8dp"-->
+                    <!--android:id="@+id/d_txt_district"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:textColor="@android:color/black"-->
+                    <!--android:text="District"/>-->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
