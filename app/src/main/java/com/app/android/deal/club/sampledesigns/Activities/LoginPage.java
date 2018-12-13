@@ -113,14 +113,6 @@ public class LoginPage extends AppCompatActivity {
                 params.put("password", mPassword.getText().toString().trim());
                 return params;
             }
-
-//                @Override
-//                public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application-json");
-//                return params;
-            //}
-
         };
         queue.add(stringRequest);
     }

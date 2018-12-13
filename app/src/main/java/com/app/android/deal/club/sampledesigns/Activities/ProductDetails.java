@@ -162,7 +162,7 @@ public class ProductDetails extends AppCompatActivity {
     private void removeWishList()
     {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://adinn.candyrestaurant.com/api/register";
+        String url = "http://adinn.candyrestaurant.com/api/remove-wishlist";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -175,6 +175,7 @@ public class ProductDetails extends AppCompatActivity {
                             if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
                             {
                                 Toast.makeText(ProductDetails.this, "Product removed from Wishlist...", Toast.LENGTH_SHORT).show();
+
                             }
                             else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
                             {
@@ -194,7 +195,8 @@ public class ProductDetails extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("name", "");
+                params.put("product_id", productId);
+                params.put("user_id", session.getPreferences(ProductDetails.this,Constants.CURRENT_USER_ID));
                 return params;
             }
         };
@@ -274,7 +276,7 @@ public class ProductDetails extends AppCompatActivity {
     private void addWishList()
     {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://adinn.candyrestaurant.com/api/add-wishlist";
+        String url = "http://adinn.candyrestaurant.com/api/wishlist";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -424,9 +426,12 @@ public class ProductDetails extends AppCompatActivity {
         int mDay = 0;
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
+        mMonth = c.get(Calendar.MONTH) +1 ;
         mDay = c.get(Calendar.DAY_OF_MONTH);
-        return mDay+"/"+mMonth+1+"/"+mYear;
+
+        Log.e("XXXXXXXXXXXX",mDay+"/"+mMonth+"/"+mYear);
+        return mDay+"/"+mMonth+"/"+mYear;
     }
+
 
 }
