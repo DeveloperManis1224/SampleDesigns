@@ -154,7 +154,6 @@ public class ProductDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addCart();
-                Toast.makeText(ProductDetails.this, "" , Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -202,6 +201,7 @@ public class ProductDetails extends AppCompatActivity {
         };
         queue.add(stringRequest);
     }
+
     private void checkAvailability()
     {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -273,6 +273,7 @@ public class ProductDetails extends AppCompatActivity {
         };
         queue.add(stringRequest);
     }
+
     private void addWishList()
     {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -317,6 +318,7 @@ public class ProductDetails extends AppCompatActivity {
         };
         queue.add(stringRequest);
     }
+
     private void addCart()
     {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -419,6 +421,7 @@ public class ProductDetails extends AppCompatActivity {
         };
         queue.add(stringRequest);
     }
+
     private String getStartDate()
     {
         int mYear = 0;
@@ -432,6 +435,5 @@ public class ProductDetails extends AppCompatActivity {
         Log.e("XXXXXXXXXXXX",mDay+"/"+mMonth+"/"+mYear);
         return mDay+"/"+mMonth+"/"+mYear;
     }
-
 
 }

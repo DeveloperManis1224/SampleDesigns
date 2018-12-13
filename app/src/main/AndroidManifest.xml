@@ -53,9 +53,11 @@
             android:name=".Activities.ContactUs"
             android:label="Contact Us"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.CartActivity"
+        <activity
+            android:name=".Activities.CartActivity"
             android:label="My Cart"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Activities.BookingFormActivity"></activity>
     </application>
 
 </manifest>

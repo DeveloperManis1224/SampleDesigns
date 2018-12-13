@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -32,13 +34,15 @@ import java.util.Map;
 public class CartActivity extends AppCompatActivity {
     RecyclerView List_view;
     ArrayList<RecentPrdocutData> cartDataList = new ArrayList<>();
+    ArrayList<String> costList = new ArrayList<>();
     SessionManager session;
+    TextView txtTotalCost;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-
         session = new SessionManager();
+        txtTotalCost = findViewById(R.id.txt_total_cost);
         List_view=(RecyclerView)findViewById(R.id.list_view);
         RecyclerView.LayoutManager lytMgr=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         List_view.setLayoutManager(lytMgr);
@@ -51,6 +55,18 @@ public class CartActivity extends AppCompatActivity {
             startActivity(new Intent(CartActivity.this,LoginPage.class));
             Toast.makeText(this, "Please login and check your cart list", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String getTotalAmount()
+    {
+        String amount = "";
+        double amountToCalculate = 0.0;
+        for (int i = 0 ; i < costList.size(); i++)
+        {
+            amountToCalculate = amountToCalculate + Double.valueOf(costList.get(i));
+        }
+        amount = String.valueOf(amountToCalculate);
+        return  amount;
     }
 
     private void getCartList() {
@@ -71,6 +87,7 @@ public class CartActivity extends AppCompatActivity {
                                 if(jsonArray.length() == 0)
                                 {
                                     Toast.makeText(CartActivity.this, "No Cart Added", Toast.LENGTH_SHORT).show();
+                                    txtTotalCost.setText("0.0");
                                 }
                                 else {
                                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -90,11 +107,14 @@ public class CartActivity extends AppCompatActivity {
                                         String city_id = resObject.getString(Constants.CITY_ID);
                                         String categoryId = resObject.getString(Constants.CATEGORY_ID);
                                         String sts = resObject.getString(Constants.PRODUCT_STATUS);
+
+                                        costList.add(totalCost);
                                         cartDataList.add(new RecentPrdocutData(uId, productName, price, size, sft, type, printingCost, mountingCost
                                                 , totalCost, description, image, stateId, city_id, categoryId, sts));
                                         RecentProductAdapter radapter = new RecentProductAdapter(cartDataList);
                                         List_view.setAdapter(radapter);
                                     }
+                                    txtTotalCost.setText(getResources().getString(R.string.Rs)+" "+getTotalAmount());
                                 }
 
                             } else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED)) {
@@ -104,6 +124,7 @@ public class CartActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -122,4 +143,11 @@ public class CartActivity extends AppCompatActivity {
     };
         queue.add(stringRequest);
     }
+
+
+    public void onCheckoutClick(View v)
+    {
+
+    }
+
 }
