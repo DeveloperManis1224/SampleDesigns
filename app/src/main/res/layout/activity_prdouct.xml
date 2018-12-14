@@ -10,13 +10,11 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -26,8 +24,6 @@
                 android:id="@+id/hint_search"
                 android:textSize="12sp"
                 android:text="Search by"/>
-
-
         </LinearLayout>
 
 

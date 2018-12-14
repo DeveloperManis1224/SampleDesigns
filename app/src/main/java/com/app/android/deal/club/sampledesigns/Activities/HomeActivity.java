@@ -323,9 +323,6 @@ public class HomeActivity extends AppCompatActivity
                                     String description = resObject.getString("Description");
                                     JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
                                     String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
-//                                        String image = resObject.getString("image");
-
-
                                     String stateId = resObject.getString("state_id");
                                     String city_id = resObject.getString("city_id");
                                     String categoryId = resObject.getString("category_id");

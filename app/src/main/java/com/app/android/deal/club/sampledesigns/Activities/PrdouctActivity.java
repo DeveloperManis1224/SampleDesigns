@@ -1,14 +1,20 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +34,7 @@ import com.app.android.deal.club.sampledesigns.Utils.Constants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +51,65 @@ public class PrdouctActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prdouct);
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.dialog_layout, (ViewGroup) findViewById(R.id.layout_root));
+//layout_root should be the name of the "top-level" layout node in the dialog_layout.xml file.
+        final Spinner category = (Spinner) layout.findViewById(R.id.spin_category);
+        final Spinner type = (Spinner) layout.findViewById(R.id.spin_type);
+        final Spinner city = (Spinner) layout.findViewById(R.id.spin_city);
+        final SeekBar cost = (SeekBar) layout.findViewById(R.id.seek_cost);
+        final TextView minValue = layout.findViewById(R.id.min_val);
+        final TextView maxValue = layout.findViewById(R.id.max_val);
+
+
+        cost.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+
+                int seektime = 0;
+                int MIN = 5;
+                if (progress < MIN) {
+
+                    minValue.setText(" Time Interval (" + seektime + " sec)");
+                } else {
+                    seektime = progress;
+                }
+                minValue.setText(" Time Interval (" + seektime + " sec)");
+
+            }
+        });
+
+        //Building dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(layout);
+        builder.setPositiveButton("Filter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                //save info where you want it
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
         categoryListSpinner = findViewById(R.id.spin_category);
         list_view_product = findViewById(R.id.product_list_view);
         hintSearch = findViewById(R.id.hint_search);
@@ -60,7 +126,6 @@ public class PrdouctActivity extends AppCompatActivity {
         {
 
         }
-
         list_view_product.setLayoutManager(new GridLayoutManager(this, 2));
         spinList.add("Select Category");
         catIdList.add("11111");

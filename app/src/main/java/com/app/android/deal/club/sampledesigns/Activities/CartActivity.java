@@ -40,9 +40,11 @@ import java.util.Map;
 public class CartActivity extends AppCompatActivity {
     RecyclerView List_view;
     ArrayList<RecentPrdocutData> cartDataList = new ArrayList<>();
-    String[] cartIdList = new String[]{};
+    public static ArrayList<String> cartIdList = new ArrayList<String>();
     ArrayList<String> costList = new ArrayList<>();
+    public static StringBuilder costBuilder = new StringBuilder();
     SessionManager session;
+    public static String totalAmount= "";
     public static TextView txtTotalCost;
     public static ProductAdapter radapter;
     @Override
@@ -84,7 +86,6 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void getCartList() {
-        final ArrayList<String> images = new ArrayList<String>(){};
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/carts";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -98,11 +99,11 @@ public class CartActivity extends AppCompatActivity {
                             String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
                             if (loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS)) {
                                 JSONArray jsonArray = jsonObject.getJSONArray("products");
-
                                 if(jsonArray.length() == 0)
                                 {
                                     Toast.makeText(CartActivity.this, "No Cart Added", Toast.LENGTH_SHORT).show();
                                     txtTotalCost.setText(getResources().getString(R.string.Rs)+" 0.00");
+                                    totalAmount = "0.00";
                                 }
                                 else {
                                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -120,19 +121,24 @@ public class CartActivity extends AppCompatActivity {
                                         String description = resObject.getString("Description");
                                         JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
                                         String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
-//
                                         String stateId = resObject.getString("state_id");
                                         String city_id = resObject.getString("city_id");
                                         String categoryId = resObject.getString("category_id");
                                         String sts = resObject.getString("status");
                                         costList.add(totalCost);
-                                        cartIdList[i] = uId;
+                                        cartIdList.add(uId);
+                                        if(i == 0 )
+                                        {
+                                            costBuilder.append(uId);
+                                        }
+                                        costBuilder.append(","+uId);
                                         cartDataList.add(new RecentPrdocutData(uId, productName, price, size, sft, type, printingCost, mountingCost
                                                 , totalCost, description, image, stateId, city_id, categoryId, sts));
                                         radapter = new ProductAdapter(cartDataList);
                                         List_view.setAdapter(radapter);
                                     }
                                     txtTotalCost.setText(getResources().getString(R.string.Rs)+" "+formatDecimal(getTotalAmount()));
+                                    totalAmount =  getTotalAmount();
                                 }
 
                             } else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED)) {
@@ -163,19 +169,16 @@ public class CartActivity extends AppCompatActivity {
     }
 
 
-    public void onCheckoutClick(View v)
-    {
+    public void onCheckoutClick(View v) {
         if(cartDataList.size()==0)
         {
             Toast.makeText(this, "Cart is Empty!", Toast.LENGTH_SHORT).show();
         }
         else {
-            checkOutProduct();
+           startActivity(new Intent(CartActivity.this,BookingFormActivity.class));
             Log.e("RESPONSE-REGISTER",""+cartIdList.toString());
-
         }
     }
-
 
     private void checkOutProduct()
     {
@@ -192,11 +195,11 @@ public class CartActivity extends AppCompatActivity {
                             String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
                             if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
                             {
-//                                Toast.makeText(CartActivity.this, "Product added to Wishlist", Toast.LENGTH_SHORT).show();
-//                                Intent in = new Intent(CartActivity.this, BookingFormActivity.class);
-//                                in.putExtra("cart_list",cartDataList);
-//                                in.putExtra("cart_size",cartDataList);
-//                                startActivity(in);
+                                //Toast.makeText(CartActivity.this, "Product added to Wishlist", Toast.LENGTH_SHORT).show();
+                                Intent in = new Intent(CartActivity.this, BookingFormActivity.class);
+                                in.putExtra("cart_list",cartDataList);
+                                in.putExtra("cart_size",cartDataList.size());
+                                startActivity(in);
                             }
                             else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
                             {

@@ -57,9 +57,13 @@
             android:name=".Activities.CartActivity"
             android:label="My Cart"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.BookingFormActivity"
+        <activity
+            android:name=".Activities.BookingFormActivity"
             android:label="Booking Form"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Activities.CategoryProductView"
+            android:label="Products"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
