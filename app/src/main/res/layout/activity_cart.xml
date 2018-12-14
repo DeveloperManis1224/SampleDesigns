@@ -3,33 +3,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f4f4f4"
     tools:context=".Activities.CartActivity">
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:id="@+id/list_view"/>
-
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:padding="5dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:text="Contact Our Support +91 452 4344800 / +91 452 4344801."/>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:id="@+id/list_view"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
         android:padding="5dp"
-        android:elevation="2dp"
+        android:elevation="3dp"
+        android:background="#fff"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:gravity="right"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAllCaps="true"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:layout_marginLeft="10dp"
@@ -37,19 +55,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:id="@+id/txt_total_cost"
                 android:textStyle="bold"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorAccent"
                 android:layout_marginLeft="10dp"
                 android:text="Total"/>
         </LinearLayout>
+
+
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:text="Checkout"
             android:onClick="onCheckoutClick"
+            android:layout_marginBottom="5dp"
             android:paddingRight="10dp"
             android:paddingLeft="10dp"
             android:drawableRight="@drawable/arrow_right"
@@ -57,7 +78,7 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:background="@drawable/description_lyt"/>
+            android:background="@drawable/more_button_lyt"/>
 
     </LinearLayout>
 

@@ -47,12 +47,8 @@ public class ProductDetails extends AppCompatActivity {
     private LikeButton mButton;
     private TextView mCheckAvailable, mAddCart;
     StringBuilder decriptionData = new StringBuilder();
-
     private LinearLayout lyt;
-
     SessionManager session;
-
-    String startDate;
 
 
     @Override
@@ -61,6 +57,8 @@ public class ProductDetails extends AppCompatActivity {
         setContentView(R.layout.activity_product_details);
         init();
     }
+
+
     private void init()
     {
         session = new SessionManager();
@@ -142,7 +140,7 @@ public class ProductDetails extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                                checkAvailability();
+                                addCart();
                                 mCheckAvailable.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                             }
                         }, mYear, mMonth, mDay);
@@ -356,6 +354,7 @@ public class ProductDetails extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("product_id", productId);
                 params.put("user_id", session.getPreferences(ProductDetails.this,Constants.CURRENT_USER_ID));
+                params.put("start_date",""+mCheckAvailable.getText().toString().trim());
                 return params;
             }
         };

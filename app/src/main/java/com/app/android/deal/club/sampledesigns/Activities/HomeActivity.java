@@ -1,5 +1,6 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -266,10 +267,11 @@ public class HomeActivity extends AppCompatActivity
             i.putExtra(android.content.Intent.EXTRA_TEXT, ": Coming soon...");
             startActivity(Intent.createChooser(i,"Share via"));
         }  else if (id == R.id.nav_cart) {
-            startActivity(new Intent(HomeActivity.this,CartActivity.class));
-        } else if (id == R.id.nav_wishlist) {
-            startActivity(new Intent(HomeActivity.this,WishList.class));
+            startActivity(new Intent(HomeActivity.this, CartActivity.class));
         }
+//        } else if (id == R.id.nav_wishlist) {
+//            startActivity(new Intent(HomeActivity.this,WishList.class));
+//        }
         else if (id == R.id.nav_contact_us) {
             startActivity(new Intent(HomeActivity.this,ContactUs.class));
         }else if (id == R.id.nav_about_us) {
@@ -313,12 +315,17 @@ public class HomeActivity extends AppCompatActivity
                                     String price = resObject.getString("price");
                                     String size = resObject.getString("size");
                                     String sft = resObject.getString("sft");
-                                    String type = resObject.getString("type");
+                                    JSONObject type_Object =resObject.getJSONObject("type");
+                                    String type = type_Object.getString("type");
                                     String printingCost = resObject.getString("printing_cost");
                                     String mountingCost = resObject.getString("mounting_cost");
                                     String totalCost = resObject.getString("total_cost");
                                     String description = resObject.getString("Description");
-                                    String image = resObject.getString("image");
+                                    JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
+                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
+//                                        String image = resObject.getString("image");
+
+
                                     String stateId = resObject.getString("state_id");
                                     String city_id = resObject.getString("city_id");
                                     String categoryId = resObject.getString("category_id");
@@ -376,7 +383,8 @@ public class HomeActivity extends AppCompatActivity
                                     String mountingCost = resObject.getString(Constants.MOUNTING_COST);
                                     String totalCost = resObject.getString(Constants.TOTAL_COST);
                                     String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
-                                    String image = resObject.getString(Constants.PRODUCT_IMAGE);
+                                    JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
+                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);

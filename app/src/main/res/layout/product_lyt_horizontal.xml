@@ -53,11 +53,11 @@
         android:paddingBottom="7dp"
         android:gravity="right">
         <TextView
-            android:layout_width="15dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/r_read_more"
             android:gravity="right"
-            android:background="@drawable/icon_more"
+            android:background="@drawable/delete_icon"
             android:text=""/>
     </LinearLayout>
 

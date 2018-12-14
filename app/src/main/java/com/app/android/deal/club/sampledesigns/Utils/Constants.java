@@ -23,6 +23,7 @@ public class Constants  {
     public static final String TOTAL_COST = "total_cost";
     public static final String PRODUCT_DESCRIPTION= "Description";
     public static final String PRODUCT_IMAGE = "image";
+    public static final String PRODUCT_IMAGES = "images";
     public static final String STATE_ID = "state_id";
     public static final String CITY_ID= "city_id";
     public static final String CATEGORY_ID = "category_id";

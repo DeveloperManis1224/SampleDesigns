@@ -20,10 +20,10 @@
             android:id="@+id/nav_cart"
             android:icon="@drawable/shop_cart"
             android:title="My Cart" />
-        <item
-            android:id="@+id/nav_wishlist"
-            android:icon="@drawable/icon_wishlist"
-            android:title="My Wishlist" />
+        <!--<item-->
+            <!--android:id="@+id/nav_wishlist"-->
+            <!--android:icon="@drawable/icon_wishlist"-->
+            <!--android:title="My Wishlist" />-->
     </group>
 
     <item android:title="more">
