@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
 
+import org.florescu.android.rangeseekbar.RangeSeekBar;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,39 +60,69 @@ public class PrdouctActivity extends AppCompatActivity {
         final Spinner category = (Spinner) layout.findViewById(R.id.spin_category);
         final Spinner type = (Spinner) layout.findViewById(R.id.spin_type);
         final Spinner city = (Spinner) layout.findViewById(R.id.spin_city);
-        final SeekBar cost = (SeekBar) layout.findViewById(R.id.seek_cost);
-        final TextView minValue = layout.findViewById(R.id.min_val);
-        final TextView maxValue = layout.findViewById(R.id.max_val);
+//        final SeekBar cost = (SeekBar) layout.findViewById(R.id.seek_cost);
+        final TextView minValue1 = layout.findViewById(R.id.min_val);
+
+        final TextView maxValue1 = layout.findViewById(R.id.max_val);
+
+        RangeSeekBar<Integer> rangeSeekBar = new RangeSeekBar<>(this);
+        // Set the range
+        rangeSeekBar.setRangeValues(10000, 120000);
+        rangeSeekBar.setSelectedMinValue(10000);
+        rangeSeekBar.setSelectedMaxValue(120000);
+
+        // Add to layout
+        FrameLayout layout1 = (FrameLayout) layout.findViewById(R.id.seekbar_placeholder);
+        layout1.addView(rangeSeekBar);
 
 
-        cost.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
+        // Seek bar for which we will set text color in code
+        RangeSeekBar rangeSeekBarTextColorWithCode = (RangeSeekBar) layout.findViewById(R.id.rangeSeekBarTextColorWithCode);
+        rangeSeekBarTextColorWithCode.setTextAboveThumbsColorResource(android.R.color.holo_red_dark);
+        rangeSeekBarTextColorWithCode.setRangeValues(1000,120000);
+
+        Log.e("RANGE",""+rangeSeekBarTextColorWithCode.getSelectedMinValue()+"//"+rangeSeekBarTextColorWithCode.getSelectedMaxValue());
+        rangeSeekBarTextColorWithCode.getSelectedMinValue();
+        rangeSeekBarTextColorWithCode.getSelectedMaxValue();
+
+        rangeSeekBarTextColorWithCode.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener() {
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser) {
-
-                int seektime = 0;
-                int MIN = 5;
-                if (progress < MIN) {
-
-                    minValue.setText(" Time Interval (" + seektime + " sec)");
-                } else {
-                    seektime = progress;
-                }
-                minValue.setText(" Time Interval (" + seektime + " sec)");
-
+            public void onRangeSeekBarValuesChanged(RangeSeekBar bar, Object minValue, Object maxValue) {
+                minValue1.setText(minValue.toString());
+                maxValue1.setText(maxValue.toString());
             }
         });
+
+
+//        cost.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress,
+//                                          boolean fromUser) {
+//
+//                int seektime = 0;
+//                int MIN = 5;
+//                if (progress < MIN) {
+//
+//                    minValue.setText(" Time Interval (" + seektime + " sec)");
+//                } else {
+//                    seektime = progress;
+//                }
+//                minValue.setText(" Time Interval (" + seektime + " sec)");
+//
+//            }
+//        });
 
         //Building dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
