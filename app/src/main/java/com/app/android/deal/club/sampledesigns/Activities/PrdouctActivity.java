@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
@@ -43,41 +44,123 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PrdouctActivity extends AppCompatActivity {
-    private Spinner categoryListSpinner;
-    ArrayList<String> spinList = new ArrayList<>();
+    private Spinner categoryListSpinner,CitySpinner, typeSpinner;
+    ArrayList<String> catSpinList = new ArrayList<>();
     ArrayList<String> catIdList = new ArrayList<>();
+
+    ArrayList<String> typeSpinList = new ArrayList<>();
+    ArrayList<String> typeIdList = new ArrayList<>();
+
+    ArrayList<String> citySpinList = new ArrayList<>();
+    ArrayList<String> cityIdList = new ArrayList<>();
+
     ArrayList<RecentPrdocutData> productData = new ArrayList<>();
     RecyclerView list_view_product;
     TextView hintSearch;
+    LayoutInflater inflater;
+    View layout;
+
+    int positionCat = 0;
+    int positionCity = 0 ;
+    int positionType = 0;
+
+    Button filterBtn ;
+    Button sortBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prdouct);
 
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.dialog_layout, (ViewGroup) findViewById(R.id.layout_root));
-//layout_root should be the name of the "top-level" layout node in the dialog_layout.xml file.
-        final Spinner category = (Spinner) layout.findViewById(R.id.spin_category);
-        final Spinner type = (Spinner) layout.findViewById(R.id.spin_type);
-        final Spinner city = (Spinner) layout.findViewById(R.id.spin_city);
-//        final SeekBar cost = (SeekBar) layout.findViewById(R.id.seek_cost);
+
+        inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        layout = inflater.inflate(R.layout.dialog_layout, (ViewGroup) findViewById(R.id.layout_root));
+
+
+        categoryListSpinner = (Spinner) layout.findViewById(R.id.spin_category);
+        typeSpinner= (Spinner) layout.findViewById(R.id.spin_type);
+        CitySpinner = (Spinner) layout.findViewById(R.id.spin_city);
+        list_view_product = findViewById(R.id.product_list_view);
+        hintSearch = findViewById(R.id.hint_search);
+
+        findViewById(R.id.filter_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFilterClick();
+                view.setClickable(false);
+            }
+        });
+        findViewById(R.id.sort_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSortClick();
+            }
+        });
+
+        list_view_product.setLayoutManager(new GridLayoutManager(this, 2));
+        catSpinList.add("All");
+        catIdList.add("11111");
+
+        typeSpinList.add("All");
+        typeIdList.add("11111");
+
+        citySpinList.add("All");
+        cityIdList.add("11111");
+
+        CitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                positionCity = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                positionType = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        categoryListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                positionCat = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        getCategorySpinnerValues();
+        getCitySpinnerValues();
+        getTypeSpinnerValues();
+
+    }
+
+
+
+    public  void onFilterClick()
+    {
         final TextView minValue1 = layout.findViewById(R.id.min_val);
 
         final TextView maxValue1 = layout.findViewById(R.id.max_val);
 
         RangeSeekBar<Integer> rangeSeekBar = new RangeSeekBar<>(this);
-        // Set the range
         rangeSeekBar.setRangeValues(10000, 120000);
         rangeSeekBar.setSelectedMinValue(10000);
         rangeSeekBar.setSelectedMaxValue(120000);
-
-        // Add to layout
         FrameLayout layout1 = (FrameLayout) layout.findViewById(R.id.seekbar_placeholder);
         layout1.addView(rangeSeekBar);
-
-
-
-        // Seek bar for which we will set text color in code
         RangeSeekBar rangeSeekBarTextColorWithCode = (RangeSeekBar) layout.findViewById(R.id.rangeSeekBarTextColorWithCode);
         rangeSeekBarTextColorWithCode.setTextAboveThumbsColorResource(android.R.color.holo_red_dark);
         rangeSeekBarTextColorWithCode.setRangeValues(1000,120000);
@@ -94,44 +177,14 @@ public class PrdouctActivity extends AppCompatActivity {
             }
         });
 
-
-//        cost.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress,
-//                                          boolean fromUser) {
-//
-//                int seektime = 0;
-//                int MIN = 5;
-//                if (progress < MIN) {
-//
-//                    minValue.setText(" Time Interval (" + seektime + " sec)");
-//                } else {
-//                    seektime = progress;
-//                }
-//                minValue.setText(" Time Interval (" + seektime + " sec)");
-//
-//            }
-//        });
-
-        //Building dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(layout);
         builder.setPositiveButton("Filter", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                //save info where you want it
+                getCategoryDetails(null,null,null
+                        ,maxValue1.getText().toString(),minValue1.getText().toString(),"");
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -140,45 +193,40 @@ public class PrdouctActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        AlertDialog dialog = builder.create();
+        final AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
         dialog.show();
-        categoryListSpinner = findViewById(R.id.spin_category);
-        list_view_product = findViewById(R.id.product_list_view);
-        hintSearch = findViewById(R.id.hint_search);
 
-        if(getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_BEST_BANNERS))
-        {
+    }
+    public void onSortClick() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(PrdouctActivity.this);
+        final AlertDialog dialog = builder.create();
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout11 = inflater.inflate(R.layout.dialog_sort_lyt, (ViewGroup) findViewById(R.id.layout_root));
 
-        }
-        else if(getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_RECENT_BANNERS))
-        {
+        final TextView lowToHigh = layout11.findViewById(R.id.low_to_high);
 
-        }
-        else if(getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_SERVICE))
-        {
+        final TextView highToLow = layout11.findViewById(R.id.high_to_low);
 
-        }
-        list_view_product.setLayoutManager(new GridLayoutManager(this, 2));
-        spinList.add("Select Category");
-        catIdList.add("11111");
-        getCategorySpinnerValues();
-        categoryListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        lowToHigh.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.e("CLICKEDPOSITION",catIdList.size()+"    "+i);
-                if(!spinList.get(i).equalsIgnoreCase("Select Category"))
-                {
-                    getCategoryDetails(catIdList.get(i));
-                }
+            public void onClick(View view) {
+                getCategoryDetails("","","","","","0");
             }
+        });
+        highToLow.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+            public void onClick(View view) {
+                getCategoryDetails("","","","","","1");
             }
         });
 
-    }
+        builder.setView(layout11);
+        dialog.setCancelable(true);
+        dialog.show();
 
+    }
 
     private void getCategorySpinnerValues() {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -200,9 +248,10 @@ public class PrdouctActivity extends AppCompatActivity {
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     String id = object.getString("id");
                                     String categoryName = object.getString("category");
-                                    spinList.add(id+" . "+categoryName);
+                                    catSpinList.add(id+" . "+categoryName);
                                     catIdList.add(id);
-                                    ArrayAdapter aa = new ArrayAdapter(PrdouctActivity.this,android.R.layout.simple_spinner_item,spinList);
+                                    ArrayAdapter aa = new ArrayAdapter(PrdouctActivity.this,
+                                            android.R.layout.simple_spinner_item,catSpinList);
                                     aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     categoryListSpinner.setAdapter(aa);
                                 }
@@ -226,12 +275,108 @@ public class PrdouctActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    private void getTypeSpinnerValues() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://adinn.candyrestaurant.com/api/product-type";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("RESPONSE-LOGIN",""+response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+                            {
+                                JSONArray jsonArray = jsonObject.getJSONArray("types");
+                                for(int i = 0; i<jsonArray.length();i++)
+                                {
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    String id = object.getString("id");
+                                    String categoryName = object.getString("type");
+                                    typeSpinList.add(id+" . "+categoryName);
+                                    typeIdList.add(id);
+                                    ArrayAdapter aa = new ArrayAdapter(PrdouctActivity.this,
+                                            android.R.layout.simple_spinner_item,typeSpinList);
+                                    aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    typeSpinner.setAdapter(aa);
+                                }
+                            }
+                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+                            {
+                                Toast.makeText(PrdouctActivity.this, ""+stsMessage,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE-LOGIN_ERROR",""+error.getMessage());
+                Toast.makeText(PrdouctActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
+    }
 
-    private void getCategoryDetails(final String categoryId) {
+    private void getCitySpinnerValues() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://adinn.candyrestaurant.com/api/city";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("RESPONSE-LOGIN",""+response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+                            {
+                                JSONArray jsonArray = jsonObject.getJSONArray("cities");
+                                for(int i = 0; i<jsonArray.length();i++)
+                                {
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    String id = object.getString("id");
+                                    String categoryName = object.getString("city");
+                                    citySpinList.add(id+" . "+categoryName);
+                                    cityIdList.add(id);
+                                    ArrayAdapter aa = new ArrayAdapter(PrdouctActivity.this,
+                                            android.R.layout.simple_spinner_item,citySpinList);
+                                    CitySpinner.setAdapter(aa);
+                                }
+                            }
+                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+                            {
+                                Toast.makeText(PrdouctActivity.this, ""+stsMessage,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE-LOGIN_ERROR",""+error.getMessage());
+                Toast.makeText(PrdouctActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+
+
+
+    private void getCategoryDetails(final String categoryId,final String type_id,
+                                    final String cityId,final String max, final String min, final String sort) {
        list_view_product.setAdapter(null);
        productData.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://adinn.candyrestaurant.com/api/category-product";
+        String url = "http://adinn.candyrestaurant.com/api/sort-order-product";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -247,21 +392,22 @@ public class PrdouctActivity extends AppCompatActivity {
                                 for(int i = 0; i < jsonArray.length(); i++ )
                                 {
                                     JSONObject resObject = jsonArray.getJSONObject(i);
-                                    String uId = resObject.getString("id");
-                                    String productName = resObject.getString("name");
-                                    String price = resObject.getString("price");
-                                    String size = resObject.getString("size");
-                                    String sft = resObject.getString("sft");
-                                    String type = resObject.getString("type");
-                                    String printingCost = resObject.getString("printing_cost");
-                                    String mountingCost = resObject.getString("mounting_cost");
-                                    String totalCost = resObject.getString("total_cost");
-                                    String description = resObject.getString("Description");
-                                    String image = resObject.getString("image");
-                                    String stateId = resObject.getString("state_id");
-                                    String city_id = resObject.getString("city_id");
-                                    String categoryId = resObject.getString("category_id");
-                                    String sts = resObject.getString("status");
+                                    String uId = resObject.getString(Constants.PRODUCT_ID);
+                                    String productName = resObject.getString(Constants.PRODUCT_NAME);
+                                    String price = resObject.getString(Constants.PRODUCT_NAME);
+                                    String size = resObject.getString(Constants.PRODUCT_SIZE);
+                                    String sft = resObject.getString(Constants.PRODUCT_SFT);
+                                    String type = resObject.getString(Constants.PRODUCT_TYPE);
+                                    String printingCost = resObject.getString(Constants.PRINTING_COST);
+                                    String mountingCost = resObject.getString(Constants.MOUNTING_COST);
+                                    String totalCost = resObject.getString(Constants.TOTAL_COST);
+                                    String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
+                                    JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
+                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
+                                    String stateId = resObject.getString(Constants.STATE_ID);
+                                    String city_id = resObject.getString(Constants.CITY_ID);
+                                    String categoryId = resObject.getString(Constants.CATEGORY_ID);
+                                    String sts = resObject.getString(Constants.PRODUCT_STATUS);
                                     productData.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
                                             ,totalCost,description,image,stateId,city_id,categoryId,sts));
                                     RecentProductAdapter radapter = new RecentProductAdapter(productData);
@@ -288,7 +434,12 @@ public class PrdouctActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("category_id", categoryId);
+                params.put("category_id", catIdList.get(positionCat));
+                params.put("sort_type",sort);
+                params.put("type_id",typeIdList.get(positionType));
+                params.put("city_id",cityIdList.get(positionCity));
+                params.put("max_price",max);
+                params.put("min_price",min);
                 return params;
             }
         };

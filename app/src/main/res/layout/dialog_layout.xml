@@ -16,15 +16,31 @@
         android:textSize="18sp"
         android:text="Select Filters"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Select Category "/>
+
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
         android:background="@drawable/layout_bg"
         android:padding="2dp"
         android:id="@+id/spin_category"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:text="Select Type"/>
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,6 +50,15 @@
         android:background="@drawable/layout_bg"
         android:padding="2dp"
         android:id="@+id/spin_type"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:text="Select City"/>
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,8 +79,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:padding="3dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text="Select Price "/>
 
     <org.florescu.android.rangeseekbar.RangeSeekBar
@@ -100,16 +126,6 @@
 
     </LinearLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:text="Search"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:textSize="16sp"
-        android:textColor="#fff"
-        android:background="@drawable/more_button_lyt"/>
 
 
 </LinearLayout>

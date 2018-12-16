@@ -68,13 +68,14 @@ public class HomeActivity extends AppCompatActivity
     RecyclerView List_view1;
     SessionManager session;
     SliderLayout sliderLayout;
-
     TextView mRecentBanner, mBestBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
         session = new SessionManager();
         sliderLayout = findViewById(R.id.imageSlider);
         sliderLayout.setIndicatorAnimation(SliderLayout.Animations.SLIDE); //set indicator animation by using SliderLayout.Animations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
@@ -284,7 +285,7 @@ public class HomeActivity extends AppCompatActivity
 
     private void getRecentProducts() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://adinn.candyrestaurant.com/api/product";
+        String url = "http://adinn.candyrestaurant.com/api/recent-product";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -298,16 +299,16 @@ public class HomeActivity extends AppCompatActivity
                             {
                                 JSONArray jsonArray = jsonObject.getJSONArray("products");
                                 int val = 0;
-                                if(jsonArray.length() <10)
-                                {
-                                    val = jsonArray.length();
-                                }
-                                else
-                                {
-                                    val = 10;
-                                }
+//                                if(jsonArray.length() <10)
+//                                {
+//                                    val = jsonArray.length();
+//                                }
+//                                else
+//                                {
+//                                    val = 10;
+//                                }
 
-                                for(int i = 0; i < val; i++ )
+                                for(int i = 0; i < jsonArray.length(); i++ )
                                 {
                                     JSONObject resObject = jsonArray.getJSONObject(i);
                                     String uId = resObject.getString("id");
@@ -339,6 +340,7 @@ public class HomeActivity extends AppCompatActivity
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
+                            Log.e("RESPONSE-HOME_Recent",""+e.getMessage());
                             e.printStackTrace();
                         }
                     }
@@ -409,6 +411,11 @@ public class HomeActivity extends AppCompatActivity
             }
         });
         queue.add(stringRequest);
+    }
+
+    public void onCategoryClick(View v)
+    {
+        startActivity(new Intent(HomeActivity.this,PrdouctActivity.class));
     }
 
 }
