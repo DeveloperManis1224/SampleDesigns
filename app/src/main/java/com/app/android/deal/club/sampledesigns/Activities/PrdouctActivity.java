@@ -57,8 +57,8 @@ public class PrdouctActivity extends AppCompatActivity {
     ArrayList<RecentPrdocutData> productData = new ArrayList<>();
     RecyclerView list_view_product;
     TextView hintSearch;
-    LayoutInflater inflater;
-    View layout;
+//    LayoutInflater inflater;
+//    View layout;
 
     int positionCat = 0;
     int positionCity = 0 ;
@@ -73,21 +73,21 @@ public class PrdouctActivity extends AppCompatActivity {
         setContentView(R.layout.activity_prdouct);
 
 
-        inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        layout = inflater.inflate(R.layout.dialog_layout, (ViewGroup) findViewById(R.id.layout_root));
 
 
-        categoryListSpinner = (Spinner) layout.findViewById(R.id.spin_category);
-        typeSpinner= (Spinner) layout.findViewById(R.id.spin_type);
-        CitySpinner = (Spinner) layout.findViewById(R.id.spin_city);
+
+
         list_view_product = findViewById(R.id.product_list_view);
         hintSearch = findViewById(R.id.hint_search);
 
         findViewById(R.id.filter_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getCategorySpinnerValues();
+                getCitySpinnerValues();
+                getTypeSpinnerValues();
                 onFilterClick();
-                view.setClickable(false);
+
             }
         });
         findViewById(R.id.sort_btn).setOnClickListener(new View.OnClickListener() {
@@ -107,6 +107,23 @@ public class PrdouctActivity extends AppCompatActivity {
         citySpinList.add("All");
         cityIdList.add("11111");
 
+
+
+
+
+        getCategoryDetails("","","","","","");
+
+    }
+
+
+
+    public  void onFilterClick()
+    {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.dialog_layout, (ViewGroup) findViewById(R.id.layout_root));
+        categoryListSpinner = (Spinner) layout.findViewById(R.id.spin_category);
+        typeSpinner= (Spinner) layout.findViewById(R.id.spin_type);
+        CitySpinner = (Spinner) layout.findViewById(R.id.spin_city);
         CitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -140,17 +157,6 @@ public class PrdouctActivity extends AppCompatActivity {
 
             }
         });
-
-        getCategorySpinnerValues();
-        getCitySpinnerValues();
-        getTypeSpinnerValues();
-
-    }
-
-
-
-    public  void onFilterClick()
-    {
         final TextView minValue1 = layout.findViewById(R.id.min_val);
 
         final TextView maxValue1 = layout.findViewById(R.id.max_val);
@@ -177,7 +183,7 @@ public class PrdouctActivity extends AppCompatActivity {
             }
         });
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(PrdouctActivity.this);
         builder.setView(layout);
         builder.setPositiveButton("Filter", new DialogInterface.OnClickListener() {
             @Override
@@ -402,14 +408,14 @@ public class PrdouctActivity extends AppCompatActivity {
                                     String mountingCost = resObject.getString(Constants.MOUNTING_COST);
                                     String totalCost = resObject.getString(Constants.TOTAL_COST);
                                     String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
-                                    JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
-                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
+//                                    JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
+//                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
                                     String sts = resObject.getString(Constants.PRODUCT_STATUS);
                                     productData.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
+                                            ,totalCost,description,"D4W3KdpwFYMc.jpg",stateId,city_id,categoryId,sts));
                                     RecentProductAdapter radapter = new RecentProductAdapter(productData);
                                     radapter.notifyDataSetChanged();
                                     list_view_product.setAdapter(radapter);
@@ -434,10 +440,16 @@ public class PrdouctActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("category_id", catIdList.get(positionCat));
+//                params.put("category_id", catIdList.get(positionCat));
+//                params.put("sort_type",sort);
+//                params.put("type_id",typeIdList.get(positionType));
+//                params.put("city_id",cityIdList.get(positionCity));
+//                params.put("max_price",max);
+//                params.put("min_price",min);
+                params.put("category_id", categoryId);
                 params.put("sort_type",sort);
-                params.put("type_id",typeIdList.get(positionType));
-                params.put("city_id",cityIdList.get(positionCity));
+                params.put("type_id",type_id);
+                params.put("city_id",cityId);
                 params.put("max_price",max);
                 params.put("min_price",min);
                 return params;

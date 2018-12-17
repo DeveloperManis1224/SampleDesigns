@@ -20,6 +20,7 @@
                 android:layout_height="200dp"
                 android:layout_alignParentTop="true"
                 android:id="@+id/imageSlider"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +42,7 @@
                    android:layout_height="120dp"
                    android:layout_marginTop="7dp"
                    android:elevation="2dp"
-                    android:onClick="onCategoryClick"
+
                    android:background="@android:color/white"
                    android:weightSum="2"
                    android:orientation="horizontal">
@@ -74,6 +75,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
                             android:text="Expolre Now"/>
@@ -85,7 +87,7 @@
                     android:layout_height="120dp"
                     android:layout_marginTop="7dp"
                     android:elevation="2dp"
-                    android:onClick="onCategoryClick"
+
                     android:background="@android:color/white"
                     android:weightSum="2"
                     android:orientation="horizontal">
@@ -112,6 +114,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
                             android:text="Expolre Now"/>
@@ -133,7 +136,6 @@
                     android:layout_height="120dp"
                     android:layout_marginTop="7dp"
                     android:elevation="2dp"
-                    android:onClick="onCategoryClick"
                     android:weightSum="2"
                     android:background="@android:color/white"
                     android:orientation="horizontal">
@@ -168,6 +170,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
                             android:text="Expolre Now"/>
@@ -179,7 +182,6 @@
                     android:layout_height="120dp"
                     android:layout_marginTop="7dp"
                     android:elevation="2dp"
-                    android:onClick="onCategoryClick"
                     android:background="@android:color/white"
                     android:weightSum="2"
                     android:orientation="horizontal">
@@ -206,6 +208,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
                             android:text="Expolre Now"/>
@@ -227,7 +230,6 @@
                     android:layout_height="120dp"
                     android:layout_marginTop="7dp"
                     android:elevation="2dp"
-                    android:onClick="onCategoryClick"
                     android:weightSum="2"
                     android:background="@android:color/white"
                     android:orientation="horizontal">
@@ -261,6 +263,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
                             android:text="Expolre Now"/>
@@ -272,7 +275,7 @@
                     android:layout_height="120dp"
                     android:layout_marginTop="7dp"
                     android:elevation="2dp"
-                    android:onClick="onCategoryClick"
+
                     android:weightSum="2"
                     android:background="@android:color/white"
                     android:orientation="horizontal">
@@ -299,6 +302,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
                             android:text="Expolre Now"/>
@@ -318,7 +322,6 @@
                     android:layout_height="120dp"
                     android:layout_marginTop="7dp"
                     android:elevation="2dp"
-                    android:onClick="onCategoryClick"
                     android:background="@android:color/white"
                     android:weightSum="2"
                     android:orientation="horizontal">
@@ -352,6 +355,7 @@
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
+                            android:onClick="onCategoryClick"
                             android:padding="8dp"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
@@ -365,7 +369,7 @@
                     android:layout_height="120dp"
                     android:layout_marginTop="7dp"
                     android:elevation="2dp"
-                    android:onClick="onCategoryClick"
+
                     android:background="@android:color/white"
                     android:weightSum="2"
                     android:orientation="horizontal">
@@ -391,6 +395,7 @@
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
+                            android:onClick="onCategoryClick"
                             android:padding="8dp"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
@@ -413,7 +418,7 @@
                     android:layout_height="120dp"
                     android:layout_marginTop="7dp"
                     android:elevation="2dp"
-                    android:onClick="onCategoryClick"
+
                     android:background="@android:color/white"
                     android:weightSum="2"
                     android:orientation="horizontal">
@@ -447,6 +452,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
                             android:text="Expolre Now"/>
@@ -456,6 +462,7 @@
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

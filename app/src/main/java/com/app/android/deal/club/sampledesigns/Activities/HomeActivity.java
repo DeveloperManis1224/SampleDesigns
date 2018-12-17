@@ -298,16 +298,6 @@ public class HomeActivity extends AppCompatActivity
                             if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
                             {
                                 JSONArray jsonArray = jsonObject.getJSONArray("products");
-                                int val = 0;
-//                                if(jsonArray.length() <10)
-//                                {
-//                                    val = jsonArray.length();
-//                                }
-//                                else
-//                                {
-//                                    val = 10;
-//                                }
-
                                 for(int i = 0; i < jsonArray.length(); i++ )
                                 {
                                     JSONObject resObject = jsonArray.getJSONObject(i);
@@ -381,17 +371,6 @@ public class HomeActivity extends AppCompatActivity
                                     String mountingCost = resObject.getString(Constants.MOUNTING_COST);
                                     String totalCost = resObject.getString(Constants.TOTAL_COST);
                                     String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
-//                                    String image;
-//                                    JSONArray jsry ;
-//                                    try {
-//                                        jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
-//                                         image= jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
-//                                    }catch (IndexOutOfBoundsException ex)
-//                                    {
-//                                        Log.e("RESPONSE-HOME_BError",""+ex.getMessage());
-//                                        ex.printStackTrace();
-//                                        image = "not";
-//                                    }
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
