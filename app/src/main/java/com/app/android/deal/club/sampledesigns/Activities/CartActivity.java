@@ -108,23 +108,31 @@ public class CartActivity extends AppCompatActivity {
                                 else {
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject resObject = jsonArray.getJSONObject(i);
-                                        String uId = resObject.getString("id");
-                                        String productName = resObject.getString("name");
-                                        String price = resObject.getString("price");
-                                        String size = resObject.getString("size");
-                                        String sft = resObject.getString("sft");
-                                        JSONObject type_Object =resObject.getJSONObject("type");
-                                        String type = type_Object.getString("type");
-                                        String printingCost = resObject.getString("printing_cost");
-                                        String mountingCost = resObject.getString("mounting_cost");
-                                        String totalCost = resObject.getString("total_cost");
-                                        String description = resObject.getString("Description");
-                                        JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
-                                        String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
-                                        String stateId = resObject.getString("state_id");
-                                        String city_id = resObject.getString("city_id");
-                                        String categoryId = resObject.getString("category_id");
-                                        String sts = resObject.getString("status");
+                                        String uId = resObject.getString(Constants.PRODUCT_ID);
+                                        String productName = resObject.getString(Constants.PRODUCT_NAME);
+                                        String price = resObject.getString(Constants.PRODUCT_NAME);
+                                        String size = resObject.getString(Constants.PRODUCT_SIZE);
+                                        String sft = resObject.getString(Constants.PRODUCT_SFT);
+                                        String type = resObject.getJSONObject(Constants.PRODUCT_TYPE).getString(Constants.PRODUCT_TYPE);
+                                        String printingCost = resObject.getString(Constants.PRINTING_COST);
+                                        String mountingCost = resObject.getString(Constants.MOUNTING_COST);
+                                        String totalCost = resObject.getString(Constants.TOTAL_COST);
+                                        String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
+//                                    String image;
+//                                    JSONArray jsry ;
+//                                    try {
+//                                        jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
+//                                         image= jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
+//                                    }catch (IndexOutOfBoundsException ex)
+//                                    {
+//                                        Log.e("RESPONSE-HOME_BError",""+ex.getMessage());
+//                                        ex.printStackTrace();
+//                                        image = "not";
+//                                    }
+                                        String stateId = resObject.getString(Constants.STATE_ID);
+                                        String city_id = resObject.getString(Constants.CITY_ID);
+                                        String categoryId = resObject.getString(Constants.CATEGORY_ID);
+                                        String sts = resObject.getString(Constants.PRODUCT_STATUS);
                                         costList.add(totalCost);
                                         cartIdList.add(uId);
                                         if(i == 0 )
@@ -133,7 +141,7 @@ public class CartActivity extends AppCompatActivity {
                                         }
                                         costBuilder.append(","+uId);
                                         cartDataList.add(new RecentPrdocutData(uId, productName, price, size, sft, type, printingCost, mountingCost
-                                                , totalCost, description, image, stateId, city_id, categoryId, sts));
+                                                , totalCost, description, "D4W3KdpwFYMc.jpg", stateId, city_id, categoryId, sts));
                                         radapter = new ProductAdapter(cartDataList);
                                         List_view.setAdapter(radapter);
                                     }

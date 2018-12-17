@@ -26,12 +26,11 @@
                     android:scaleType="fitXY"
                     android:textColor="#131313"
                     android:textSize="18sp"
+                    android:elevation="2dp"
                     android:id="@+id/produ_img"
-                    android:padding="5dp"
                     android:textAlignment="center"
                     android:textStyle="bold"
                     android:src="@mipmap/ic_launcher"/>
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -77,7 +76,7 @@
                     android:id="@+id/check_available"
                     android:textColor="@android:color/white"
                     android:background="@drawable/more_button_lyt"
-                    android:text="Add Cart"/>
+                    android:text="Add to Cart"/>
             </LinearLayout>
 
             <LinearLayout
@@ -181,6 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:id="@+id/lyt_desc"
+                android:layout_marginBottom="20dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/layout_bg"
@@ -190,20 +190,14 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
+
+                    android:paddingBottom="10dp"
                     android:textSize="16sp"
-                    android:padding="4dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:paddingTop="4dp"
                     android:background="@drawable/description_lyt"
                     android:text="Description"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingLeft="8dp"
-                    android:id="@+id/d_txt_hoarding_id"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="HoadingId"/>
 
                 <!--<TextView-->
                     <!--android:layout_width="match_parent"-->

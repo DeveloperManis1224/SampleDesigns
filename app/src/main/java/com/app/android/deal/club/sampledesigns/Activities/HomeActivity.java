@@ -87,13 +87,13 @@ public class HomeActivity extends AppCompatActivity
         mRecentBanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).putExtra(Constants.PAGE_FROM,Constants.PAGE_RECENT_BANNERS));
+                startActivity(new Intent(HomeActivity.this,CategoryProductView.class).putExtra(Constants.PAGE_FROM,Constants.PAGE_RECENT_BANNERS));
             }
         });
         mBestBanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).putExtra(Constants.PAGE_FROM,Constants.PAGE_BEST_BANNERS));
+                startActivity(new Intent(HomeActivity.this,CategoryProductView.class).putExtra(Constants.PAGE_FROM,Constants.PAGE_BEST_BANNERS));
             }
         });
         //set scroll delay in seconds :
@@ -311,25 +311,24 @@ public class HomeActivity extends AppCompatActivity
                                 for(int i = 0; i < jsonArray.length(); i++ )
                                 {
                                     JSONObject resObject = jsonArray.getJSONObject(i);
-                                    String uId = resObject.getString("id");
-                                    String productName = resObject.getString("name");
-                                    String price = resObject.getString("price");
-                                    String size = resObject.getString("size");
-                                    String sft = resObject.getString("sft");
-                                    JSONObject type_Object =resObject.getJSONObject("type");
-                                    String type = type_Object.getString("type");
-                                    String printingCost = resObject.getString("printing_cost");
-                                    String mountingCost = resObject.getString("mounting_cost");
-                                    String totalCost = resObject.getString("total_cost");
-                                    String description = resObject.getString("Description");
-                                    JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
-                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
-                                    String stateId = resObject.getString("state_id");
-                                    String city_id = resObject.getString("city_id");
-                                    String categoryId = resObject.getString("category_id");
-                                    String sts = resObject.getString("status");
+                                    String uId = resObject.getString(Constants.PRODUCT_ID);
+                                    String productName = resObject.getString(Constants.PRODUCT_NAME);
+                                    String price = resObject.getString(Constants.PRODUCT_NAME);
+                                    String size = resObject.getString(Constants.PRODUCT_SIZE);
+                                    String sft = resObject.getString(Constants.PRODUCT_SFT);
+                                    String type = resObject.getJSONObject(Constants.PRODUCT_TYPE).getString(Constants.PRODUCT_TYPE);
+                                    String printingCost = resObject.getString(Constants.PRINTING_COST);
+                                    String mountingCost = resObject.getString(Constants.MOUNTING_COST);
+                                    String totalCost = resObject.getString(Constants.TOTAL_COST);
+                                    String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
+//                                    JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
+//                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
+                                    String stateId = resObject.getString(Constants.STATE_ID);
+                                    String city_id = resObject.getString(Constants.CITY_ID);
+                                    String categoryId = resObject.getString(Constants.CATEGORY_ID);
+                                    String sts = resObject.getString(Constants.PRODUCT_STATUS);
                                     productDataList.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                    ,totalCost,description,image,stateId,city_id,categoryId,sts));
+                                    ,totalCost,description,"D4W3KdpwFYMc.jpg",stateId,city_id,categoryId,sts));
                                     RecentProductAdapter radapter = new RecentProductAdapter(productDataList);
                                     List_view.setAdapter(radapter);
                                 }
@@ -361,7 +360,7 @@ public class HomeActivity extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e("RESPONSE-HOME_Recent",""+response);
+                        Log.e("RESPONSE-HOME_Best",""+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String loginStatus = jsonObject.getString("status");//LOGIN = "1";
@@ -377,19 +376,28 @@ public class HomeActivity extends AppCompatActivity
                                     String price = resObject.getString(Constants.PRODUCT_NAME);
                                     String size = resObject.getString(Constants.PRODUCT_SIZE);
                                     String sft = resObject.getString(Constants.PRODUCT_SFT);
-                                    String type = resObject.getString(Constants.PRODUCT_TYPE);
+                                    String type = resObject.getJSONObject(Constants.PRODUCT_TYPE).getString(Constants.PRODUCT_TYPE);
                                     String printingCost = resObject.getString(Constants.PRINTING_COST);
                                     String mountingCost = resObject.getString(Constants.MOUNTING_COST);
                                     String totalCost = resObject.getString(Constants.TOTAL_COST);
                                     String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
-                                    JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
-                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
+//                                    String image;
+//                                    JSONArray jsry ;
+//                                    try {
+//                                        jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
+//                                         image= jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
+//                                    }catch (IndexOutOfBoundsException ex)
+//                                    {
+//                                        Log.e("RESPONSE-HOME_BError",""+ex.getMessage());
+//                                        ex.printStackTrace();
+//                                        image = "not";
+//                                    }
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
                                     String sts = resObject.getString(Constants.PRODUCT_STATUS);
                                     bestDataList.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
+                                            ,totalCost,description,"D4W3KdpwFYMc.jpg",stateId,city_id,categoryId,sts));
                                     RecentProductAdapter radapter = new RecentProductAdapter(bestDataList);
                                     List_view1.setAdapter(radapter);
                                 }
@@ -400,6 +408,7 @@ public class HomeActivity extends AppCompatActivity
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
+                            Log.e("RESPONSE-HOME_BError",""+e.getMessage());
                             e.printStackTrace();
                         }
                     }

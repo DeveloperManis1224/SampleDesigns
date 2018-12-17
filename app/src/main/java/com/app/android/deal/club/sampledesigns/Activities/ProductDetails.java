@@ -95,7 +95,7 @@ public class ProductDetails extends AppCompatActivity {
         categoryId = getIntent().getExtras().getString(Constants.CATEGORY_ID);
         productSts = getIntent().getExtras().getString(Constants.PRODUCT_STATUS);
 
-        mProductName.setText(getString(R.string.filled_bullet) +" Name            :"+productName);
+        mProductName.setText(getString(R.string.filled_bullet) +" Location            :"+productName);
         mProductType.setText(getString(R.string.filled_bullet) +" Type            :"+productType);
         mProductSft.setText(getString(R.string.filled_bullet) +" Sft             :"+productSFT);
         mProductSize.setText(getString(R.string.filled_bullet) +" Size            :"+productSize);
@@ -379,20 +379,12 @@ public class ProductDetails extends AppCompatActivity {
                                 JSONArray jsonArray = jsonObject.getJSONArray("products");
                                 for (int i = 0; i < jsonArray.length(); i++)
                                 {
-                                    JSONObject jobj = new JSONObject();
+                                    JSONObject jobj = jsonArray.getJSONObject(i);
                                     String id = jobj.getString("id");
                                     String product_id = jobj.getString("product_id");
                                     String title = jobj.getString("title");
                                     String details = jobj.getString("details");
-
-                                    decriptionData.append(getResources().getString(R.string.filled_bullet)+" "+title+" : "+details+"\n");
-
-//                                    LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
-//                                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//                                    TextView tv=new TextView(ProductDetails.this);
-//                                    tv.setLayoutParams(lparams);
-//                                    tv.setText(getResources().getString(R.string.filled_bullet)+" "+title+" : "+details);
-//                                    lyt.addView(tv);
+                                    decriptionData.append(getResources().getString(R.string.filled_bullet)+" "+title+" : "+details+"\n \n");
                                 }
                             }
                             else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
@@ -400,8 +392,9 @@ public class ProductDetails extends AppCompatActivity {
                                 Toast.makeText(ProductDetails.this, ""+stsMessage,
                                         Toast.LENGTH_SHORT).show();
                             }
-                            ((TextView)findViewById(R.id.d_txt_hoarding_id)).setText(decriptionData);
+                            mDescription.setText(decriptionData);
                         } catch (JSONException e) {
+                            Log.e("RESPONSE-ERROR_DETAILS",""+e.getMessage());
                             e.printStackTrace();
                         }
                     }
