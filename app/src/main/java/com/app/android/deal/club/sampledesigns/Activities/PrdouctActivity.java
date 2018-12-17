@@ -190,7 +190,7 @@ public class PrdouctActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                getCategoryDetails(null,null,null
+                getCategoryDetails(catIdList.get(positionCat),typeIdList.get(positionType),cityIdList.get(positionCity)
                         ,maxValue1.getText().toString(),minValue1.getText().toString(),"");
             }
         });
@@ -339,6 +339,8 @@ public class PrdouctActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+
+
     private void getCitySpinnerValues() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/city";
@@ -387,7 +389,6 @@ public class PrdouctActivity extends AppCompatActivity {
 
 
 
-
     private void getCategoryDetails(final String categoryId,final String type_id,
                                     final String cityId,final String max, final String min, final String sort) {
        list_view_product.setAdapter(null);
@@ -414,11 +415,12 @@ public class PrdouctActivity extends AppCompatActivity {
                                     String price = resObject.getString(Constants.PRODUCT_NAME);
                                     String size = resObject.getString(Constants.PRODUCT_SIZE);
                                     String sft = resObject.getString(Constants.PRODUCT_SFT);
-                                    String type = resObject.getString(Constants.PRODUCT_TYPE);
+                                    String type = resObject.getJSONObject(Constants.PRODUCT_TYPE).getString(Constants.PRODUCT_TYPE);
                                     String printingCost = resObject.getString(Constants.PRINTING_COST);
                                     String mountingCost = resObject.getString(Constants.MOUNTING_COST);
                                     String totalCost = resObject.getString(Constants.TOTAL_COST);
                                     String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
+                                    String image = resObject.getString(Constants.PRODUCT_IMAGE);
 //                                    JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
 //                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
                                     String stateId = resObject.getString(Constants.STATE_ID);
@@ -426,7 +428,7 @@ public class PrdouctActivity extends AppCompatActivity {
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
                                     String sts = resObject.getString(Constants.PRODUCT_STATUS);
                                     productData.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                            ,totalCost,description,"D4W3KdpwFYMc.jpg",stateId,city_id,categoryId,sts));
+                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
                                     RecentProductAdapter radapter = new RecentProductAdapter(productData);
                                     radapter.notifyDataSetChanged();
                                     list_view_product.setAdapter(radapter);

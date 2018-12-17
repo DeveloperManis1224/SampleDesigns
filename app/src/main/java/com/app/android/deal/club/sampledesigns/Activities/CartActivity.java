@@ -43,6 +43,7 @@ public class CartActivity extends AppCompatActivity {
     public static ArrayList<String> cartIdList = new ArrayList<String>();
     ArrayList<String> costList = new ArrayList<>();
     public static StringBuilder costBuilder = new StringBuilder();
+    public static StringBuilder productBuilder = new StringBuilder();
     SessionManager session;
     public static String totalAmount= "";
     public static TextView txtTotalCost;
@@ -129,6 +130,7 @@ public class CartActivity extends AppCompatActivity {
 //                                        ex.printStackTrace();
 //                                        image = "not";
 //                                    }
+                                        String image = resObject.getString(Constants.PRODUCT_IMAGE);
                                         String stateId = resObject.getString(Constants.STATE_ID);
                                         String city_id = resObject.getString(Constants.CITY_ID);
                                         String categoryId = resObject.getString(Constants.CATEGORY_ID);
@@ -138,16 +140,23 @@ public class CartActivity extends AppCompatActivity {
                                         if(i == 0 )
                                         {
                                             costBuilder.append(uId);
+                                            productBuilder.append(uId);
                                         }
-                                        costBuilder.append(","+uId);
+                                        else {
+                                            costBuilder.append("," + uId);
+
+                                            productBuilder.append("," + uId);
+                                        }
                                         cartDataList.add(new RecentPrdocutData(uId, productName, price, size, sft, type, printingCost, mountingCost
-                                                , totalCost, description, "D4W3KdpwFYMc.jpg", stateId, city_id, categoryId, sts));
+                                                , totalCost, description, image, stateId, city_id, categoryId, sts));
                                         radapter = new ProductAdapter(cartDataList);
                                         List_view.setAdapter(radapter);
                                     }
                                     txtTotalCost.setText(getResources().getString(R.string.Rs)+" "+formatDecimal(getTotalAmount()));
                                     totalAmount =  getTotalAmount();
                                 }
+
+                                Log.e("RESPONSE-HOME_Recent", "" + productBuilder.toString());
 
                             } else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED)) {
                                 Toast.makeText(CartActivity.this, "" + stsMessage,

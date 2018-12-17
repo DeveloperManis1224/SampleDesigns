@@ -18,8 +18,13 @@
             android:title="Products" />
         <item
             android:id="@+id/nav_cart"
-            android:icon="@drawable/shop_cart"
+            android:icon="@drawable/add_cart"
             android:title="My Cart" />
+
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/shop_cart"
+            android:title="My Orders" />
         <!--<item-->
             <!--android:id="@+id/nav_wishlist"-->
             <!--android:icon="@drawable/icon_wishlist"-->

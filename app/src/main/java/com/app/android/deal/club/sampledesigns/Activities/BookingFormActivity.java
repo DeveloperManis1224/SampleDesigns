@@ -145,7 +145,7 @@ public class BookingFormActivity extends AppCompatActivity {
     }
 
     private void bookChecking() {
-        Log.e("RESPONSE-HOME_Recent",""+CartActivity.cartIdList.toString());
+        Log.e("RESPONSE-HOME_Recent",""+CartActivity.productBuilder.toString());
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/order";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -168,6 +168,7 @@ public class BookingFormActivity extends AppCompatActivity {
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 dialog.cancel();
+                                                startActivity(new Intent(BookingFormActivity.this,HomeActivity.class));
                                             }
                                         });
                                 AlertDialog alert11 = builder1.create();
@@ -208,7 +209,7 @@ public class BookingFormActivity extends AppCompatActivity {
                 params.put("email",mEmail.getText().toString().trim());
                 params.put("notes",mNotes.getText().toString().trim());
                 params.put("total_amount",CartActivity.totalAmount.toString());
-                params.put("products",CartActivity.cartIdList.toString());
+                params.put("products",CartActivity.productBuilder.toString());
                 return params;
             }
         };

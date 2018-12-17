@@ -33,6 +33,7 @@ public class Constants  {
 
     public static final String PAGE_FROM = "from";
     public static final String PAGE_HOME = "home";
+    public static final String PAGE_SEARCH = "search";
     public static final String PAGE_SERVICE = "service";
     public static final String PAGE_BEST_BANNERS = "best";
     public static final String PAGE_RECENT_BANNERS = "recent";

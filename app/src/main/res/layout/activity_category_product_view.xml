@@ -7,6 +7,24 @@
     android:orientation="vertical"
     tools:context=".Activities.CategoryProductView">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lyt_container"
+        android:padding="7dp"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:id="@+id/auto_search_edt"
+            android:hint="Search Location"
+            android:background="@drawable/layout_bg"/>
+
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

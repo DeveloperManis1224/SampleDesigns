@@ -1,17 +1,13 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,9 +23,6 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -37,8 +30,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.android.deal.club.sampledesigns.Adapters.RecentProductAdapter;
-import com.app.android.deal.club.sampledesigns.DBHelper;
-import com.app.android.deal.club.sampledesigns.DataAdapter;
 import com.app.android.deal.club.sampledesigns.DataModel;
 import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
@@ -50,17 +41,10 @@ import com.smarteist.autoimageslider.SliderView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
     ArrayList<DataModel> dataModal=new ArrayList<DataModel>();
     ArrayList<RecentPrdocutData> productDataList = new ArrayList<>();
     ArrayList<RecentPrdocutData> bestDataList = new ArrayList<>();
@@ -69,13 +53,10 @@ public class HomeActivity extends AppCompatActivity
     SessionManager session;
     SliderLayout sliderLayout;
     TextView mRecentBanner, mBestBanner;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-
         session = new SessionManager();
         sliderLayout = findViewById(R.id.imageSlider);
         sliderLayout.setIndicatorAnimation(SliderLayout.Animations.SLIDE); //set indicator animation by using SliderLayout.Animations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
@@ -239,7 +220,6 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             session.setPreferences(HomeActivity.this,Constants.LOGIN_STATUS,Constants.LOGOUT);
@@ -247,9 +227,10 @@ public class HomeActivity extends AppCompatActivity
             Toast.makeText(this, "Logout Successfull", Toast.LENGTH_SHORT).show();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
+
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -258,9 +239,32 @@ public class HomeActivity extends AppCompatActivity
             startActivity(new Intent(HomeActivity.this,HomeActivity.class));
         } else if (id == R.id.nav_services) {
             startActivity(new Intent(HomeActivity.this,Services.class));
+        }else if (id == R.id.nav_orders) {
+            startActivity(new Intent(HomeActivity.this,OrderDetails.class));
         } else if (id == R.id.nav_products) {
-            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).
-                    putExtra(Constants.PAGE_FROM,Constants.PAGE_HOME));
+
+//            AlertDialog.Builder builder1 = new AlertDialog.Builder(HomeActivity.this);
+//            builder1.setTitle("Select one");
+//            builder1.setCancelable(true);
+//            builder1.setPositiveButton(
+//                    "Remove",
+//                    new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                            dialog.cancel();
+//                        }
+//                    });
+//            builder1.setNegativeButton(
+//                    "Cancel",
+//                    new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                            dialog.cancel();
+//                        }
+//                    });
+//            AlertDialog alert11 = builder1.create();
+//            alert11.show();
+
+
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class));
         } else if (id == R.id.nav_share) {
             Intent i=new Intent(android.content.Intent.ACTION_SEND);
             i.setType("text/plain");
@@ -307,13 +311,12 @@ public class HomeActivity extends AppCompatActivity
                                     String size = resObject.getString(Constants.PRODUCT_SIZE);
                                     String sft = resObject.getString(Constants.PRODUCT_SFT);
                                     String type = resObject.getJSONObject(Constants.PRODUCT_TYPE).getString(Constants.PRODUCT_TYPE);
+                                    Log.e("RESPONSE-HOME_Best",""+type);
                                     String printingCost = resObject.getString(Constants.PRINTING_COST);
                                     String mountingCost = resObject.getString(Constants.MOUNTING_COST);
                                     String totalCost = resObject.getString(Constants.TOTAL_COST);
                                     String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
-                                    String image = resObject.getString(Constants.PRODUCT_IMAGES);
-//                                    JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
-//                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
+                                    String image = resObject.getString(Constants.PRODUCT_IMAGE);
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
@@ -368,10 +371,11 @@ public class HomeActivity extends AppCompatActivity
                                     String size = resObject.getString(Constants.PRODUCT_SIZE);
                                     String sft = resObject.getString(Constants.PRODUCT_SFT);
                                     String type = resObject.getJSONObject(Constants.PRODUCT_TYPE).getString(Constants.PRODUCT_TYPE);
+                                    Log.e("RESPONSE-HOME_Best",""+type);
                                     String printingCost = resObject.getString(Constants.PRINTING_COST);
                                     String mountingCost = resObject.getString(Constants.MOUNTING_COST);
                                     String totalCost = resObject.getString(Constants.TOTAL_COST);
-                                    String image = resObject.getString(Constants.PRODUCT_IMAGES);
+                                    String image = resObject.getString(Constants.PRODUCT_IMAGE);
                                     String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
@@ -406,6 +410,12 @@ public class HomeActivity extends AppCompatActivity
     public void onCategoryClick(View v)
     {
         startActivity(new Intent(HomeActivity.this,PrdouctActivity.class));
+    }
+
+    public void onSearchClick(View v)
+    {
+        startActivity(new Intent(HomeActivity.this,CategoryProductView.class).
+                putExtra(Constants.PAGE_FROM,Constants.PAGE_SEARCH));
     }
 
 }
