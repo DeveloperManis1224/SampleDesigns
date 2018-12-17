@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -205,32 +206,42 @@ public class PrdouctActivity extends AppCompatActivity {
 
     }
     public void onSortClick() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(PrdouctActivity.this);
-        final AlertDialog dialog = builder.create();
+
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout11 = inflater.inflate(R.layout.dialog_sort_lyt, (ViewGroup) findViewById(R.id.layout_root));
-
-        final TextView lowToHigh = layout11.findViewById(R.id.low_to_high);
-
-        final TextView highToLow = layout11.findViewById(R.id.high_to_low);
+        final View layout11 = inflater.inflate(R.layout.dialog_sort_lyt, (ViewGroup) findViewById(R.id.layout_root));
 
 
-        lowToHigh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getCategoryDetails("","","","","","0");
-            }
-        });
-        highToLow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getCategoryDetails("","","","","","1");
-            }
-        });
+        final RadioButton lowToHigh = layout11.findViewById(R.id.low_to_high);
 
+        final RadioButton highToLow = layout11.findViewById(R.id.high_to_low);
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(PrdouctActivity.this);
         builder.setView(layout11);
-        dialog.setCancelable(true);
+        builder.setPositiveButton("Sort", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                if(lowToHigh.isChecked())
+                {
+                    getCategoryDetails("","","","","","0");
+                }
+                else
+                {
+                    getCategoryDetails("","","","","","1");
+                }
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
         dialog.show();
+
 
     }
 

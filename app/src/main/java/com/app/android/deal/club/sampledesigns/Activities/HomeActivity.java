@@ -311,6 +311,7 @@ public class HomeActivity extends AppCompatActivity
                                     String mountingCost = resObject.getString(Constants.MOUNTING_COST);
                                     String totalCost = resObject.getString(Constants.TOTAL_COST);
                                     String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
+                                    String image = resObject.getString(Constants.PRODUCT_IMAGES);
 //                                    JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
 //                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
                                     String stateId = resObject.getString(Constants.STATE_ID);
@@ -318,7 +319,7 @@ public class HomeActivity extends AppCompatActivity
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
                                     String sts = resObject.getString(Constants.PRODUCT_STATUS);
                                     productDataList.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                    ,totalCost,description,"D4W3KdpwFYMc.jpg",stateId,city_id,categoryId,sts));
+                                    ,totalCost,description,image,stateId,city_id,categoryId,sts));
                                     RecentProductAdapter radapter = new RecentProductAdapter(productDataList);
                                     List_view.setAdapter(radapter);
                                 }
@@ -370,13 +371,14 @@ public class HomeActivity extends AppCompatActivity
                                     String printingCost = resObject.getString(Constants.PRINTING_COST);
                                     String mountingCost = resObject.getString(Constants.MOUNTING_COST);
                                     String totalCost = resObject.getString(Constants.TOTAL_COST);
+                                    String image = resObject.getString(Constants.PRODUCT_IMAGES);
                                     String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
                                     String sts = resObject.getString(Constants.PRODUCT_STATUS);
                                     bestDataList.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                            ,totalCost,description,"D4W3KdpwFYMc.jpg",stateId,city_id,categoryId,sts));
+                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
                                     RecentProductAdapter radapter = new RecentProductAdapter(bestDataList);
                                     List_view1.setAdapter(radapter);
                                 }

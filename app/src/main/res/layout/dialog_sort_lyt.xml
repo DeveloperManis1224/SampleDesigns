@@ -2,9 +2,9 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,26 +14,33 @@
         android:textColor="#000"
         android:textSize="18sp"
         android:text="Select Filters"/>
-
-    <TextView
+    <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="3dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:id="@+id/low_to_high"
-        android:layout_marginRight="20dp"
-        android:text="Products - Low to High"/>
+        android:orientation="vertical">
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/low_to_high"
+            android:layout_marginRight="20dp"
+            android:text="Products - Low to High"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:id="@+id/high_to_low"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Products - High to Low"/>
+    </RadioGroup>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="3dp"
-        android:id="@+id/high_to_low"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:text="Products - High to Low"/>
+
+
+
 </LinearLayout>
