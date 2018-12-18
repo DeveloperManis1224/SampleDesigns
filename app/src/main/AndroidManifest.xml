@@ -22,7 +22,7 @@
         <activity android:name=".Activities.RegisterPage" />
         <activity
             android:name=".Activities.HomeActivity"
-            android:label="@string/title_activity_home"
+            android:label="Adinn"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 

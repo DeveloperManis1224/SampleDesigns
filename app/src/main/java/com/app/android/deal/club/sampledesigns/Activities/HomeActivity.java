@@ -20,6 +20,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,8 +31,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.android.deal.club.sampledesigns.Adapters.ExpandableListAdapter;
 import com.app.android.deal.club.sampledesigns.Adapters.RecentProductAdapter;
 import com.app.android.deal.club.sampledesigns.DataModel;
+import com.app.android.deal.club.sampledesigns.DataModels.MenuModel;
 import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
@@ -42,6 +46,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,11 +59,17 @@ public class HomeActivity extends AppCompatActivity
     SessionManager session;
     SliderLayout sliderLayout;
     TextView mRecentBanner, mBestBanner;
+
+    ExpandableListAdapter expandableListAdapter;
+    ExpandableListView expandableListView;
+    List<MenuModel> headerList = new ArrayList<>();
+    HashMap<MenuModel, List<MenuModel>> childList = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         session = new SessionManager();
+        expandableListView = findViewById(R.id.expandableListView);
         sliderLayout = findViewById(R.id.imageSlider);
         sliderLayout.setIndicatorAnimation(SliderLayout.Animations.SLIDE); //set indicator animation by using SliderLayout.Animations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
         sliderLayout.setScrollTimeInSec(3);
@@ -111,6 +123,11 @@ public class HomeActivity extends AppCompatActivity
         Log.e("UserId",""+session.getPreferences(HomeActivity.this,Constants.CURRENT_USER_ID));
         getRecentProducts();
         getBestFitings();
+        prepareMenuData();
+
+
+
+        populateExpandableList();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -416,6 +433,94 @@ public class HomeActivity extends AppCompatActivity
     {
         startActivity(new Intent(HomeActivity.this,CategoryProductView.class).
                 putExtra(Constants.PAGE_FROM,Constants.PAGE_SEARCH));
+    }
+
+
+    private void prepareMenuData() {
+        MenuModel menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_home),"Home", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_services),"Services", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"Products", true, true, ""); //Menu of Java Tutorials
+        headerList.add(menuModel);
+        List<MenuModel> childModelsList = new ArrayList<>();
+        MenuModel childModel = new MenuModel("1. HOARDINGS / BILLBOARDS", false, false, "https://www.journaldev.com/7153/core-java-tutorial");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("2. UNIPOLES / MONOPOLES", false, false, "https://www.journaldev.com/19187/java-fileinputstream");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("3. CENTRALMEDIAN / POLE KIOSKS", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("4. BUS SHELTERS / BUS BAYS", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("5. ARCHES / GANTRIES / PANELS", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("6. FOOT OVER BRIDGES", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("7. TRAFFIC SIGNS / TRAFFIC SHELTERS", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("8. AUTO / CAB / BUS / TRAIN", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("9. OTHER OOH", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModelsList.add(childModel);
+        if (menuModel.hasChildren) {
+            Log.d("API123","here");
+            childList.put(menuModel, childModelsList);
+        }
+        childModelsList = new ArrayList<>();
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"Products", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"My Cart", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"My Orders", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"Share", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"Contact Us", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"About Us", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        if (menuModel.hasChildren) {
+            childList.put(menuModel, childModelsList);
+        }
+    }
+
+    private void populateExpandableList() {
+
+        expandableListAdapter = new ExpandableListAdapter(this, headerList, childList);
+        expandableListView.setAdapter(expandableListAdapter);
+
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+
+                if (headerList.get(groupPosition).isGroup) {
+                    if (!headerList.get(groupPosition).hasChildren) {
+//                        WebView webView = findViewById(R.id.webView);
+//                        webView.loadUrl(headerList.get(groupPosition).url);
+                        onBackPressed();
+                    }
+                }
+
+                return false;
+            }
+        });
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                if (childList.get(headerList.get(groupPosition)) != null) {
+                    MenuModel model = childList.get(headerList.get(groupPosition)).get(childPosition);
+                    if (model.getuId().length() > 0) {
+//                        WebView webView = findViewById(R.id.webView);
+//                        webView.loadUrl(model.url);
+                        onBackPressed();
+                    }
+                }
+
+                return false;
+            }
+        });
     }
 
 }
