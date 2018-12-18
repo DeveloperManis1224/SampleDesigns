@@ -45,12 +45,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PrdouctActivity extends AppCompatActivity {
-    private Spinner categoryListSpinner,CitySpinner, typeSpinner;
+    private Spinner categoryListSpinner,CitySpinner, typeSpinner, stateSpinner;
     ArrayList<String> catSpinList = new ArrayList<>();
     ArrayList<String> catIdList = new ArrayList<>();
 
     ArrayList<String> typeSpinList = new ArrayList<>();
     ArrayList<String> typeIdList = new ArrayList<>();
+
+    ArrayList<String> stateSpinList = new ArrayList<>();
+    ArrayList<String> stateIdList = new ArrayList<>();
 
     ArrayList<String> citySpinList = new ArrayList<>();
     ArrayList<String> cityIdList = new ArrayList<>();
@@ -64,6 +67,7 @@ public class PrdouctActivity extends AppCompatActivity {
     int positionCat = 0;
     int positionCity = 0 ;
     int positionType = 0;
+    int positionState = 0;
 
     Button filterBtn ;
     Button sortBtn;
@@ -72,8 +76,6 @@ public class PrdouctActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prdouct);
-
-
 
 
 
@@ -87,6 +89,7 @@ public class PrdouctActivity extends AppCompatActivity {
                 getCategorySpinnerValues();
                 getCitySpinnerValues();
                 getTypeSpinnerValues();
+                getStateSpinnerValues();
                 onFilterClick();
 
             }
@@ -100,19 +103,39 @@ public class PrdouctActivity extends AppCompatActivity {
 
         list_view_product.setLayoutManager(new GridLayoutManager(this, 2));
         catSpinList.add("All");
-        catIdList.add("11111");
+        catIdList.add("0");
 
         typeSpinList.add("All");
-        typeIdList.add("11111");
+        typeIdList.add("0");
 
         citySpinList.add("All");
-        cityIdList.add("11111");
+        cityIdList.add("0");
 
+        stateSpinList.add("All");
+        stateIdList.add("0");
 
+        //getCategoryDetails("","","","","","","");
 
-
-
-        getCategoryDetails("","","","","","");
+        if(getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_MENU))
+        {
+            getCategoryDetails(getIntent().getExtras().getString(Constants.CATEGORY_ID),"0",
+                    "0","0","120000","1000","");
+        }
+        else if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_HOME))
+        {
+            getCategoryDetails(getIntent().getExtras().getString(Constants.CATEGORY_ID),"0",
+                    "0","0","120000","1000","");
+        }
+        else if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_PLACES))
+        {
+            getCategoryDetails("0",
+                    "0",getIntent().getExtras().getString(Constants.STATE_ID),"0","120000","1000","");
+        }
+        else
+        {
+            getCategoryDetails("","","","","","","");
+        }
+        //getCategoryDetails("","","","","1000","500000","");
 
     }
 
@@ -125,6 +148,19 @@ public class PrdouctActivity extends AppCompatActivity {
         categoryListSpinner = (Spinner) layout.findViewById(R.id.spin_category);
         typeSpinner= (Spinner) layout.findViewById(R.id.spin_type);
         CitySpinner = (Spinner) layout.findViewById(R.id.spin_city);
+        stateSpinner = (Spinner) layout.findViewById(R.id.spin_state);
+
+        stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                positionState = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         CitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -190,7 +226,9 @@ public class PrdouctActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                getCategoryDetails(catIdList.get(positionCat),typeIdList.get(positionType),cityIdList.get(positionCity)
+                Log.v("VALUESFILTER",""+catIdList.get(positionCat)+"///"+typeIdList.get(positionType)+"///"+stateIdList.get(positionState)+"///"+cityIdList.get(positionCity)
+                        +"///"+maxValue1.getText().toString()+"///"+minValue1.getText().toString());
+                getCategoryDetails(catIdList.get(positionCat),typeIdList.get(positionType),stateIdList.get(positionState),cityIdList.get(positionCity)
                         ,maxValue1.getText().toString(),minValue1.getText().toString(),"");
             }
         });
@@ -223,11 +261,11 @@ public class PrdouctActivity extends AppCompatActivity {
 
                 if(lowToHigh.isChecked())
                 {
-                    getCategoryDetails("","","","","","0");
+                    getCategoryDetails("","","","","","","0");
                 }
                 else
                 {
-                    getCategoryDetails("","","","","","1");
+                    getCategoryDetails("","","","","","","1");
                 }
                 dialog.dismiss();
             }
@@ -241,11 +279,11 @@ public class PrdouctActivity extends AppCompatActivity {
         final AlertDialog dialog = builder.create();
         dialog.setCancelable(false);
         dialog.show();
-
-
     }
 
     private void getCategorySpinnerValues() {
+        catSpinList.clear();
+        catIdList.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/category";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -293,6 +331,8 @@ public class PrdouctActivity extends AppCompatActivity {
     }
 
     private void getTypeSpinnerValues() {
+        typeSpinList.clear();
+        typeIdList.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/product-type";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -339,9 +379,61 @@ public class PrdouctActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    private void getStateSpinnerValues() {
+        stateIdList.clear();
+        stateSpinList.clear();
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://adinn.candyrestaurant.com/api/state";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("RESPONSE-LOGIN",""+response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+                            {
+                                JSONArray jsonArray = jsonObject.getJSONArray("states");
+                                for(int i = 0; i<jsonArray.length();i++)
+                                {
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    String id = object.getString("id");
+                                    String categoryName = object.getString("state");
+                                    stateSpinList.add(id+" . "+categoryName);
+                                    stateIdList.add(id);
+                                    ArrayAdapter aa = new ArrayAdapter(PrdouctActivity.this,
+                                            android.R.layout.simple_spinner_item,stateSpinList);
+                                    aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    stateSpinner.setAdapter(aa);
+                                }
+                            }
+                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+                            {
+                                Toast.makeText(PrdouctActivity.this, ""+stsMessage,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE-LOGIN_ERROR",""+error.getMessage());
+                Toast.makeText(PrdouctActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+
 
 
     private void getCitySpinnerValues() {
+        cityIdList.clear();
+        citySpinList.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/city";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -389,8 +481,10 @@ public class PrdouctActivity extends AppCompatActivity {
 
 
 
-    private void getCategoryDetails(final String categoryId,final String type_id,
+    private void getCategoryDetails(final String categoryId,final String type_id,final String stateId,
                                     final String cityId,final String max, final String min, final String sort) {
+
+        Log.e("VALUESFILTER",categoryId+"///"+type_id+"///"+stateId+"///"+cityId+"///"+max+"///"+min+"///"+sort);
        list_view_product.setAdapter(null);
        productData.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -407,31 +501,35 @@ public class PrdouctActivity extends AppCompatActivity {
                             if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
                             {
                                 JSONArray jsonArray = jsonObject.getJSONArray("products");
-                                for(int i = 0; i < jsonArray.length(); i++ )
+                                if(jsonArray.length()==0)
                                 {
-                                    JSONObject resObject = jsonArray.getJSONObject(i);
-                                    String uId = resObject.getString(Constants.PRODUCT_ID);
-                                    String productName = resObject.getString(Constants.PRODUCT_NAME);
-                                    String price = resObject.getString(Constants.PRODUCT_NAME);
-                                    String size = resObject.getString(Constants.PRODUCT_SIZE);
-                                    String sft = resObject.getString(Constants.PRODUCT_SFT);
-                                    String type = resObject.getJSONObject(Constants.PRODUCT_TYPE).getString(Constants.PRODUCT_TYPE);
-                                    String printingCost = resObject.getString(Constants.PRINTING_COST);
-                                    String mountingCost = resObject.getString(Constants.MOUNTING_COST);
-                                    String totalCost = resObject.getString(Constants.TOTAL_COST);
-                                    String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
-                                    String image = resObject.getString(Constants.PRODUCT_IMAGE);
+                                    Toast.makeText(PrdouctActivity.this, "No Products", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject resObject = jsonArray.getJSONObject(i);
+                                        String uId = resObject.getString(Constants.PRODUCT_ID);
+                                        String productName = resObject.getString(Constants.PRODUCT_NAME);
+                                        String price = resObject.getString(Constants.PRODUCT_NAME);
+                                        String size = resObject.getString(Constants.PRODUCT_SIZE);
+                                        String sft = resObject.getString(Constants.PRODUCT_SFT);
+                                        String type = resObject.getJSONObject(Constants.PRODUCT_TYPE).getString(Constants.PRODUCT_TYPE);
+                                        String printingCost = resObject.getString(Constants.PRINTING_COST);
+                                        String mountingCost = resObject.getString(Constants.MOUNTING_COST);
+                                        String totalCost = resObject.getString(Constants.TOTAL_COST);
+                                        String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
+                                        String image = resObject.getString(Constants.PRODUCT_IMAGE);
 //                                    JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
 //                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
-                                    String stateId = resObject.getString(Constants.STATE_ID);
-                                    String city_id = resObject.getString(Constants.CITY_ID);
-                                    String categoryId = resObject.getString(Constants.CATEGORY_ID);
-                                    String sts = resObject.getString(Constants.PRODUCT_STATUS);
-                                    productData.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
-                                    RecentProductAdapter radapter = new RecentProductAdapter(productData);
-                                    radapter.notifyDataSetChanged();
-                                    list_view_product.setAdapter(radapter);
+                                        String stateId = resObject.getString(Constants.STATE_ID);
+                                        String city_id = resObject.getString(Constants.CITY_ID);
+                                        String categoryId = resObject.getString(Constants.CATEGORY_ID);
+                                        String sts = resObject.getString(Constants.PRODUCT_STATUS);
+                                        productData.add(new RecentPrdocutData(uId, productName, price, size, sft, type, printingCost, mountingCost
+                                                , totalCost, description, image, stateId, city_id, categoryId, sts));
+                                        RecentProductAdapter radapter = new RecentProductAdapter(productData);
+                                        radapter.notifyDataSetChanged();
+                                        list_view_product.setAdapter(radapter);
+                                    }
                                 }
                             }
                             else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
@@ -462,6 +560,7 @@ public class PrdouctActivity extends AppCompatActivity {
                 params.put("category_id", categoryId);
                 params.put("sort_type",sort);
                 params.put("type_id",type_id);
+                params.put("state_id",stateId);
                 params.put("city_id",cityId);
                 params.put("max_price",max);
                 params.put("min_price",min);

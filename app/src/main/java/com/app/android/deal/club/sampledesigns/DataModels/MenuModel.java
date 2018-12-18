@@ -57,8 +57,7 @@ public class MenuModel {
         this.hasChildren = hasChildren;
         this.isGroup = isGroup;
     }
-    public MenuModel(String name,boolean isGroup, boolean hasChildren, String url) {
-        this.image = image;
+    public MenuModel(String name,boolean isGroup, boolean hasChildren, String uId) {
         this.name = name;
         this.uId = uId;
         this.hasChildren = hasChildren;

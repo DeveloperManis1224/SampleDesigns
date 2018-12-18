@@ -3,11 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="4dp">
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/lblListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#393939"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:text="Hello World"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
 </LinearLayout>

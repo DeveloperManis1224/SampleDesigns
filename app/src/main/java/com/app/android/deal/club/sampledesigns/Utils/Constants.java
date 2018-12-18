@@ -31,9 +31,14 @@ public class Constants  {
     public static final String CATEGORY_ID = "category_id";
     public static final String PRODUCT_STATUS = "status";
 
+    public static final String PRODUCT_SELL_STATUS = "product_sell_sts";
+    public static final String INVOICE_URL = "invoice_url";
+
     public static final String PAGE_FROM = "from";
     public static final String PAGE_HOME = "home";
     public static final String PAGE_SEARCH = "search";
+    public static final String PAGE_MENU = "menu";
+    public static final String PAGE_PLACES = "places";
     public static final String PAGE_SERVICE = "service";
     public static final String PAGE_BEST_BANNERS = "best";
     public static final String PAGE_RECENT_BANNERS = "recent";

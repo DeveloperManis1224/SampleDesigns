@@ -92,6 +92,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:id="@+id/cat1"
                             android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
@@ -131,6 +132,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:id="@+id/cat2"
                             android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
@@ -187,6 +189,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:id="@+id/cat3"
                             android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
@@ -225,6 +228,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:id="@+id/cat4"
                             android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
@@ -279,6 +283,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:id="@+id/cat5"
                             android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
@@ -318,6 +323,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:id="@+id/cat6"
                             android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
@@ -373,6 +379,7 @@
                             android:layout_height="35dp"
                             android:onClick="onCategoryClick"
                             android:padding="8dp"
+                            android:id="@+id/cat7"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
                             android:text="Expolre Now"/>
@@ -413,6 +420,7 @@
                             android:layout_height="35dp"
                             android:onClick="onCategoryClick"
                             android:padding="8dp"
+                            android:id="@+id/cat8"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
                             android:text="Expolre Now"/>
@@ -465,6 +473,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:padding="8dp"
+                            android:id="@+id/cat9"
                             android:onClick="onCategoryClick"
                             android:textColor="@android:color/white"
                             android:background="@drawable/more_button_lyt"
@@ -576,6 +585,44 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:id="@+id/list_view1"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/colorAccent"
+                    android:text="States"/>
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:id="@+id/state_list"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="5dp"
+                    android:visibility="gone"
+                    android:textColor="@color/colorAccent"
+                    android:text="Cities"/>
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:visibility="gone"
+                    android:id="@+id/city_list"/>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

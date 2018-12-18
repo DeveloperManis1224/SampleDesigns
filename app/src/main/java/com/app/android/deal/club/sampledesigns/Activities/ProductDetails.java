@@ -28,11 +28,15 @@ import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
 import com.bumptech.glide.Glide;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+import com.smarteist.autoimageslider.SliderLayout;
+import com.smarteist.autoimageslider.SliderView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,12 +47,16 @@ public class ProductDetails extends AppCompatActivity {
     productDescription, productImage, stateId, cityId, categoryId, productSts ;
     private TextView mProductName, mProductType, mProductSft, mProductSize, mPrintingCost, mMountingCost,
     mTotalCost, mDescription, mProductStatus;
-    private ImageView mProductImage;
     private LikeButton mButton;
     private TextView mCheckAvailable, mAddCart;
     StringBuilder decriptionData = new StringBuilder();
     private LinearLayout lyt;
     SessionManager session;
+    SliderLayout sliderLayout;
+
+    ArrayList<String> imgList = new ArrayList<>();
+
+
 
 
     @Override
@@ -65,16 +73,20 @@ public class ProductDetails extends AppCompatActivity {
         mButton = findViewById(R.id.star_button);
         mCheckAvailable = findViewById(R.id.check_available);
         mAddCart = findViewById(R.id.add_cart_txt);
-        mProductName = findViewById(R.id.d_txt_name_product);
+        mProductName = findViewById(R.id.d_txt_product_name);
         mProductType = findViewById(R.id.d_txt_type);
         mProductSft = findViewById(R.id.d_txt_sft);
         mProductSize = findViewById(R.id.d_txt_size);
-        mPrintingCost = findViewById(R.id.d_txt_printting_cost);
-        mMountingCost = findViewById(R.id.d_txt_mounting_cost);
+//        mPrintingCost = findViewById(R.id.d_txt_printting_cost);
+//        mMountingCost = findViewById(R.id.d_txt_mounting_cost);
         mTotalCost = findViewById(R.id.d_total_cost);
         mDescription = findViewById(R.id.d_txt_description);
-        mProductStatus = findViewById(R.id.d_dis_cost);
-        mProductImage = findViewById(R.id.produ_img);
+//        mProductStatus = findViewById(R.id.d_dis_cost);
+
+
+        sliderLayout = findViewById(R.id.img_slider);
+        sliderLayout.setIndicatorAnimation(SliderLayout.Animations.SLIDE); //set indicator animation by using SliderLayout.Animations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+        //sliderLayout.setScrollTimeInSec(3);
         lyt = findViewById(R.id.lyt_desc);
 
 
@@ -95,19 +107,28 @@ public class ProductDetails extends AppCompatActivity {
         categoryId = getIntent().getExtras().getString(Constants.CATEGORY_ID);
         productSts = getIntent().getExtras().getString(Constants.PRODUCT_STATUS);
 
-        mProductName.setText(getString(R.string.filled_bullet) +" Location            :"+productName);
-        mProductType.setText(getString(R.string.filled_bullet) +" Type            :"+productType);
-        mProductSft.setText(getString(R.string.filled_bullet) +" Sft             :"+productSFT);
-        mProductSize.setText(getString(R.string.filled_bullet) +" Size            :"+productSize);
-        mPrintingCost.setText(getString(R.string.filled_bullet) +" Printing Cost   :"+printingCost);
-        mMountingCost.setText(getString(R.string.filled_bullet) +" Mounting Cost   :"+mountingCost);
-        mTotalCost.setText(getString(R.string.filled_bullet) +" Total Cost      :"+totalCost);
-        mDescription.setText(getString(R.string.filled_bullet) +" Description     :"+productDescription);
-        mProductStatus.setText(getString(R.string.filled_bullet) +" Status          :"+productSts);
+        mProductName.setText(getString(R.string.filled_bullet) +" Location : "+productName);
+        mProductType.setText(getString(R.string.filled_bullet) +" TYPE : "+productType);
+        mProductSft.setText(getString(R.string.filled_bullet) +" SFT : "+productSFT);
+        mProductSize.setText(getString(R.string.filled_bullet) +" SIZE : "+productSize);
+//        mPrintingCost.setText(getString(R.string.filled_bullet) +" Printing Cost   :"+printingCost);
+//        mMountingCost.setText(getString(R.string.filled_bullet) +" Mounting Cost   :"+mountingCost);
+        mTotalCost.setText(getString(R.string.Rs)+" "+formatDecimal(totalCost));
+//        mDescription.setText(getString(R.string.filled_bullet) +" Description     :"+productDescription);
+//        mProductStatus.setText(getString(R.string.filled_bullet) +" Status          :"+productSts);
         ((TextView)findViewById(R.id.d_txt_product_name)).setText(productName);
-        Glide.with(ProductDetails.this)
-                .load(Constants.APP_BASE_URL+productImage)
-                .into(mProductImage);
+//        Glide.with(ProductDetails.this)
+//                .load(Constants.APP_BASE_URL+productImage)
+//                .into(mProductImage);
+
+        decriptionData.append(getString(R.string.filled_bullet) +" Location : "+productName+"\n \n");
+        decriptionData.append(getString(R.string.filled_bullet) +" TYPE : "+productType+"\n \n");
+        decriptionData.append(getString(R.string.filled_bullet) +" SFT : "+productSFT+"\n \n");
+        decriptionData.append(getString(R.string.filled_bullet) +" SIZE : "+productSize+"\n \n");
+        decriptionData.append(getString(R.string.filled_bullet) +" PRINTING COST : "+printingCost+"\n \n");
+        decriptionData.append( getString(R.string.filled_bullet) +" MOUNTING COST : "+mountingCost+"\n \n");
+        decriptionData.append(getString(R.string.filled_bullet)+" TOTAL COST : "+formatDecimal(totalCost)+"\n \n");
+
 
         mButton.setOnLikeListener(new OnLikeListener() {
             @Override
@@ -154,6 +175,11 @@ public class ProductDetails extends AppCompatActivity {
                 addCart();
             }
         });
+    }
+
+    public static String formatDecimal(String value) {
+        DecimalFormat df = new DecimalFormat("#,##,##,##0.00");
+        return df.format(Double.valueOf(value));
     }
 
     private void removeWishList()
@@ -386,6 +412,17 @@ public class ProductDetails extends AppCompatActivity {
                                     String details = jobj.getString("details");
                                     decriptionData.append(getResources().getString(R.string.filled_bullet)+" "+title+" : "+details+"\n \n");
                                 }
+                                JSONArray jry = jsonObject.getJSONArray(Constants.PRODUCT_IMAGES);
+                                for (int j = 0; j<jry.length() ; j++ )
+                                {
+                                    JSONObject jobj1 = jry.getJSONObject(j);
+                                    String id = jobj1.getString("id");
+                                    String images = jobj1.getString(Constants.PRODUCT_IMAGES);
+                                    imgList.add(images);
+                                }
+
+                                sliderLayout.setScrollTimeInSec(imgList.size());
+                                setSliderViews();
                             }
                             else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
                             {
@@ -428,4 +465,60 @@ public class ProductDetails extends AppCompatActivity {
         return mDay+"/"+mMonth+"/"+mYear;
     }
 
+
+    public void onShareWhatsapp(View v)
+    {
+        Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+        whatsappIntent.setType("text/plain");
+        whatsappIntent.setPackage("com.whatsapp");
+        whatsappIntent.putExtra(Intent.EXTRA_TEXT,"Location : "+productName+"\n"
+                +" Type            :"+productType+"\n"
+                +" Sft             :"+productSFT+"\n"
+                +" Size            :"+productSize+"\n"
+                +" Total Cost      :"+totalCost);
+
+        try{
+            startActivity(whatsappIntent);
+
+        }catch (android.content.ActivityNotFoundException ex)
+        {
+            Toast.makeText(this, "Whatspp have been installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void setSliderViews() {
+
+        Log.e("RESPONSE-LENGTH",""+imgList.size());
+
+        for (int i = 0; i <= imgList.size(); i++) {
+
+            SliderView sliderView = new SliderView(this);
+
+            switch (i) {
+                case 0:
+                    sliderView.setImageUrl(Constants.APP_BASE_URL+imgList.get(i));
+                    sliderView.setDescription("");
+                    break;
+                case 1:
+                    sliderView.setImageUrl(Constants.APP_BASE_URL+imgList.get(i));
+                    sliderView.setDescription("");
+                    break;
+            }
+
+            sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+            //sliderView.setDescription("setDescription " + (i + 1));
+            sliderView.setDescription("");
+            final int finalI = i;
+            sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                @Override
+                public void onSliderClick(SliderView sliderView) {
+                    //Toast.makeText(HomeActivity.this, "This is slider " + (finalI + 1), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            //at last add this view in your layout :
+            sliderLayout.addSliderView(sliderView);
+        }
+    }
 }

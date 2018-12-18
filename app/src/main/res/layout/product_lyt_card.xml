@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/layout_bg"
     android:elevation="2dp"
+    android:layout_gravity="center"
     android:id="@+id/lyt_card_linear"
     android:layout_marginRight="8dp"
     android:layout_marginTop="10dp"

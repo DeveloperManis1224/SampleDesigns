@@ -22,7 +22,7 @@
         <activity android:name=".Activities.RegisterPage" />
         <activity
             android:name=".Activities.HomeActivity"
-            android:label="Adinn"
+            android:label="Adinn Outdoors"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
@@ -66,7 +66,12 @@
             android:name=".Activities.CategoryProductView"
             android:label="Products"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.OrderDetails"></activity>
+        <activity android:name=".Activities.OrderDetails"
+            android:label="My Orders"
+            android:theme="@style/AppTheme"/>
+        <activity android:name=".Activities.InvoiceWebView"
+            android:label="Invoice"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

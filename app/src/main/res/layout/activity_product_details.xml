@@ -9,7 +9,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentTop="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,248 +22,315 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <ImageView
+                <com.smarteist.autoimageslider.SliderLayout
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:scaleType="fitXY"
-                    android:textColor="#131313"
-                    android:textSize="18sp"
-                    android:elevation="2dp"
-                    android:id="@+id/produ_img"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:layout_height="200dp"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/img_slider"/>
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/produ_img"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="180dp"-->
+                    <!--android:elevation="2dp"-->
+                    <!--android:scaleType="fitXY"-->
+                    <!--android:src="@mipmap/ic_launcher"-->
+                    <!--android:textAlignment="center"-->
+                    <!--android:textColor="#131313"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textStyle="bold" />-->
+
                 <TextView
+                    android:id="@+id/d_dis_cost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Display cost"
+                    android:textAlignment="center"
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp"
-                    android:visibility="gone"
-                    android:id="@+id/d_dis_cost"
-                    android:padding="5dp"
-                    android:textAlignment="center"
                     android:textStyle="bold"
-                    android:text="Display cost"/>
+                    android:visibility="gone" />
             </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:gravity="right">
+                android:background="@drawable/layout_bg"
+                android:elevation="3dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/d_txt_product_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:ellipsize="end"
+                    android:maxLength="25"
+                    android:padding="4dp"
+                    android:text="Product Name"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/d_txt_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:paddingLeft="8dp"
+                        android:text="size"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/d_txt_sft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="4dp"
+                        android:text="sft"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/d_txt_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="4dp"
+                        android:text="type"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/d_total_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="4dp"
+                        android:text="total ocst"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:padding="5dp"
+                        android:layout_marginTop="-30dp">
+                        <TextView
+                            android:id="@+id/check_available"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/more_button_lyt"
+                            android:padding="5dp"
+                            android:text="Add to Cart"
+                            android:textColor="@android:color/white" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:onClick="onShareWhatsapp"
+                        android:gravity="center"
+                        android:background="@drawable/more_button_lyt"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:padding="10dp"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:text="Share On Whatsapp"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/share_icon"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="4dp"-->
+                <!--android:paddingLeft="8dp"-->
+                <!--android:id="@+id/d_txt_name_product"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:text="Name"/>-->
+
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="4dp"-->
+                <!--android:paddingLeft="8dp"-->
+                <!--android:id="@+id/d_txt_size"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:text="size"/>-->
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="4dp"-->
+                <!--android:paddingLeft="8dp"-->
+                <!--android:id="@+id/d_txt_type"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:text="type"/>-->
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="4dp"-->
+                <!--android:id="@+id/d_txt_sft"-->
+                <!--android:paddingLeft="8dp"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:text="sft"/>-->
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="4dp"-->
+                <!--android:id="@+id/d_txt_printting_cost"-->
+                <!--android:paddingLeft="8dp"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:text="printingcost"/>-->
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="4dp"-->
+                <!--android:paddingLeft="8dp"-->
+                <!--android:id="@+id/d_txt_mounting_cost"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:text="mounting cost"/>-->
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="4dp"-->
+                <!--android:id="@+id/d_total_cost"-->
+                <!--android:paddingLeft="8dp"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:text="total ocst"/>-->
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:padding="10dp">
+
                 <com.like.LikeButton
-                    app:icon_type="heart"
-                    app:is_enabled="true"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="-5dp"
-                    app:icon_size="18dp"
-                    app:anim_scale_factor="2"
-                    android:visibility="gone"
                     android:id="@+id/star_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:visibility="gone"
-                    android:id="@+id/add_cart_txt"
                     android:layout_marginRight="5dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/more_button_lyt"
-                    android:text="Add to cart"/>
+                    android:layout_marginTop="-5dp"
+                    android:visibility="gone"
+                    app:anim_scale_factor="2"
+                    app:icon_size="18dp"
+                    app:icon_type="heart"
+                    app:is_enabled="true" />
+
                 <TextView
+                    android:id="@+id/add_cart_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:id="@+id/check_available"
-                    android:textColor="@android:color/white"
+                    android:layout_marginRight="5dp"
                     android:background="@drawable/more_button_lyt"
-                    android:text="Add to Cart"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/layout_bg"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Add to cart"
                     android:textColor="@android:color/white"
-                    android:textSize="18sp"
-                    android:background="@drawable/description_lyt"
-                    android:id="@+id/d_txt_product_name"
-                    android:padding="4dp"
-                    android:maxLength="25"
-                    android:ellipsize="end"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:text="Product Name"/>
+                    android:visibility="gone" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/check_available1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingLeft="8dp"
-                    android:id="@+id/d_txt_name_product"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="Name"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingLeft="8dp"
-                    android:id="@+id/d_txt_size"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="size"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingLeft="8dp"
-                    android:id="@+id/d_txt_type"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="type"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:id="@+id/d_txt_sft"
-                    android:paddingLeft="8dp"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="sft"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:id="@+id/d_txt_printting_cost"
-                    android:paddingLeft="8dp"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="printingcost"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingLeft="8dp"
-                    android:id="@+id/d_txt_mounting_cost"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="mounting cost"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:id="@+id/d_total_cost"
-                    android:paddingLeft="8dp"
-                    android:paddingBottom="10dp"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:text="total ocst"/>
-
+                    android:background="@drawable/more_button_lyt"
+                    android:padding="5dp"
+                    android:text="Add to Cart"
+                    android:textColor="@android:color/white"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lyt_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/lyt_desc"
                 android:layout_marginBottom="20dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="6dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/layout_bg"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-
-                    android:paddingBottom="10dp"
-                    android:textSize="16sp"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:paddingTop="4dp"
                     android:background="@drawable/description_lyt"
-                    android:text="Description"/>
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="4dp"
+                    android:paddingTop="6dp"
+                    android:text="Media Information"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:paddingTop="4dp"-->
-                    <!--android:paddingLeft="8dp"-->
-                    <!--android:id="@+id/d_txt_category"-->
-                    <!--android:textSize="14sp"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textColor="@android:color/black"-->
-                    <!--android:text="Category"/>-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:paddingTop="4dp"-->
-                    <!--android:paddingLeft="8dp"-->
-                    <!--android:id="@+id/d_txt_media_type"-->
-                    <!--android:textSize="14sp"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textColor="@android:color/black"-->
-                    <!--android:text="Media Type"/>-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:paddingTop="4dp"-->
-                    <!--android:paddingLeft="8dp"-->
-                    <!--android:id="@+id/d_txt_lighting_type"-->
-                    <!--android:textSize="14sp"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textColor="@android:color/black"-->
-                    <!--android:text="Lighting Type"/>-->
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:paddingTop="4dp"-->
-                    <!--android:paddingLeft="8dp"-->
-                    <!--android:id="@+id/d_txt_state"-->
-                    <!--android:textSize="14sp"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textColor="@android:color/black"-->
-                    <!--android:text="State"/>-->
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:paddingTop="4dp"-->
-                    <!--android:paddingLeft="8dp"-->
-                    <!--android:id="@+id/d_txt_district"-->
-                    <!--android:textSize="14sp"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textColor="@android:color/black"-->
-                    <!--android:text="District"/>-->
                 <TextView
+                    android:id="@+id/d_txt_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
+                    android:layout_marginBottom="10dp"
                     android:paddingLeft="8dp"
-                    android:id="@+id/d_txt_description"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:paddingTop="4dp"
+                    android:text="Description"
                     android:textColor="@android:color/black"
-                    android:text="Description"/>
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

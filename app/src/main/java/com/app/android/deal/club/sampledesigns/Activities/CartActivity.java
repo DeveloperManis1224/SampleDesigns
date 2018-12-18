@@ -119,17 +119,6 @@ public class CartActivity extends AppCompatActivity {
                                         String mountingCost = resObject.getString(Constants.MOUNTING_COST);
                                         String totalCost = resObject.getString(Constants.TOTAL_COST);
                                         String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
-//                                    String image;
-//                                    JSONArray jsry ;
-//                                    try {
-//                                        jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
-//                                         image= jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
-//                                    }catch (IndexOutOfBoundsException ex)
-//                                    {
-//                                        Log.e("RESPONSE-HOME_BError",""+ex.getMessage());
-//                                        ex.printStackTrace();
-//                                        image = "not";
-//                                    }
                                         String image = resObject.getString(Constants.PRODUCT_IMAGE);
                                         String stateId = resObject.getString(Constants.STATE_ID);
                                         String city_id = resObject.getString(Constants.CITY_ID);
@@ -144,7 +133,6 @@ public class CartActivity extends AppCompatActivity {
                                         }
                                         else {
                                             costBuilder.append("," + uId);
-
                                             productBuilder.append("," + uId);
                                         }
                                         cartDataList.add(new RecentPrdocutData(uId, productName, price, size, sft, type, printingCost, mountingCost

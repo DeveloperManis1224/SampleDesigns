@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.android.deal.club.sampledesigns.DataModels.MenuModel;
 import com.app.android.deal.club.sampledesigns.R;
@@ -97,6 +98,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ImageView img = convertView.findViewById(R.id.icon_nav);
 
         img.setImageDrawable(getGroup(groupPosition).getImage());
+        ImageView imgdrop = convertView.findViewById(R.id.icon_drop);
+//
+        if(getGroup(groupPosition).getName().equalsIgnoreCase("Products"))
+        {
+            imgdrop.setVisibility(View.VISIBLE);
+        }
+//        imgdrop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                Toast.makeText(context, "Click Down Icon", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 

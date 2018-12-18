@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,9 +33,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.android.deal.club.sampledesigns.Adapters.ExpandableListAdapter;
+import com.app.android.deal.club.sampledesigns.Adapters.PlaceAdapter;
 import com.app.android.deal.club.sampledesigns.Adapters.RecentProductAdapter;
 import com.app.android.deal.club.sampledesigns.DataModel;
 import com.app.android.deal.club.sampledesigns.DataModels.MenuModel;
+import com.app.android.deal.club.sampledesigns.DataModels.PlaceModel;
 import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
@@ -54,8 +57,12 @@ public class HomeActivity extends AppCompatActivity
     ArrayList<DataModel> dataModal=new ArrayList<DataModel>();
     ArrayList<RecentPrdocutData> productDataList = new ArrayList<>();
     ArrayList<RecentPrdocutData> bestDataList = new ArrayList<>();
+
+    ArrayList<PlaceModel> stateList = new ArrayList<>();
+    ArrayList<PlaceModel> cityList = new ArrayList<>();
+
     RecyclerView List_view, category_listview, menu_listview;
-    RecyclerView List_view1;
+    RecyclerView List_view1, stateListview, cityListview;
     SessionManager session;
     SliderLayout sliderLayout;
     TextView mRecentBanner, mBestBanner;
@@ -105,6 +112,11 @@ public class HomeActivity extends AppCompatActivity
         List_view1 =(RecyclerView) findViewById(R.id.list_view1);
         category_listview = findViewById(R.id.category_list);
         menu_listview = findViewById(R.id.menu_list);
+        stateListview = findViewById(R.id.state_list);
+        cityListview = findViewById(R.id.city_list);
+
+        stateListview.setLayoutManager(new GridLayoutManager(this, 3));
+        cityListview.setLayoutManager(new GridLayoutManager(this, 3));
 
         RecyclerView.LayoutManager lytMgr=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView.LayoutManager lytMgr1=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -124,6 +136,9 @@ public class HomeActivity extends AppCompatActivity
         getRecentProducts();
         getBestFitings();
         prepareMenuData();
+
+        getStates();
+        //getCities();
 
 
 
@@ -426,7 +441,53 @@ public class HomeActivity extends AppCompatActivity
 
     public void onCategoryClick(View v)
     {
-        startActivity(new Intent(HomeActivity.this,PrdouctActivity.class));
+        if(v.getId() == R.id.cat1)
+        {
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).
+                    putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"1"));
+        }
+        if(v.getId() == R.id.cat2)
+        {
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).
+                    putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"2"));
+        }
+        if(v.getId() == R.id.cat3)
+        {
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).
+                    putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"3"));
+        }
+        if(v.getId() == R.id.cat4)
+        {
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).
+                    putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"4"));
+        }
+        if(v.getId() == R.id.cat5)
+        {
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).
+                    putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"5"));
+        }
+        if(v.getId() == R.id.cat6)
+        {
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).
+                    putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"6"));
+        }
+        if(v.getId() == R.id.cat7)
+        {
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).
+                    putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"7"));
+        }
+        if(v.getId() == R.id.cat8)
+        {
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).
+                    putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"8"));
+        }
+        if(v.getId() == R.id.cat9)
+        {
+            startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).
+                    putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"9"));
+        }
+
+
     }
 
     public void onSearchClick(View v)
@@ -441,43 +502,44 @@ public class HomeActivity extends AppCompatActivity
         headerList.add(menuModel);
         menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_services),"Services", true, true, ""); //Menu of Python Tutorials
         headerList.add(menuModel);
-        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"Products", true, true, ""); //Menu of Java Tutorials
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.category_icon),"Category", true, true, ""); //Menu of Java Tutorials
         headerList.add(menuModel);
         List<MenuModel> childModelsList = new ArrayList<>();
-        MenuModel childModel = new MenuModel("1. HOARDINGS / BILLBOARDS", false, false, "https://www.journaldev.com/7153/core-java-tutorial");
+        MenuModel childModel = new MenuModel("1. HOARDINGS / BILLBOARDS", false, false, "1");
         childModelsList.add(childModel);
-        childModel = new MenuModel("2. UNIPOLES / MONOPOLES", false, false, "https://www.journaldev.com/19187/java-fileinputstream");
+        childModel = new MenuModel("2. UNIPOLES / MONOPOLES", false, false, "2");
         childModelsList.add(childModel);
-        childModel = new MenuModel("3. CENTRALMEDIAN / POLE KIOSKS", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModel = new MenuModel("3. CENTRALMEDIAN / POLE KIOSKS", false, false, "3");
         childModelsList.add(childModel);
-        childModel = new MenuModel("4. BUS SHELTERS / BUS BAYS", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModel = new MenuModel("4. BUS SHELTERS / BUS BAYS", false, false, "4");
         childModelsList.add(childModel);
-        childModel = new MenuModel("5. ARCHES / GANTRIES / PANELS", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModel = new MenuModel("5. ARCHES / GANTRIES / PANELS", false, false, "5");
         childModelsList.add(childModel);
-        childModel = new MenuModel("6. FOOT OVER BRIDGES", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModel = new MenuModel("6. FOOT OVER BRIDGES", false, false, "6");
         childModelsList.add(childModel);
-        childModel = new MenuModel("7. TRAFFIC SIGNS / TRAFFIC SHELTERS", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModel = new MenuModel("7. TRAFFIC SIGNS / TRAFFIC SHELTERS", false, false, "7");
         childModelsList.add(childModel);
-        childModel = new MenuModel("8. AUTO / CAB / BUS / TRAIN", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModel = new MenuModel("8. AUTO / CAB / BUS / TRAIN", false, false, "8");
         childModelsList.add(childModel);
-        childModel = new MenuModel("9. OTHER OOH", false, false, "https://www.journaldev.com/19115/java-filereader");
+        childModel = new MenuModel("9. OTHER OOH", false, false, "9");
         childModelsList.add(childModel);
         if (menuModel.hasChildren) {
             Log.d("API123","here");
             childList.put(menuModel, childModelsList);
         }
         childModelsList = new ArrayList<>();
+
         menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"Products", true, true, ""); //Menu of Python Tutorials
         headerList.add(menuModel);
-        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"My Cart", true, true, ""); //Menu of Python Tutorials
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.add_cart),"My Cart", true, true, ""); //Menu of Python Tutorials
         headerList.add(menuModel);
-        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"My Orders", true, true, ""); //Menu of Python Tutorials
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.shop_cart),"My Orders", true, true, ""); //Menu of Python Tutorials
         headerList.add(menuModel);
-        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"Share", true, true, ""); //Menu of Python Tutorials
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_share),"Share", true, true, ""); //Menu of Python Tutorials
         headerList.add(menuModel);
-        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"Contact Us", true, true, ""); //Menu of Python Tutorials
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.contact_icon),"Contact Us", true, true, ""); //Menu of Python Tutorials
         headerList.add(menuModel);
-        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"About Us", true, true, ""); //Menu of Python Tutorials
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_about),"About Us", true, true, ""); //Menu of Python Tutorials
         headerList.add(menuModel);
         if (menuModel.hasChildren) {
             childList.put(menuModel, childModelsList);
@@ -494,11 +556,56 @@ public class HomeActivity extends AppCompatActivity
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
                 if (headerList.get(groupPosition).isGroup) {
-                    if (!headerList.get(groupPosition).hasChildren) {
-//                        WebView webView = findViewById(R.id.webView);
-//                        webView.loadUrl(headerList.get(groupPosition).url);
-                        onBackPressed();
+                    //Toast.makeText(HomeActivity.this, ""+headerList.get(groupPosition).getName(), Toast.LENGTH_SHORT).show();
+
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("Home"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,HomeActivity.class));
                     }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("Services"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,Services.class));
+                    }
+
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("Products"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,PrdouctActivity.class));
+                    }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("My Cart"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,CartActivity.class));
+                    }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("My Orders"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,OrderDetails.class));
+                    }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("Share"))
+                    {
+                        Intent i=new Intent(android.content.Intent.ACTION_SEND);
+                        i.setType("text/plain");
+                        i.putExtra(android.content.Intent.EXTRA_SUBJECT,"Playstore link");
+                        i.putExtra(android.content.Intent.EXTRA_TEXT, ": Coming soon...");
+                        startActivity(Intent.createChooser(i,"Share via"));
+                    }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("Contact Us"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,ContactUs.class));
+                    }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("About Us"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,AboutUs.class));
+                    }
+
+//                    if (!headerList.get(groupPosition).hasChildren) {
+//                        Toast.makeText(HomeActivity.this, ""+headerList.get(groupPosition).getName(), Toast.LENGTH_SHORT).show();
+//                    }
                 }
 
                 return false;
@@ -511,16 +618,173 @@ public class HomeActivity extends AppCompatActivity
 
                 if (childList.get(headerList.get(groupPosition)) != null) {
                     MenuModel model = childList.get(headerList.get(groupPosition)).get(childPosition);
-                    if (model.getuId().length() > 0) {
-//                        WebView webView = findViewById(R.id.webView);
-//                        webView.loadUrl(model.url);
-                        onBackPressed();
-                    }
-                }
 
+                    Toast.makeText(HomeActivity.this, "cvcvcvc", Toast.LENGTH_SHORT).show();
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("1"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,PrdouctActivity.class).
+                                putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"1"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("2"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"2"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("3"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"3"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("4"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"4"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("5"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"5"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("6"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"6"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("7"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"7"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("8"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"8"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("9"))
+                    {
+                        startActivity(new Intent(HomeActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"9"));
+                    }
+//                    if (model.getuId().length() > 0) {
+//                            onBackPressed();
+//                    }
+                }
                 return false;
             }
         });
     }
+
+
+    private void getStates()
+    {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://adinn.candyrestaurant.com/api/state";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("RESPONSE-HOME_Best",""+response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+                            {
+                                JSONArray jsonArray = jsonObject.getJSONArray("states");
+                                for(int i = 0; i < jsonArray.length(); i++ )
+                                {
+                                    JSONObject resObject = jsonArray.getJSONObject(i);
+                                    String uId = resObject.getString(Constants.PRODUCT_ID);
+                                    String stateName = resObject.getString("state");
+                                    stateList.add(new PlaceModel(uId,stateName));
+                                    PlaceAdapter radapter = new PlaceAdapter(stateList);
+                                    stateListview.setAdapter(radapter);
+                                }
+                            }
+                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+                            {
+                                Toast.makeText(HomeActivity.this, ""+stsMessage,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            Log.e("RESPONSE-HOME_BError",""+e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE-HOME_Recent",""+error.getMessage());
+                Toast.makeText(HomeActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
+
+    }
+//    private void getCities()
+//    {
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        String url = "http://adinn.candyrestaurant.com/api/cities";
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.e("RESPONSE-HOME_Best",""+response);
+//                        try {
+//                            JSONObject jsonObject = new JSONObject(response);
+//                            String loginStatus = jsonObject.getString("status");//LOGIN = "1";
+//                            String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
+//                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
+//                            {
+//                                JSONArray jsonArray = jsonObject.getJSONArray("products");
+//                                for(int i = 0; i < jsonArray.length(); i++ )
+//                                {
+//                                    JSONObject resObject = jsonArray.getJSONObject(i);
+//                                    String uId = resObject.getString(Constants.PRODUCT_ID);
+//                                    String cityName = resObject.getString("city");
+//                                    cityList.add(new PlaceModel(uId,cityName));
+//                                    PlaceAdapter radapter = new PlaceAdapter(stateList);
+//                                    cityListview.setAdapter(radapter);
+//                                }
+//                            }
+//                            else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
+//                            {
+//                                Toast.makeText(HomeActivity.this, ""+stsMessage,
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
+//                        } catch (JSONException e) {
+//                            Log.e("RESPONSE-HOME_BError",""+e.getMessage());
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("RESPONSE-HOME_Recent",""+error.getMessage());
+//                Toast.makeText(HomeActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        queue.add(stringRequest);
+//    }
+
+
+
 
 }
