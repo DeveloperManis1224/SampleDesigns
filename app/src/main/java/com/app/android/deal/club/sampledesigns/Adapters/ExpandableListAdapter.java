@@ -100,7 +100,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         img.setImageDrawable(getGroup(groupPosition).getImage());
         ImageView imgdrop = convertView.findViewById(R.id.icon_drop);
 //
-        if(getGroup(groupPosition).getName().equalsIgnoreCase("Products"))
+        if(getGroup(groupPosition).getName().equalsIgnoreCase("Category"))
         {
             imgdrop.setVisibility(View.VISIBLE);
         }

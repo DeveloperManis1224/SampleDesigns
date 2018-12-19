@@ -122,12 +122,12 @@ public class ProductDetails extends AppCompatActivity {
 //                .into(mProductImage);
 
         decriptionData.append(getString(R.string.filled_bullet) +" Location : "+productName+"\n \n");
-        decriptionData.append(getString(R.string.filled_bullet) +" TYPE : "+productType+"\n \n");
-        decriptionData.append(getString(R.string.filled_bullet) +" SFT : "+productSFT+"\n \n");
-        decriptionData.append(getString(R.string.filled_bullet) +" SIZE : "+productSize+"\n \n");
-        decriptionData.append(getString(R.string.filled_bullet) +" PRINTING COST : "+printingCost+"\n \n");
-        decriptionData.append( getString(R.string.filled_bullet) +" MOUNTING COST : "+mountingCost+"\n \n");
-        decriptionData.append(getString(R.string.filled_bullet)+" TOTAL COST : "+formatDecimal(totalCost)+"\n \n");
+        decriptionData.append(getString(R.string.filled_bullet) +" Type : "+productType+"\n \n");
+        decriptionData.append(getString(R.string.filled_bullet) +" Sft : "+productSFT+"\n \n");
+        decriptionData.append(getString(R.string.filled_bullet) +" Size : "+productSize+"\n \n");
+        decriptionData.append(getString(R.string.filled_bullet) +" Printing Cost : "+printingCost+"\n \n");
+        decriptionData.append( getString(R.string.filled_bullet) +" Mounting Cost : "+mountingCost+"\n \n");
+        decriptionData.append(getString(R.string.filled_bullet)+" Total Cost : "+formatDecimal(totalCost)+"\n \n");
 
 
         mButton.setOnLikeListener(new OnLikeListener() {

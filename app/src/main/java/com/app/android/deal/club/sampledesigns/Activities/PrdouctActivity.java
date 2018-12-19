@@ -2,19 +2,28 @@ package com.app.android.deal.club.sampledesigns.Activities;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
@@ -29,10 +38,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.android.deal.club.sampledesigns.Adapters.ExpandableListAdapter;
 import com.app.android.deal.club.sampledesigns.Adapters.RecentProductAdapter;
+import com.app.android.deal.club.sampledesigns.DataModels.MenuModel;
 import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
+import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 import org.json.JSONArray;
@@ -42,9 +54,12 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class PrdouctActivity extends AppCompatActivity {
+public class PrdouctActivity extends AppCompatActivity
+
+        implements NavigationView.OnNavigationItemSelectedListener{
     private Spinner categoryListSpinner,CitySpinner, typeSpinner, stateSpinner;
     ArrayList<String> catSpinList = new ArrayList<>();
     ArrayList<String> catIdList = new ArrayList<>();
@@ -61,6 +76,14 @@ public class PrdouctActivity extends AppCompatActivity {
     ArrayList<RecentPrdocutData> productData = new ArrayList<>();
     RecyclerView list_view_product;
     TextView hintSearch;
+    SessionManager session;
+
+    ExpandableListAdapter expandableListAdapter;
+    ExpandableListView expandableListView;
+    List<MenuModel> headerList = new ArrayList<>();
+    HashMap<MenuModel, List<MenuModel>> childList = new HashMap<>();
+
+
 //    LayoutInflater inflater;
 //    View layout;
 
@@ -72,14 +95,52 @@ public class PrdouctActivity extends AppCompatActivity {
     Button filterBtn ;
     Button sortBtn;
 
+    private DrawerLayout mDrawerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prdouct);
 
+        session = new SessionManager();
+
+        list_view_product.setLayoutManager(new GridLayoutManager(this, 2));
+        catSpinList.add("All");
+        catIdList.add("0");
+
+        typeSpinList.add("All");
+        typeIdList.add("0");
+
+        citySpinList.add("All");
+        cityIdList.add("0");
+
+        stateSpinList.add("All");
+        stateIdList.add("0");
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.as_above);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem)
+
+                    {
+                        switch (menuItem.getItemId())
+                        {
 
 
+                        }
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
 
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
         list_view_product = findViewById(R.id.product_list_view);
         hintSearch = findViewById(R.id.hint_search);
 
@@ -100,41 +161,68 @@ public class PrdouctActivity extends AppCompatActivity {
                 onSortClick();
             }
         });
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        list_view_product.setLayoutManager(new GridLayoutManager(this, 2));
-        catSpinList.add("All");
-        catIdList.add("0");
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        typeSpinList.add("All");
-        typeIdList.add("0");
-
-        citySpinList.add("All");
-        cityIdList.add("0");
-
-        stateSpinList.add("All");
-        stateIdList.add("0");
-
-        //getCategoryDetails("","","","","","","");
-
-        if(getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_MENU))
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.nav_user_name);
+        TextView navEmail = (TextView) headerView.findViewById(R.id.nav_email);
+        if(session.getPreferences(PrdouctActivity.this, Constants.LOGIN_STATUS).equalsIgnoreCase(Constants.LOGOUT))
         {
-            getCategoryDetails(getIntent().getExtras().getString(Constants.CATEGORY_ID),"0",
-                    "0","0","120000","1000","");
+            navUsername.setText("Login");
+            navEmail.setVisibility(View.GONE);
+            navUsername.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(view.getContext(),LoginPage.class));
+                }
+            });
         }
-        else if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_HOME))
+        else if(session.getPreferences(PrdouctActivity.this, Constants.LOGIN_STATUS).equalsIgnoreCase(Constants.LOGIN))
         {
-            getCategoryDetails(getIntent().getExtras().getString(Constants.CATEGORY_ID),"0",
-                    "0","0","120000","1000","");
-        }
-        else if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_PLACES))
-        {
-            getCategoryDetails("0",
-                    "0",getIntent().getExtras().getString(Constants.STATE_ID),"0","120000","1000","");
+            navUsername.setText("Welcome "+session.getPreferences(PrdouctActivity.this,Constants.CURRENT_USER_NAME)+",");
+            navEmail.setVisibility(View.VISIBLE);
+            navEmail.setText(session.getPreferences(PrdouctActivity.this,Constants.CURRENT_USER_EMAIL));
         }
         else
         {
-            getCategoryDetails("","","","","","","");
+            navUsername.setText("Login");
+            navEmail.setVisibility(View.GONE);
+            navUsername.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(view.getContext(),LoginPage.class));
+                }
+            });
         }
+
+        //getCategoryDetails("","","","","","","");
+try {
+    if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_MENU)) {
+        getCategoryDetails(getIntent().getExtras().getString(Constants.CATEGORY_ID), "0",
+                "0", "0", "120000", "1000", "");
+    } else if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_HOME)) {
+        getCategoryDetails(getIntent().getExtras().getString(Constants.CATEGORY_ID), "0",
+                "0", "0", "120000", "1000", "");
+    } else if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_PLACES)) {
+        getCategoryDetails("0",
+                "0", getIntent().getExtras().getString(Constants.STATE_ID), "0", "120000", "1000", "");
+    } else {
+        getCategoryDetails("", "", "", "", "", "", "");
+    }
+}catch (NullPointerException ex)
+{
+    ex.printStackTrace();
+    getCategoryDetails("0", "0", "0", "0", "120000", "1000", "");
+}
         //getCategoryDetails("","","","","1000","500000","");
 
     }
@@ -429,6 +517,201 @@ public class PrdouctActivity extends AppCompatActivity {
     }
 
 
+    private void prepareMenuData() {
+        MenuModel menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_home),"Home", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_services),"Services", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.category_icon),"Category", true, true, ""); //Menu of Java Tutorials
+        headerList.add(menuModel);
+        List<MenuModel> childModelsList = new ArrayList<>();
+        MenuModel childModel = new MenuModel("1. HOARDINGS / BILLBOARDS", false, false, "1");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("2. UNIPOLES / MONOPOLES", false, false, "2");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("3. CENTRALMEDIAN / POLE KIOSKS", false, false, "3");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("4. BUS SHELTERS / BUS BAYS", false, false, "4");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("5. ARCHES / GANTRIES / PANELS", false, false, "5");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("6. FOOT OVER BRIDGES", false, false, "6");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("7. TRAFFIC SIGNS / TRAFFIC SHELTERS", false, false, "7");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("8. AUTO / CAB / BUS / TRAIN", false, false, "8");
+        childModelsList.add(childModel);
+        childModel = new MenuModel("9. OTHER OOH", false, false, "9");
+        childModelsList.add(childModel);
+        if (menuModel.hasChildren) {
+            Log.d("API123","here");
+            childList.put(menuModel, childModelsList);
+        }
+        childModelsList = new ArrayList<>();
+
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_products),"Products", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.add_cart),"My Cart", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.shop_cart),"My Orders", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_share),"Share", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.contact_icon),"Contact Us", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_about),"About Us", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        if (menuModel.hasChildren) {
+            childList.put(menuModel, childModelsList);
+        }
+    }
+
+    private void populateExpandableList() {
+
+        expandableListAdapter = new ExpandableListAdapter(this, headerList, childList);
+        expandableListView.setAdapter(expandableListAdapter);
+
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+
+                if (headerList.get(groupPosition).isGroup) {
+                    //Toast.makeText(HomeActivity.this, ""+headerList.get(groupPosition).getName(), Toast.LENGTH_SHORT).show();
+
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("Home"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,HomeActivity.class));
+                    }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("Services"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,Services.class));
+                    }
+
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("Products"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,PrdouctActivity.class));
+                    }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("My Cart"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,CartActivity.class));
+                    }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("My Orders"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,OrderDetails.class));
+                    }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("Share"))
+                    {
+                        Intent i=new Intent(android.content.Intent.ACTION_SEND);
+                        i.setType("text/plain");
+                        i.putExtra(android.content.Intent.EXTRA_SUBJECT,"Playstore link");
+                        i.putExtra(android.content.Intent.EXTRA_TEXT, ": Coming soon...");
+                        startActivity(Intent.createChooser(i,"Share via"));
+                    }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("Contact Us"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,ContactUs.class));
+                    }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("About Us"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,AboutUs.class));
+                    }
+
+//                    if (!headerList.get(groupPosition).hasChildren) {
+//                        Toast.makeText(HomeActivity.this, ""+headerList.get(groupPosition).getName(), Toast.LENGTH_SHORT).show();
+//                    }
+                }
+
+                return false;
+            }
+        });
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                if (childList.get(headerList.get(groupPosition)) != null) {
+                    MenuModel model = childList.get(headerList.get(groupPosition)).get(childPosition);
+
+                    Toast.makeText(PrdouctActivity.this, "cvcvcvc", Toast.LENGTH_SHORT).show();
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("1"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,PrdouctActivity.class).
+                                putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"1"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("2"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"2"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("3"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"3"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("4"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"4"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("5"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"5"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("6"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"6"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("7"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"7"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("8"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"8"));
+                    }
+                    else
+
+                    if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("9"))
+                    {
+                        startActivity(new Intent(PrdouctActivity.this,PrdouctActivity.class)
+                                .putExtra(Constants.PAGE_FROM,Constants.PAGE_MENU).putExtra(Constants.CATEGORY_ID,"9"));
+                    }
+//                    if (model.getuId().length() > 0) {
+//                            onBackPressed();
+//                    }
+                }
+                return false;
+            }
+        });
+    }
+
+
 
 
     private void getCitySpinnerValues() {
@@ -568,5 +851,10 @@ public class PrdouctActivity extends AppCompatActivity {
             }
         };
         queue.add(stringRequest);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
     }
 }
