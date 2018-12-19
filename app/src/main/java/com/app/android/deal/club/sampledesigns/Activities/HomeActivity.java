@@ -1,13 +1,12 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,11 +20,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -44,13 +43,13 @@ import com.app.android.deal.club.sampledesigns.Utils.Constants;
 import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
 import com.smarteist.autoimageslider.SliderLayout;
 import com.smarteist.autoimageslider.SliderView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -139,9 +138,6 @@ public class HomeActivity extends AppCompatActivity
 
         getStates();
         //getCities();
-
-
-
         populateExpandableList();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -253,16 +249,22 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            session.setPreferences(HomeActivity.this,Constants.LOGIN_STATUS,Constants.LOGOUT);
-            startActivity(new Intent(HomeActivity.this,HomeActivity.class));
-            Toast.makeText(this, "Logout Successfull", Toast.LENGTH_SHORT).show();
+        if (id == R.id.cart_btn_bar) {
+//            session.setPreferences(HomeActivity.this,Constants.LOGIN_STATUS,Constants.LOGOUT);
+//            startActivity(new Intent(HomeActivity.this,HomeActivity.class));
+//            Toast.makeText(this, "Logout Successfull", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(HomeActivity.this,CartActivity.class));
+            return true;
+        }
+        if (id == R.id.order_btn_bar) {
+            startActivity(new Intent(HomeActivity.this,OrderDetails.class));
+//            session.setPreferences(HomeActivity.this,Constants.LOGIN_STATUS,Constants.LOGOUT);
+//            startActivity(new Intent(HomeActivity.this,HomeActivity.class));
+//            Toast.makeText(this, "Logout Successfull", Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -274,27 +276,6 @@ public class HomeActivity extends AppCompatActivity
         }else if (id == R.id.nav_orders) {
             startActivity(new Intent(HomeActivity.this,OrderDetails.class));
         } else if (id == R.id.nav_products) {
-
-//            AlertDialog.Builder builder1 = new AlertDialog.Builder(HomeActivity.this);
-//            builder1.setTitle("Select one");
-//            builder1.setCancelable(true);
-//            builder1.setPositiveButton(
-//                    "Remove",
-//                    new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            dialog.cancel();
-//                        }
-//                    });
-//            builder1.setNegativeButton(
-//                    "Cancel",
-//                    new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            dialog.cancel();
-//                        }
-//                    });
-//            AlertDialog alert11 = builder1.create();
-//            alert11.show();
-
 
             startActivity(new Intent(HomeActivity.this,PrdouctActivity.class));
         } else if (id == R.id.nav_share) {
@@ -376,6 +357,10 @@ public class HomeActivity extends AppCompatActivity
                 Toast.makeText(HomeActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
@@ -436,6 +421,10 @@ public class HomeActivity extends AppCompatActivity
                 Toast.makeText(HomeActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
@@ -489,7 +478,6 @@ public class HomeActivity extends AppCompatActivity
 
 
     }
-
     public void onSearchClick(View v)
     {
         startActivity(new Intent(HomeActivity.this,CategoryProductView.class).
@@ -619,7 +607,7 @@ public class HomeActivity extends AppCompatActivity
                 if (childList.get(headerList.get(groupPosition)) != null) {
                     MenuModel model = childList.get(headerList.get(groupPosition)).get(childPosition);
 
-                    Toast.makeText(HomeActivity.this, "cvcvcvc", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(HomeActivity.this, "cvcvcvc", Toast.LENGTH_SHORT).show();
 
                     if(childList.get(headerList.get(groupPosition)).get(childPosition).getuId().equalsIgnoreCase("1"))
                     {
@@ -735,6 +723,10 @@ public class HomeActivity extends AppCompatActivity
                 Toast.makeText(HomeActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
 
     }

@@ -44,6 +44,11 @@ public class CategoryProductView extends AppCompatActivity {
     LinearLayout lyt ;
     AutoCompleteTextView mSearchInput ;
 
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,7 @@ public class CategoryProductView extends AppCompatActivity {
         setContentView(R.layout.activity_category_product_view);
         lyt = findViewById(R.id.lyt_container);
         mSearchInput = findViewById(R.id.auto_search_edt);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mSearchInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

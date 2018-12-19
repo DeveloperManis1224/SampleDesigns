@@ -49,9 +49,16 @@ public class CartActivity extends AppCompatActivity {
     public static TextView txtTotalCost;
     public static ProductAdapter radapter;
     @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         session = new SessionManager();
         txtTotalCost = findViewById(R.id.txt_total_cost);
 

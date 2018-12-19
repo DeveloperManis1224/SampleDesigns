@@ -15,10 +15,16 @@ public class AboutUs extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         imgView = findViewById(R.id.about_gif);
 
         Glide.with(AboutUs.this)
                 .load(getResources().getDrawable(R.drawable.about_us_gif))
                 .into(imgView);
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }

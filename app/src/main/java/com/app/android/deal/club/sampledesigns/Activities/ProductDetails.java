@@ -57,12 +57,17 @@ public class ProductDetails extends AppCompatActivity {
     ArrayList<String> imgList = new ArrayList<>();
 
 
-
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
     }
 
@@ -489,36 +494,41 @@ public class ProductDetails extends AppCompatActivity {
 
     private void setSliderViews() {
 
-        Log.e("RESPONSE-LENGTH",""+imgList.size());
+        try{
+            Log.e("RESPONSE-LENGTH",""+imgList.size());
 
-        for (int i = 0; i <= imgList.size(); i++) {
+            for (int i = 0; i <= imgList.size(); i++) {
+                SliderView sliderView = new SliderView(this);
 
-            SliderView sliderView = new SliderView(this);
-
-            switch (i) {
-                case 0:
-                    sliderView.setImageUrl(Constants.APP_BASE_URL+imgList.get(i));
-                    sliderView.setDescription("");
-                    break;
-                case 1:
-                    sliderView.setImageUrl(Constants.APP_BASE_URL+imgList.get(i));
-                    sliderView.setDescription("");
-                    break;
-            }
-
-            sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
-            //sliderView.setDescription("setDescription " + (i + 1));
-            sliderView.setDescription("");
-            final int finalI = i;
-            sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
-                @Override
-                public void onSliderClick(SliderView sliderView) {
-                    //Toast.makeText(HomeActivity.this, "This is slider " + (finalI + 1), Toast.LENGTH_SHORT).show();
+                switch (i) {
+                    case 0:
+                        sliderView.setImageUrl(Constants.APP_BASE_URL+imgList.get(i));
+                        sliderView.setDescription("");
+                        break;
+                    case 1:
+                        sliderView.setImageUrl(Constants.APP_BASE_URL+imgList.get(i));
+                        sliderView.setDescription("");
+                        break;
                 }
-            });
 
-            //at last add this view in your layout :
-            sliderLayout.addSliderView(sliderView);
+                sliderView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+                //sliderView.setDescription("setDescription " + (i + 1));
+                sliderView.setDescription("");
+                final int finalI = i;
+                sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
+                    @Override
+                    public void onSliderClick(SliderView sliderView) {
+                        //Toast.makeText(HomeActivity.this, "This is slider " + (finalI + 1), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                //at last add this view in your layout :
+                sliderLayout.addSliderView(sliderView);
+            }
+        }catch (IndexOutOfBoundsException ex)
+        {
+            ex.printStackTrace();
         }
+
     }
 }

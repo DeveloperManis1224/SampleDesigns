@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,11 +36,16 @@ public class OrderDetails extends AppCompatActivity {
     RecyclerView list_view_order;
     public static ProductAdapter radapter;
     SessionManager session ;
-
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         list_view_order = findViewById(R.id.order_list_view);
 
         session  = new SessionManager();
@@ -115,6 +121,10 @@ public class OrderDetails extends AppCompatActivity {
                 return params;
             }
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 }

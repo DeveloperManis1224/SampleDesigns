@@ -49,8 +49,7 @@ public class BookingFormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_form);
-
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         session = new SessionManager();
         mFname = findViewById(R.id.edt_f_name);
         mLname = findViewById(R.id.edt_l_name);
@@ -173,8 +172,6 @@ public class BookingFormActivity extends AppCompatActivity {
                                         });
                                 AlertDialog alert11 = builder1.create();
                                 alert11.show();
-                                Toast.makeText(BookingFormActivity.this, "Booking submitted.",
-                                        Toast.LENGTH_SHORT).show();
                             }
                             else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
                             {
@@ -216,7 +213,11 @@ public class BookingFormActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
      private boolean isValid()
      {
          boolean val = true;

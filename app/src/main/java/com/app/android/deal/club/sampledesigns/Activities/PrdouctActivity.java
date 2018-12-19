@@ -15,6 +15,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -32,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -83,41 +86,47 @@ public class PrdouctActivity extends AppCompatActivity
     List<MenuModel> headerList = new ArrayList<>();
     HashMap<MenuModel, List<MenuModel>> childList = new HashMap<>();
 
-
-//    LayoutInflater inflater;
-//    View layout;
-
     int positionCat = 0;
     int positionCity = 0 ;
     int positionType = 0;
     int positionState = 0;
 
     Button filterBtn ;
+    ImageView hum;
     Button sortBtn;
-
     private DrawerLayout mDrawerLayout;
+
+    private ImageView cartBtn, orderBtn;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prdouct);
-
+        hum = findViewById(R.id.hum_icon);
         session = new SessionManager();
 
+        cartBtn = findViewById(R.id.cart_list);
+        orderBtn = findViewById(R.id.order_list);
+
+
+        cartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PrdouctActivity.this,CartActivity.class));
+            }
+        });
+
+        orderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PrdouctActivity.this,OrderDetails.class));
+            }
+        });
+        list_view_product = findViewById(R.id.product_list_view);
+        expandableListView = findViewById(R.id.expandableListView);
+        hintSearch = findViewById(R.id.hint_search);
         list_view_product.setLayoutManager(new GridLayoutManager(this, 2));
-        catSpinList.add("All");
-        catIdList.add("0");
-
-        typeSpinList.add("All");
-        typeIdList.add("0");
-
-        citySpinList.add("All");
-        cityIdList.add("0");
-
-        stateSpinList.add("All");
-        stateIdList.add("0");
-
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.as_above);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -128,21 +137,16 @@ public class PrdouctActivity extends AppCompatActivity
                         switch (menuItem.getItemId())
                         {
 
-
                         }
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
                         mDrawerLayout.closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-
                         return true;
                     }
                 });
-        list_view_product = findViewById(R.id.product_list_view);
-        hintSearch = findViewById(R.id.hint_search);
+
 
         findViewById(R.id.filter_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,14 +165,13 @@ public class PrdouctActivity extends AppCompatActivity
                 onSortClick();
             }
         });
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.addDrawerListener(toggle);
+//        toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
@@ -204,6 +207,15 @@ public class PrdouctActivity extends AppCompatActivity
             });
         }
 
+
+
+        hum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawer.openDrawer(Gravity.START);
+            }
+        });
+
         //getCategoryDetails("","","","","","","");
 try {
     if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_MENU)) {
@@ -225,12 +237,12 @@ try {
 }
         //getCategoryDetails("","","","","1000","500000","");
 
+
+        prepareMenuData();
+        populateExpandableList();
     }
 
-
-
-    public  void onFilterClick()
-    {
+    public  void onFilterClick() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.dialog_layout, (ViewGroup) findViewById(R.id.layout_root));
         categoryListSpinner = (Spinner) layout.findViewById(R.id.spin_category);
@@ -331,6 +343,7 @@ try {
         dialog.show();
 
     }
+
     public void onSortClick() {
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -372,6 +385,8 @@ try {
     private void getCategorySpinnerValues() {
         catSpinList.clear();
         catIdList.clear();
+        catSpinList.add("All");
+        catIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/category";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -415,12 +430,18 @@ try {
                 Toast.makeText(PrdouctActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
     private void getTypeSpinnerValues() {
         typeSpinList.clear();
         typeIdList.clear();
+        typeSpinList.add("All");
+        typeIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/product-type";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -463,13 +484,18 @@ try {
                 Log.e("RESPONSE-LOGIN_ERROR",""+error.getMessage());
                 Toast.makeText(PrdouctActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
-        });
+        });stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
     private void getStateSpinnerValues() {
         stateIdList.clear();
         stateSpinList.clear();
+        stateSpinList.add("All");
+        stateIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/state";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -513,9 +539,12 @@ try {
                 Toast.makeText(PrdouctActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
-
 
     private void prepareMenuData() {
         MenuModel menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_home),"Home", true, true, ""); //Menu of Python Tutorials
@@ -711,12 +740,11 @@ try {
         });
     }
 
-
-
-
     private void getCitySpinnerValues() {
         cityIdList.clear();
         citySpinList.clear();
+        citySpinList.add("All");
+        cityIdList.add("0");
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/city";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -761,8 +789,6 @@ try {
         });
         queue.add(stringRequest);
     }
-
-
 
     private void getCategoryDetails(final String categoryId,final String type_id,final String stateId,
                                     final String cityId,final String max, final String min, final String sort) {
@@ -850,6 +876,10 @@ try {
                 return params;
             }
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 

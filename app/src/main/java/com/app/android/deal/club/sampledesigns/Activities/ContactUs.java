@@ -26,10 +26,18 @@ import java.util.Map;
 
 public class ContactUs extends AppCompatActivity {
     private TextInputEditText mFname,mLname,mEmail,mDescription ;
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_us);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mFname = findViewById(R.id.edt_fname);
         mLname = findViewById(R.id.edt_lname);

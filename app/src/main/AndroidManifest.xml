@@ -36,8 +36,8 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activities.PrdouctActivity"
-            android:label="Products"
-            android:theme="@style/AppTheme" />
+
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.AboutUs"
             android:label="About Us"

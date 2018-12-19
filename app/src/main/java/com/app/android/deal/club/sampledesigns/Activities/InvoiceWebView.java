@@ -11,9 +11,15 @@ public class InvoiceWebView extends AppCompatActivity {
 
     WebView webInvoice ;
     @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invoice_web_view);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         webInvoice = findViewById(R.id.web_view_invoice);
         String inovice_url = getIntent().getExtras().getString(Constants.INVOICE_URL);
         webInvoice.getSettings().setLoadsImagesAutomatically(true);
