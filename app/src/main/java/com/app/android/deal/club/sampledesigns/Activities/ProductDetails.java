@@ -375,6 +375,7 @@ public class ProductDetails extends AppCompatActivity {
         };
         queue.add(stringRequest);
     }
+    /*img,name,price,serial num,status */
 
     private void addCart()
     {

@@ -1,5 +1,6 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginPage extends AppCompatActivity {
-
+    ProgressDialog progressDialog;
     TextInputEditText mUsername, mPassword;
     SessionManager session;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -34,10 +35,16 @@ public class LoginPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
+
+
         init();
     }
 
     private void init() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("please wait");
+        progressDialog.setCancelable(false);
+
         mUsername = findViewById(R.id.edt_username);
         mPassword = findViewById(R.id.edt_password);
         session = new SessionManager();
@@ -63,6 +70,7 @@ public class LoginPage extends AppCompatActivity {
     public void onLoginClick(View view) {
         if(isValid())
         {
+            progressDialog.show();
             checkLoginUser();
         }
     }
@@ -74,6 +82,7 @@ public class LoginPage extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.dismiss();
                         Log.e("RESPONSE-LOGIN",""+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -104,6 +113,7 @@ public class LoginPage extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 Log.e("RESPONSE-LOGIN_ERROR",""+error.getMessage());
                 Toast.makeText(LoginPage.this, "" + error, Toast.LENGTH_SHORT).show();
             }

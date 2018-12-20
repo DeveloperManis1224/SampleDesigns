@@ -99,6 +99,7 @@ public class PrdouctActivity extends AppCompatActivity
     private ImageView cartBtn, orderBtn;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -304,11 +305,13 @@ try {
         rangeSeekBar.setSelectedMaxValue(120000);
         FrameLayout layout1 = (FrameLayout) layout.findViewById(R.id.seekbar_placeholder);
         layout1.addView(rangeSeekBar);
-        RangeSeekBar rangeSeekBarTextColorWithCode = (RangeSeekBar) layout.findViewById(R.id.rangeSeekBarTextColorWithCode);
+        RangeSeekBar rangeSeekBarTextColorWithCode = (RangeSeekBar)
+                layout.findViewById(R.id.rangeSeekBarTextColorWithCode);
         rangeSeekBarTextColorWithCode.setTextAboveThumbsColorResource(android.R.color.holo_red_dark);
         rangeSeekBarTextColorWithCode.setRangeValues(1000,120000);
 
-        Log.e("RANGE",""+rangeSeekBarTextColorWithCode.getSelectedMinValue()+"//"+rangeSeekBarTextColorWithCode.getSelectedMaxValue());
+        Log.e("RANGE",""+rangeSeekBarTextColorWithCode.getSelectedMinValue()+"//"
+                +rangeSeekBarTextColorWithCode.getSelectedMaxValue());
         rangeSeekBarTextColorWithCode.getSelectedMinValue();
         rangeSeekBarTextColorWithCode.getSelectedMaxValue();
 
@@ -326,9 +329,12 @@ try {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                Log.v("VALUESFILTER",""+catIdList.get(positionCat)+"///"+typeIdList.get(positionType)+"///"+stateIdList.get(positionState)+"///"+cityIdList.get(positionCity)
+                Log.v("VALUESFILTER",""+catIdList.get(positionCat)+"///"
+                        +typeIdList.get(positionType)+"///"+stateIdList.get(positionState)+"///"
+                        +cityIdList.get(positionCity)
                         +"///"+maxValue1.getText().toString()+"///"+minValue1.getText().toString());
-                getCategoryDetails(catIdList.get(positionCat),typeIdList.get(positionType),stateIdList.get(positionState),cityIdList.get(positionCity)
+                getCategoryDetails(catIdList.get(positionCat),typeIdList.get(positionType),
+                        stateIdList.get(positionState),cityIdList.get(positionCity)
                         ,maxValue1.getText().toString(),minValue1.getText().toString(),"");
             }
         });

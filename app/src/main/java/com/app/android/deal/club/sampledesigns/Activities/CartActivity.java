@@ -1,5 +1,6 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class CartActivity extends AppCompatActivity {
     public static String totalAmount= "";
     public static TextView txtTotalCost;
     public static ProductAdapter radapter;
+    ProgressDialog progressDialog;
     @Override
     public boolean onSupportNavigateUp(){
         finish();
@@ -87,6 +89,10 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("please wait");
+        progressDialog.setCancelable(false);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         session = new SessionManager();
         txtTotalCost = findViewById(R.id.txt_total_cost);
@@ -96,6 +102,7 @@ public class CartActivity extends AppCompatActivity {
         List_view.setLayoutManager(cart_lyt);
         if(session.getPreferences(CartActivity.this,Constants.LOGIN_STATUS).equalsIgnoreCase(Constants.LOGIN))
         {
+            progressDialog.show();
             getCartList();
         }
         else
@@ -129,6 +136,7 @@ public class CartActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.dismiss();
                         Log.e("RESPONSE-HOME_Recent", "" + response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -194,6 +202,7 @@ public class CartActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 Log.e("RESPONSE-HOME_Recent", "" + error.getMessage());
                 Toast.makeText(CartActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }

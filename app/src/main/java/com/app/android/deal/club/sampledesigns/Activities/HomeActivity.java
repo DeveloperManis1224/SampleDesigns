@@ -1,12 +1,14 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -529,6 +531,11 @@ public class HomeActivity extends AppCompatActivity
         headerList.add(menuModel);
         menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_about),"About Us", true, true, ""); //Menu of Python Tutorials
         headerList.add(menuModel);
+
+        if(session.getPreferences(HomeActivity.this,Constants.LOGIN_STATUS).equalsIgnoreCase(Constants.LOGIN)) {
+            menuModel = new MenuModel(getResources().getDrawable(R.drawable.logout_icon), "Logout", true, true, ""); //Menu of Python Tutorials
+            headerList.add(menuModel);
+        }
         if (menuModel.hasChildren) {
             childList.put(menuModel, childModelsList);
         }
@@ -589,6 +596,34 @@ public class HomeActivity extends AppCompatActivity
                     if(headerList.get(groupPosition).getName().equalsIgnoreCase("About Us"))
                     {
                         startActivity(new Intent(HomeActivity.this,AboutUs.class));
+                    }
+                    else
+                    if(headerList.get(groupPosition).getName().equalsIgnoreCase("Logout"))
+                    {
+
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(HomeActivity.this);
+                        builder1.setTitle("Logout");
+                        builder1.setMessage("Are you sure want to Logout?");
+                        builder1.setCancelable(true);
+                        builder1.setPositiveButton(
+                                "Logout",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                        Toast.makeText(HomeActivity.this, "Logout Successfull", Toast.LENGTH_SHORT).show();
+                                        session.setPreferences(HomeActivity.this,Constants.LOGIN_STATUS,Constants.LOGOUT);
+                                        startActivity(new Intent(HomeActivity.this,HomeActivity.class));
+                                    }
+                                });
+                        builder1.setNegativeButton(
+                                "Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
                     }
 
 //                    if (!headerList.get(groupPosition).hasChildren) {

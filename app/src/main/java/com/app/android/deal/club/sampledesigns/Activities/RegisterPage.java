@@ -1,5 +1,6 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class RegisterPage extends AppCompatActivity {
     private TextInputEditText mName,mPhone,mCompanyName, mEmail, mAddress,mPassword;
     SessionManager session;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,10 @@ public class RegisterPage extends AppCompatActivity {
 
     private void Init()
     {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("please wait");
+        progressDialog.setCancelable(false);
+
         mName = findViewById(R.id.reg_edt_name);
         mPhone = findViewById(R.id.reg_edt_phone);
         mCompanyName = findViewById(R.id.reg_edt_company_name);
@@ -87,6 +93,7 @@ public class RegisterPage extends AppCompatActivity {
     {
         if(isValid())
         {
+            progressDialog.show();
             addUserData();
         }
     }
@@ -98,6 +105,7 @@ public class RegisterPage extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.dismiss();
                         Log.e("RESPONSE-REGISTER",""+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -128,6 +136,7 @@ public class RegisterPage extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 Toast.makeText(RegisterPage.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         }) {
