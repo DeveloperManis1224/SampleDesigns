@@ -7,6 +7,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -56,6 +58,32 @@ public class ProductDetails extends AppCompatActivity {
 
     ArrayList<String> imgList = new ArrayList<>();
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.cart_btn_bar) {
+//            session.setPreferences(HomeActivity.this,Constants.LOGIN_STATUS,Constants.LOGOUT);
+//            startActivity(new Intent(HomeActivity.this,HomeActivity.class));
+//            Toast.makeText(this, "Logout Successfull", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(ProductDetails.this,CartActivity.class));
+            return true;
+        }
+        if (id == R.id.order_btn_bar) {
+            startActivity(new Intent(ProductDetails.this,OrderDetails.class));
+//            session.setPreferences(HomeActivity.this,Constants.LOGIN_STATUS,Constants.LOGOUT);
+//            startActivity(new Intent(HomeActivity.this,HomeActivity.class));
+//            Toast.makeText(this, "Logout Successfull", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public boolean onSupportNavigateUp(){

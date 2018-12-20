@@ -28,6 +28,7 @@ import java.util.Map;
 public class RegisterPage extends AppCompatActivity {
     private TextInputEditText mName,mPhone,mCompanyName, mEmail, mAddress,mPassword;
     SessionManager session;
+    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +55,8 @@ public class RegisterPage extends AppCompatActivity {
             val = false;
             mName.setError("Invalid Name");
         }
-        if(mEmail.getText().toString().isEmpty())
+        if(mEmail.getText().toString().isEmpty() ||
+                !mEmail.getText().toString().matches(emailPattern))
         {
             val = false;
             mEmail.setError("Invalid Email");

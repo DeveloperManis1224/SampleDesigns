@@ -85,6 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#fdfdfd"
+                android:visibility="gone"
                 android:padding="2dp"
                 android:onClick="onRegClick"
                 android:background="#1b1b1b"
@@ -92,6 +93,18 @@
                 android:textStyle="bold"
                 android:text="Register"/>
         </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:textAllCaps="false"
+            android:onClick="onRegClick"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#fff"
+            android:background="@color/colorPrimaryDark"
+            android:text="Register"/>
 
     </LinearLayout>
 

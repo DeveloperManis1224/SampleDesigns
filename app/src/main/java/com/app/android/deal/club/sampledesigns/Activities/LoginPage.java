@@ -29,6 +29,7 @@ public class LoginPage extends AppCompatActivity {
 
     TextInputEditText mUsername, mPassword;
     SessionManager session;
+    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,8 @@ public class LoginPage extends AppCompatActivity {
     private boolean isValid()
     {
         boolean val = true;
-        if(mUsername.getText().toString().isEmpty())
+        if(mUsername.getText().toString().isEmpty() ||
+                !mUsername.getText().toString().matches(emailPattern) )
         {
             val = false;
             mUsername.setError("Invalid Username");

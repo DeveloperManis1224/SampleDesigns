@@ -1,10 +1,13 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -40,6 +43,33 @@ public class OrderDetails extends AppCompatActivity {
     public boolean onSupportNavigateUp(){
         finish();
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.cart_btn_bar) {
+//            session.setPreferences(HomeActivity.this,Constants.LOGIN_STATUS,Constants.LOGOUT);
+//            startActivity(new Intent(HomeActivity.this,HomeActivity.class));
+//            Toast.makeText(this, "Logout Successfull", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(OrderDetails.this,CartActivity.class));
+            return true;
+        }
+        if (id == R.id.order_btn_bar) {
+            startActivity(new Intent(OrderDetails.this,OrderDetails.class));
+//            session.setPreferences(HomeActivity.this,Constants.LOGIN_STATUS,Constants.LOGOUT);
+//            startActivity(new Intent(HomeActivity.this,HomeActivity.class));
+//            Toast.makeText(this, "Logout Successfull", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
