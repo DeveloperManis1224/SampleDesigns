@@ -1,5 +1,9 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
@@ -10,7 +14,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -31,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,14 +50,27 @@ public class BookingFormActivity extends AppCompatActivity {
     List<String> countryList = new ArrayList<String>();
     List<String> stateList = new ArrayList<String>();
     Spinner mCountry, mState, mCity ;
+    ProgressDialog progressDialog;
+    public static TextView mStartDate, mEndDate;
     SessionManager session;
     int pos = 1;
+    int mYear = 0;
+    int mMonth = 0 ;
+    int mDay = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_form);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         session = new SessionManager();
+
+        mStartDate = findViewById(R.id.start_date);
+        mEndDate = findViewById(R.id.end_date);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("please wait");
+        progressDialog.setCancelable(false);
+
         mFname = findViewById(R.id.edt_f_name);
         mLname = findViewById(R.id.edt_l_name);
         mCompanyName = findViewById(R.id.edt_company_name);
@@ -90,7 +110,89 @@ public class BookingFormActivity extends AppCompatActivity {
 //            }
 //        });
 
+
+        mStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                showTruitonDatePickerDialog(view);
+            }
+        });
+        mEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!mStartDate.getText().toString().equalsIgnoreCase("Start Date"))
+                {
+                    showToDatePickerDialog(view);
+                }
+                else
+                {
+                    Toast.makeText(BookingFormActivity.this, "Please Select Start date...", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
     }
+
+    public void showTruitonDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    public void showToDatePickerDialog(View v) {
+        DialogFragment newFragment = new ToDatePickerFragment();
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    public static class DatePickerFragment extends DialogFragment implements
+            DatePickerDialog.OnDateSetListener {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog datePickerDialog;
+            datePickerDialog = new DatePickerDialog(getActivity(),this, year,
+                    month,day);
+            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+            return datePickerDialog;
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            // Do something with the date chosen by the user
+            mStartDate.setText(day + "/" + month  + "/" + year);
+        }
+
+    }
+
+    public static class ToDatePickerFragment extends DialogFragment implements
+            DatePickerDialog.OnDateSetListener {
+        // Calendar startDateCalendar=Calendar.getInstance();
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            String getfromdate = mStartDate.getText().toString().trim();
+            String getfrom[] = getfromdate.split("/");
+            int year,month,day;
+            year= Integer.parseInt(getfrom[2]);
+            month = Integer.parseInt(getfrom[1]);
+            day = Integer.parseInt(getfrom[0]);
+            final Calendar c = Calendar.getInstance();
+            c.set(year,month,day+1);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),this, year,month,day);
+            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+            return datePickerDialog;
+        }
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+
+            mEndDate.setText(day + "/" + month  + "/" + year);
+        }
+    }
+
+
 
     public void onBookClick(View v)
     {
@@ -101,12 +203,14 @@ public class BookingFormActivity extends AppCompatActivity {
     }
 
     private void getCityList() {
+        progressDialog.show();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/city";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.dismiss();
                         Log.e("RESPONSE-LOGIN",""+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -136,6 +240,7 @@ public class BookingFormActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 Log.e("RESPONSE-LOGIN_ERROR",""+error.getMessage());
                 Toast.makeText(BookingFormActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
@@ -144,6 +249,7 @@ public class BookingFormActivity extends AppCompatActivity {
     }
 
     private void bookChecking() {
+        progressDialog.show();
         Log.e("RESPONSE-HOME_Recent",""+CartActivity.productBuilder.toString());
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/order";
@@ -151,6 +257,7 @@ public class BookingFormActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.dismiss();
                         Log.e("RESPONSE-HOME_Recent",""+response+CartActivity.cartIdList.toString());
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -185,6 +292,7 @@ public class BookingFormActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 Log.e("RESPONSE-HOME_Recent",""+error.getMessage());
                 Toast.makeText(BookingFormActivity.this, "Exception  " + error, Toast.LENGTH_SHORT).show();
             }
@@ -201,6 +309,8 @@ public class BookingFormActivity extends AppCompatActivity {
                 params.put("city_id",cityIdList.get(pos));
                 params.put("state_id","22");
                 params.put("country_id","1");
+                params.put("start_date",mStartDate.getText().toString().trim());
+                params.put("end_date",mEndDate.getText().toString().trim());
                 params.put("post_code",mPostCode.getText().toString().trim());
                 params.put("phone",mPhone.getText().toString().trim());
                 params.put("email",mEmail.getText().toString().trim());
@@ -218,37 +328,57 @@ public class BookingFormActivity extends AppCompatActivity {
         finish();
         return true;
     }
+
      private boolean isValid()
      {
          boolean val = true;
          if(mFname.getText().toString().isEmpty())
          {
+             val = false;
              mFname.setError("Invalid");
          }
          if(mLname.getText().toString().isEmpty())
          {
+             val = false;
              mLname.setError("Invalid");
          }
          if(mCompanyName.getText().toString().isEmpty())
          {
+             val = false;
              mCompanyName.setError("Invalid");
          }
          if(mAddress.getText().toString().isEmpty())
          {
+             val = false;
              mAddress.setError("Invalid");
          }
          if(mPostCode.getText().toString().isEmpty())
          {
+             val = false;
              mPostCode.setError("Invalid");
          }
          if(mPhone.getText().toString().isEmpty())
          {
+             val = false;
              mPhone.setError("Invalid");
          }
          if(mNotes.getText().toString().isEmpty())
          {
+             val = false;
+             mNotes.setError("Invalid");
+         }
+         if(mStartDate.getText().toString().equalsIgnoreCase("Start Date"))
+         {
+             val = false;
+             mNotes.setError("Invalid");
+         }
+         if(mEndDate.getText().toString().equalsIgnoreCase("End Date"))
+         {
+             val = false;
              mNotes.setError("Invalid");
          }
          return  val;
      }
+
+
 }

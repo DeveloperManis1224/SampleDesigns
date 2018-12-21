@@ -1,6 +1,7 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -49,6 +50,7 @@ public class ProductDetails extends AppCompatActivity {
     productDescription, productImage, stateId, cityId, categoryId, productSts ;
     private TextView mProductName, mProductType, mProductSft, mProductSize, mPrintingCost, mMountingCost,
     mTotalCost, mDescription, mProductStatus;
+    ProgressDialog progressDialog;
     private LikeButton mButton;
     private TextView mCheckAvailable, mAddCart;
     StringBuilder decriptionData = new StringBuilder();
@@ -110,6 +112,9 @@ public class ProductDetails extends AppCompatActivity {
         mProductType = findViewById(R.id.d_txt_type);
         mProductSft = findViewById(R.id.d_txt_sft);
         mProductSize = findViewById(R.id.d_txt_size);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("please wait");
+        progressDialog.setCancelable(false);
 //        mPrintingCost = findViewById(R.id.d_txt_printting_cost);
 //        mMountingCost = findViewById(R.id.d_txt_mounting_cost);
         mTotalCost = findViewById(R.id.d_total_cost);
@@ -190,7 +195,6 @@ public class ProductDetails extends AppCompatActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog datePickerDialog = new DatePickerDialog(ProductDetails.this,
                         new DatePickerDialog.OnDateSetListener() {
-
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
@@ -423,12 +427,14 @@ public class ProductDetails extends AppCompatActivity {
 
     private void getDescription()
     {
+        progressDialog.show();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/product-detail";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.dismiss();
                         Log.e("RESPONSE-REGISTER",""+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -472,6 +478,7 @@ public class ProductDetails extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.show();
                 Toast.makeText(ProductDetails.this, "Failed"+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {

@@ -1,6 +1,7 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -67,6 +68,7 @@ public class HomeActivity extends AppCompatActivity
     SessionManager session;
     SliderLayout sliderLayout;
     TextView mRecentBanner, mBestBanner;
+    ProgressDialog progressDialog;
 
     ExpandableListAdapter expandableListAdapter;
     ExpandableListView expandableListView;
@@ -77,6 +79,9 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         session = new SessionManager();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("please wait");
+        progressDialog.setCancelable(false);
         expandableListView = findViewById(R.id.expandableListView);
         sliderLayout = findViewById(R.id.imageSlider);
         sliderLayout.setIndicatorAnimation(SliderLayout.Animations.SLIDE); //set indicator animation by using SliderLayout.Animations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
@@ -303,6 +308,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void getRecentProducts() {
+        progressDialog.show();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/recent-product";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -723,6 +729,7 @@ public class HomeActivity extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.dismiss();
                         Log.e("RESPONSE-HOME_Best",""+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -754,6 +761,7 @@ public class HomeActivity extends AppCompatActivity
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 Log.e("RESPONSE-HOME_Recent",""+error.getMessage());
                 Toast.makeText(HomeActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }

@@ -27,6 +27,7 @@ import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
 import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,6 +69,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         try {
             holder.productAddress.setText(obj_arr.get(position).get_productName());
             holder.productCost.setText(getIndianRupee(obj_arr.get(position).get_totalCost()));
+            Glide.with(holder.productImage.getContext()).load(Constants.APP_BASE_URL+obj_arr.get(position).get_image()).into(holder.productImage);
             holder.lyt_product.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

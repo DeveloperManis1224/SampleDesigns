@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layout_bg"
+    android:elevation="2dp"
+    android:layout_marginTop="10dp"
+    android:padding="2dp"
+    android:id="@+id/lyt_container_order"
+    android:layout_marginBottom="10dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:scaleType="fitXY"
+        android:elevation="2dp"
+        android:id="@+id/order_img"
+        android:contentDescription="@null"
+        android:src="@drawable/sample_image"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingBottom="4dp"
+        android:id="@+id/order_name"
+        android:ems="3"
+        android:singleLine="true"
+        android:textStyle="bold"
+        android:ellipsize="end"
+        android:maxLength="15"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:text="Name"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:id="@+id/order_serial_num"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:paddingLeft="8dp"
+        android:text="Serial number"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/order_sts"
+        android:textStyle="bold"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/more_button_lyt"
+        android:textColor="@android:color/white"
+        android:padding="3dp"
+        android:text="Status"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-15dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="7dp"
+        android:gravity="right">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/hintclick_invoice"
+            android:padding="3dp"
+            android:textSize="8dp"
+            android:gravity="right"
+            android:text="click to view Invoice"/>
+    </LinearLayout>
+
+
+</LinearLayout>

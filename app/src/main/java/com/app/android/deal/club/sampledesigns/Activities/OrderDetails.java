@@ -1,5 +1,6 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,8 +19,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.android.deal.club.sampledesigns.Adapters.OrderAdapter;
 import com.app.android.deal.club.sampledesigns.Adapters.ProductAdapter;
 import com.app.android.deal.club.sampledesigns.Adapters.RecentProductAdapter;
+import com.app.android.deal.club.sampledesigns.DataModels.OrderData;
 import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
@@ -35,14 +38,16 @@ import java.util.Map;
 
 public class OrderDetails extends AppCompatActivity {
 
-    ArrayList<RecentPrdocutData> orderData = new ArrayList<>();
+    ArrayList<OrderData> orderData = new ArrayList<>();
     RecyclerView list_view_order;
+    ProgressDialog progressDialog;
     public static ProductAdapter radapter;
     SessionManager session ;
     @Override
     public boolean onSupportNavigateUp(){
         finish();
         return true;
+
     }
 
     @Override
@@ -76,6 +81,10 @@ public class OrderDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("please wait");
+        progressDialog.setCancelable(false);
         list_view_order = findViewById(R.id.order_list_view);
 
         session  = new SessionManager();
@@ -88,12 +97,14 @@ public class OrderDetails extends AppCompatActivity {
 
 
     private void getOrderProducts() {
+        progressDialog.show();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://adinn.candyrestaurant.com/api/order-lists";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.dismiss();
                         Log.e("RESPONSE-HOME_Recent",session.getPreferences(OrderDetails.this,Constants.CURRENT_USER_ID)+""+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -101,33 +112,49 @@ public class OrderDetails extends AppCompatActivity {
                             String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
                             if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
                             {
-                                JSONArray jsonArray = jsonObject.getJSONArray("products");
+                                JSONArray jsonArray = jsonObject.getJSONArray("orderProducts");
+
                                 for(int i = 0; i < jsonArray.length(); i++ )
                                 {
                                     JSONObject resObject = jsonArray.getJSONObject(i);
-                                    String uId = resObject.getString(Constants.PRODUCT_ID);
-                                    String productName = resObject.getString(Constants.PRODUCT_NAME);
-                                    String price = resObject.getString(Constants.PRODUCT_NAME);
-                                    String size = resObject.getString(Constants.PRODUCT_SIZE);
-                                    String sft = resObject.getString(Constants.PRODUCT_SFT);
-                                    String type = resObject.getJSONObject(Constants.PRODUCT_TYPE).getString(Constants.PRODUCT_TYPE);
-                                    String printingCost = resObject.getString(Constants.PRINTING_COST);
-                                    String mountingCost = resObject.getString(Constants.MOUNTING_COST);
-                                    String totalCost = resObject.getString(Constants.TOTAL_COST);
-                                    String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
-                                    String image = resObject.getString(Constants.PRODUCT_IMAGE);
-                                    String stateId = resObject.getString(Constants.STATE_ID);
-                                    String city_id = resObject.getString(Constants.CITY_ID);
-                                    String categoryId = resObject.getString(Constants.CATEGORY_ID);
-                                    String sts = resObject.getString(Constants.PRODUCT_STATUS);
-                                    orderData.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
-                                    radapter = new ProductAdapter(orderData);
-                                    list_view_order.setAdapter(radapter);
+
+                                    String id = resObject.getString(Constants.PRODUCT_ID);
+                                    String order_id = resObject.getString("order_id");
+                                    JSONObject jobjProduct = resObject.getJSONObject("product");
+                                    String name  = jobjProduct.getString("name");
+                                    String image = jobjProduct.getString("image");
+                                    JSONObject jobjOrder = resObject.getJSONObject("order");
+                                    String serial_number = jobjOrder.getString("serial_no");
+                                    String status = jobjOrder.getString("status");
+                                    orderData.add(new OrderData(id,image,name,order_id,status,serial_number));
+
+                                    OrderAdapter odad = new OrderAdapter(orderData);
+
+
+//                                    String uId = resObject.getString(Constants.PRODUCT_ID);
+//                                    String productName = resObject.getString(Constants.PRODUCT_NAME);
+//                                    String price = resObject.getString(Constants.PRODUCT_NAME);
+//                                    String size = resObject.getString(Constants.PRODUCT_SIZE);
+//                                    String sft = resObject.getString(Constants.PRODUCT_SFT);
+//                                    String type = resObject.getJSONObject(Constants.PRODUCT_TYPE).getString(Constants.PRODUCT_TYPE);
+//                                    String printingCost = resObject.getString(Constants.PRINTING_COST);
+//                                    String mountingCost = resObject.getString(Constants.MOUNTING_COST);
+//                                    String totalCost = resObject.getString(Constants.TOTAL_COST);
+//                                    String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
+//                                    String image = resObject.getString(Constants.PRODUCT_IMAGE);
+//                                    String stateId = resObject.getString(Constants.STATE_ID);
+//                                    String city_id = resObject.getString(Constants.CITY_ID);
+//                                    String categoryId = resObject.getString(Constants.CATEGORY_ID);
+//                                    String sts = resObject.getString(Constants.PRODUCT_STATUS);
+//                                    orderData.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
+//                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
+
+                                    list_view_order.setAdapter(odad);
                                 }
                             }
                             else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
                             {
+
                                 Toast.makeText(OrderDetails.this, ""+stsMessage,
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -139,6 +166,7 @@ public class OrderDetails extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 Log.e("RESPONSE-HOME_Recent",""+error.getMessage());
                 Toast.makeText(OrderDetails.this, "" + error, Toast.LENGTH_SHORT).show();
             }

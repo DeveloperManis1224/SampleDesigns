@@ -1,6 +1,7 @@
 package com.app.android.deal.club.sampledesigns.Activities;
 
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -97,6 +98,7 @@ public class PrdouctActivity extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
 
     private ImageView cartBtn, orderBtn;
+    ProgressDialog progressDialog;
 
 
 
@@ -106,6 +108,9 @@ public class PrdouctActivity extends AppCompatActivity
         setContentView(R.layout.activity_prdouct);
         hum = findViewById(R.id.hum_icon);
         session = new SessionManager();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("please wait");
+        progressDialog.setCancelable(false);
 
         cartBtn = findViewById(R.id.cart_list);
         orderBtn = findViewById(R.id.order_list);
@@ -389,6 +394,7 @@ try {
     }
 
     private void getCategorySpinnerValues() {
+        progressDialog.show();
         catSpinList.clear();
         catIdList.clear();
         catSpinList.add("All");
@@ -508,6 +514,7 @@ try {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.dismiss();
                         Log.e("RESPONSE-LOGIN",""+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -541,6 +548,7 @@ try {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 Log.e("RESPONSE-LOGIN_ERROR",""+error.getMessage());
                 Toast.makeText(PrdouctActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
@@ -798,6 +806,7 @@ try {
 
     private void getCategoryDetails(final String categoryId,final String type_id,final String stateId,
                                     final String cityId,final String max, final String min, final String sort) {
+        progressDialog.show();
 
         Log.e("VALUESFILTER",categoryId+"///"+type_id+"///"+stateId+"///"+cityId+"///"+max+"///"+min+"///"+sort);
        list_view_product.setAdapter(null);
@@ -809,6 +818,7 @@ try {
                     @Override
                     public void onResponse(String response) {
                         Log.e("RESPONSE-PRODUCT",""+response);
+                        progressDialog.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String loginStatus = jsonObject.getString("status");//LOGIN = "1";
@@ -859,6 +869,7 @@ try {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 Log.e("RESPONSE-PRODUCT_ERROR",""+error.getMessage());
                 Toast.makeText(PrdouctActivity.this, "" + error, Toast.LENGTH_SHORT).show();
             }
