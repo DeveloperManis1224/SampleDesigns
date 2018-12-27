@@ -77,6 +77,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                 holder.productCost.setText(getIndianRupee(obj_arr.get(position).get_totalCost()));
             }
 
+
+
             Glide.with(holder.productImage.getContext()).load(Constants.APP_BASE_URL+obj_arr.get(position).get_image()).into(holder.productImage);
             holder.lyt_product.setOnClickListener(new View.OnClickListener() {
                 @Override
