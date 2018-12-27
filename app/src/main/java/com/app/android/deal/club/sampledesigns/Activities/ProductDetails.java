@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,9 +48,9 @@ import java.util.Map;
 public class ProductDetails extends AppCompatActivity {
 
     String productId, productName, productType, productSFT, productSize, printingCost, mountingCost, totalCost,
-    productDescription, productImage, stateId, cityId, categoryId, productSts ;
-    private TextView mProductName, mProductType, mProductSft, mProductSize, mPrintingCost, mMountingCost,
-    mTotalCost, mDescription, mProductStatus;
+    productDescription, productImage, stateId, cityId, categoryId, productSts, offerType, offerQuantity, offerStatus, offerName, offerTotal ;
+    private TextView mProductName, mProductType, mProductSft, mProductSize, mPrintingCost, mMountingCost, mDashedText,
+    mTotalCost, mDescription, mProductStatus, offerLabel;
     ProgressDialog progressDialog;
     private LikeButton mButton;
     private TextView mCheckAvailable, mAddCart;
@@ -115,19 +116,19 @@ public class ProductDetails extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("please wait");
         progressDialog.setCancelable(false);
+        offerLabel = findViewById(R.id.d_lbl_offer);
 //        mPrintingCost = findViewById(R.id.d_txt_printting_cost);
 //        mMountingCost = findViewById(R.id.d_txt_mounting_cost);
+        mDashedText = findViewById(R.id.d_dashed_text);
         mTotalCost = findViewById(R.id.d_total_cost);
         mDescription = findViewById(R.id.d_txt_description);
 //        mProductStatus = findViewById(R.id.d_dis_cost);
-
 
         sliderLayout = findViewById(R.id.img_slider);
         sliderLayout.setIndicatorAnimation(SliderLayout.Animations.SLIDE); //set indicator animation by using SliderLayout.Animations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
         //sliderLayout.setScrollTimeInSec(3);
         lyt = findViewById(R.id.lyt_desc);
-
-
+        offerLabel.setVisibility(View.GONE);
         getDescription();
 
         productId = getIntent().getExtras().getString(Constants.PRODUCT_ID);
@@ -144,6 +145,13 @@ public class ProductDetails extends AppCompatActivity {
         cityId = getIntent().getExtras().getString(Constants.CITY_ID);
         categoryId = getIntent().getExtras().getString(Constants.CATEGORY_ID);
         productSts = getIntent().getExtras().getString(Constants.PRODUCT_STATUS);
+        offerType = getIntent().getExtras().getString(Constants.OFFER_TYPE);
+        offerQuantity =getIntent().getExtras().getString(Constants.OFFER_QUANTITY);
+        offerStatus = getIntent().getExtras().getString(Constants.OFFER_STATUS);
+        offerName = getIntent().getExtras().getString(Constants.OFFER_NAME);
+        offerTotal = getIntent().getExtras().getString(Constants.OFFER_TOTAL) ;
+
+
 
         mProductName.setText(getString(R.string.filled_bullet) +" Location : "+productName);
         mProductType.setText(getString(R.string.filled_bullet) +" TYPE : "+productType);
@@ -151,7 +159,22 @@ public class ProductDetails extends AppCompatActivity {
         mProductSize.setText(getString(R.string.filled_bullet) +" SIZE : "+productSize);
 //        mPrintingCost.setText(getString(R.string.filled_bullet) +" Printing Cost   :"+printingCost);
 //        mMountingCost.setText(getString(R.string.filled_bullet) +" Mounting Cost   :"+mountingCost);
-        mTotalCost.setText(getString(R.string.Rs)+" "+formatDecimal(totalCost));
+        mDashedText.setText(getString(R.string.Rs)+" "+formatDecimal(totalCost));
+        mTotalCost.setText(getString(R.string.Rs)+" "+formatDecimal(offerTotal));
+
+
+
+        if(offerStatus.equalsIgnoreCase("1"))
+        {
+            mDashedText.setText(getString(R.string.Rs)+" "+formatDecimal(totalCost));
+            mTotalCost.setText(getString(R.string.Rs)+" "+formatDecimal(offerTotal));
+            mDashedText.setPaintFlags(mTotalCost.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+        else
+        {
+            mTotalCost.setText(getString(R.string.Rs)+" "+formatDecimal(totalCost));
+            mDashedText.setVisibility(View.GONE);
+        }
 //        mDescription.setText(getString(R.string.filled_bullet) +" Description     :"+productDescription);
 //        mProductStatus.setText(getString(R.string.filled_bullet) +" Status          :"+productSts);
         ((TextView)findViewById(R.id.d_txt_product_name)).setText(productName);
@@ -215,8 +238,18 @@ public class ProductDetails extends AppCompatActivity {
     }
 
     public static String formatDecimal(String value) {
-        DecimalFormat df = new DecimalFormat("#,##,##,##0.00");
-        return df.format(Double.valueOf(value));
+        String val ="";
+        try{
+            DecimalFormat df = new DecimalFormat("#,##,##,##0.00");
+           val = df.format(Double.valueOf(value));
+        }catch (Exception ex)
+        {
+            ex.printStackTrace();
+            DecimalFormat df = new DecimalFormat("#,##,##,##0.00");
+            val = df.format(Double.valueOf(value));
+        }
+
+        return val ;
     }
 
     private void removeWishList()
@@ -450,7 +483,9 @@ public class ProductDetails extends AppCompatActivity {
                                     String product_id = jobj.getString("product_id");
                                     String title = jobj.getString("title");
                                     String details = jobj.getString("details");
-                                    decriptionData.append(getResources().getString(R.string.filled_bullet)+" "+title+" : "+details+"\n \n");
+                                    if(!title.equalsIgnoreCase("")&&!details.equalsIgnoreCase("null")) {
+                                        decriptionData.append(getResources().getString(R.string.filled_bullet) + " " + title + " : " + details + "\n \n");
+                                    }
                                 }
                                 JSONArray jry = jsonObject.getJSONArray(Constants.PRODUCT_IMAGES);
                                 for (int j = 0; j<jry.length() ; j++ )

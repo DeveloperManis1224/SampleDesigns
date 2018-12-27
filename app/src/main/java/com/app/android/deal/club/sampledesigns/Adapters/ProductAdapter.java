@@ -68,7 +68,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     public void onBindViewHolder(final ProductAdapter.MyViewHolder holder, final int position) {
         try {
             holder.productAddress.setText(obj_arr.get(position).get_productName());
-            holder.productCost.setText(getIndianRupee(obj_arr.get(position).get_totalCost()));
+            if(obj_arr.get(position).get_offerStatus().equalsIgnoreCase("1"))
+            {
+                holder.productCost.setText(getIndianRupee(obj_arr.get(position).get_offerTotal()));
+            }
+            else
+            {
+                holder.productCost.setText(getIndianRupee(obj_arr.get(position).get_totalCost()));
+            }
+
             Glide.with(holder.productImage.getContext()).load(Constants.APP_BASE_URL+obj_arr.get(position).get_image()).into(holder.productImage);
             holder.lyt_product.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,6 +96,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                     in.putExtra(Constants.CITY_ID,obj_arr.get(position).get_cityId());
                     in.putExtra(Constants.CATEGORY_ID,obj_arr.get(position).get_categoryId());
                     in.putExtra(Constants.PRODUCT_STATUS,obj_arr.get(position).get_status());
+                    in.putExtra(Constants.OFFER_TYPE,obj_arr.get(position).get_offerType());
+                    in.putExtra(Constants.OFFER_QUANTITY,obj_arr.get(position).get_offerQuantity());
+                    in.putExtra(Constants.OFFER_STATUS,obj_arr.get(position).get_offerStatus());
+                    in.putExtra(Constants.OFFER_NAME,obj_arr.get(position).get_offerName());
+                    in.putExtra(Constants.OFFER_TOTAL,obj_arr.get(position).get_offerTotal());
                     holder.lyt_product.getContext().startActivity(in);
                 }
             });

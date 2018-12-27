@@ -31,6 +31,8 @@ import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
 import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -265,20 +267,23 @@ public class BookingFormActivity extends AppCompatActivity {
                             String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
                             if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
                             {
-                                AlertDialog.Builder builder1 = new AlertDialog.Builder(BookingFormActivity.this);
-                                builder1.setTitle("Thanks for Booking!");
-                                builder1.setMessage("Your booking is submitted successfully! we will contact you shortly...");
-                                builder1.setCancelable(true);
-                                builder1.setPositiveButton(
-                                        "Close",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
+                                new AwesomeSuccessDialog(BookingFormActivity.this)
+                                        .setTitle("Thanks for Booking!")
+                                        .setMessage("Your booking is submitted successfully! we will contact you shortly...")
+                                        .setColoredCircle(R.color.colorAccent)
+                                        .setDialogIconAndColor(R.drawable.ic_dialog_info, R.color.white)
+                                        .setCancelable(true)
+                                        .setPositiveButtonText("Close")
+                                        .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+                                        .setPositiveButtonTextColor(R.color.white)
+                                        .setPositiveButtonClick(new Closure() {
+                                            @Override
+                                            public void exec() {
                                                 startActivity(new Intent(BookingFormActivity.this,HomeActivity.class));
+                                                finish();
                                             }
-                                        });
-                                AlertDialog alert11 = builder1.create();
-                                alert11.show();
+                                        })
+                                        .show();
                             }
                             else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
                             {

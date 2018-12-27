@@ -146,9 +146,14 @@ public class CategoryProductView extends AppCompatActivity {
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
+                                    String offerType = resObject.getString(Constants.OFFER_TYPE);
+                                    String offerName = resObject.getString(Constants.OFFER_NAME);
+                                    String offerStatus = resObject.getString(Constants.OFFER_STATUS);
+                                    String offerQuantity = resObject.getString(Constants.OFFER_QUANTITY);
                                     String sts = resObject.getString(Constants.PRODUCT_STATUS);
+                                    String offerTotal = resObject.getString(Constants.OFFER_TOTAL);
                                     productData.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
+                                            ,totalCost,description,image,stateId,city_id,categoryId,sts,offerType,offerQuantity,offerStatus,offerName,offerTotal));
                                     RecentProductAdapter radapter = new RecentProductAdapter(productData);
                                     list_view_product.setAdapter(radapter);
                                 }
@@ -215,10 +220,15 @@ public class CategoryProductView extends AppCompatActivity {
 //                                    }
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
+                                    String offerType = resObject.getString(Constants.OFFER_TYPE);
+                                    String offerName = resObject.getString(Constants.OFFER_NAME);
+                                    String offerStatus = resObject.getString(Constants.OFFER_STATUS);
+                                    String offerQuantity = resObject.getString(Constants.OFFER_QUANTITY);
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
                                     String sts = resObject.getString(Constants.PRODUCT_STATUS);
+                                    String offerTotal = resObject.getString(Constants.OFFER_TOTAL);
                                     productData.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
+                                            ,totalCost,description,image,stateId,city_id,categoryId,sts,offerType,offerQuantity,offerStatus,offerName,offerTotal));
                                     RecentProductAdapter radapter = new RecentProductAdapter(productData);
                                     list_view_product.setAdapter(radapter);
                                 }
@@ -328,10 +338,15 @@ public class CategoryProductView extends AppCompatActivity {
                                     String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
+                                    String offerType = resObject.getString(Constants.OFFER_TYPE);
+                                    String offerName = resObject.getString(Constants.OFFER_NAME);
+                                    String offerStatus = resObject.getString(Constants.OFFER_STATUS);
+                                    String offerQuantity = resObject.getString(Constants.OFFER_QUANTITY);
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
                                     String sts = resObject.getString(Constants.PRODUCT_STATUS);
+                                    String offerTotal = resObject.getString(Constants.OFFER_TOTAL);
                                     productData.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
+                                            ,totalCost,description,image,stateId,city_id,categoryId,sts,offerType,offerQuantity,offerStatus,offerName,offerTotal));
                                     RecentProductAdapter radapter = new RecentProductAdapter(productData);
                                     list_view_product.setAdapter(radapter);
                                 }
@@ -398,10 +413,15 @@ public class CategoryProductView extends AppCompatActivity {
                                     String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
+                                    String offerType = resObject.getString(Constants.OFFER_TYPE);
+                                    String offerName = resObject.getString(Constants.OFFER_NAME);
+                                    String offerStatus = resObject.getString(Constants.OFFER_STATUS);
+                                    String offerQuantity = resObject.getString(Constants.OFFER_QUANTITY);
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
                                     String sts = resObject.getString(Constants.PRODUCT_STATUS);
+                                    String offerTotal = resObject.getString(Constants.OFFER_TOTAL);
                                     productData.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
+                                            ,totalCost,description,image,stateId,city_id,categoryId,sts,offerType,offerQuantity,offerStatus,offerName,offerTotal));
                                     RecentProductAdapter radapter = new RecentProductAdapter(productData);
                                     list_view_product.setAdapter(radapter);
                                 }

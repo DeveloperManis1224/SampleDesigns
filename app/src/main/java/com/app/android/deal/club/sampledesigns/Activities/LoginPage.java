@@ -17,8 +17,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.android.deal.club.sampledesigns.R;
+import com.app.android.deal.club.sampledesigns.SplashScreen;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
 import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +47,6 @@ public class LoginPage extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("please wait");
         progressDialog.setCancelable(false);
-
         mUsername = findViewById(R.id.edt_username);
         mPassword = findViewById(R.id.edt_password);
         session = new SessionManager();
@@ -68,11 +70,36 @@ public class LoginPage extends AppCompatActivity {
     }
 
     public void onLoginClick(View view) {
-        if(isValid())
+        if(Constants.isOnline(LoginPage.this))
         {
-            progressDialog.show();
-            checkLoginUser();
+            if(isValid())
+            {
+                progressDialog.show();
+                checkLoginUser();
+            }
         }
+        else
+        {
+            new AwesomeSuccessDialog(LoginPage.this)
+                    .setTitle("No Internet Available!")
+                    .setMessage("There is no internet connection.please turn on your internet connection.")
+                    .setColoredCircle(R.color.colorAccent)
+                    .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
+                    .setCancelable(true)
+                    .setPositiveButtonText("Refresh")
+                    .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+                    .setPositiveButtonTextColor(R.color.white)
+                    .setPositiveButtonClick(new Closure() {
+                        @Override
+                        public void exec() {
+                            Intent in = new Intent(LoginPage.this, SplashScreen.class);
+                            startActivity(in);
+                            finish();
+                        }
+                    })
+                    .show();
+        }
+
     }
 
     private void checkLoginUser() {

@@ -25,8 +25,11 @@ import com.app.android.deal.club.sampledesigns.Adapters.RecentProductAdapter;
 import com.app.android.deal.club.sampledesigns.DataModels.OrderData;
 import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
+import com.app.android.deal.club.sampledesigns.SplashScreen;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
 import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,6 +79,8 @@ public class OrderDetails extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,47 +115,46 @@ public class OrderDetails extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             String loginStatus = jsonObject.getString("status");//LOGIN = "1";
                             String stsMessage = jsonObject.getString("message"); //LOGOUT = "0";
-                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS))
-                            {
+                            if(loginStatus.equalsIgnoreCase(Constants.RESULT_SUCCESS)) {
                                 JSONArray jsonArray = jsonObject.getJSONArray("orderProducts");
-
-                                for(int i = 0; i < jsonArray.length(); i++ )
+                                if (jsonArray.length() == 0) {
+                                    new AwesomeSuccessDialog(OrderDetails.this)
+                                            .setTitle("No Products")
+                                            .setMessage("Your order history is Empty!")
+                                            .setColoredCircle(R.color.colorAccent)
+                                            .setDialogIconAndColor(R.drawable.ic_dialog_info, R.color.white)
+                                            .setCancelable(true)
+                                            .setPositiveButtonText("Back")
+                                            .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+                                            .setPositiveButtonTextColor(R.color.white)
+                                            .setPositiveButtonClick(new Closure() {
+                                                @Override
+                                                public void exec() {
+                                                    Intent in = new Intent(OrderDetails.this, HomeActivity.class);
+                                                    startActivity(in);
+                                                    finish();
+                                                }
+                                            })
+                                            .show();
+                                }
+                                else
                                 {
+                                for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject resObject = jsonArray.getJSONObject(i);
-
                                     String id = resObject.getString(Constants.PRODUCT_ID);
                                     String order_id = resObject.getString("order_id");
                                     JSONObject jobjProduct = resObject.getJSONObject("product");
-                                    String name  = jobjProduct.getString("name");
+                                    String name = jobjProduct.getString("name");
                                     String image = jobjProduct.getString("image");
                                     JSONObject jobjOrder = resObject.getJSONObject("order");
                                     String serial_number = jobjOrder.getString("serial_no");
                                     String status = jobjOrder.getString("status");
-                                    orderData.add(new OrderData(id,image,name,order_id,status,serial_number));
+                                    orderData.add(new OrderData(id, image, name, order_id, status, serial_number));
 
                                     OrderAdapter odad = new OrderAdapter(orderData);
-
-
-//                                    String uId = resObject.getString(Constants.PRODUCT_ID);
-//                                    String productName = resObject.getString(Constants.PRODUCT_NAME);
-//                                    String price = resObject.getString(Constants.PRODUCT_NAME);
-//                                    String size = resObject.getString(Constants.PRODUCT_SIZE);
-//                                    String sft = resObject.getString(Constants.PRODUCT_SFT);
-//                                    String type = resObject.getJSONObject(Constants.PRODUCT_TYPE).getString(Constants.PRODUCT_TYPE);
-//                                    String printingCost = resObject.getString(Constants.PRINTING_COST);
-//                                    String mountingCost = resObject.getString(Constants.MOUNTING_COST);
-//                                    String totalCost = resObject.getString(Constants.TOTAL_COST);
-//                                    String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
-//                                    String image = resObject.getString(Constants.PRODUCT_IMAGE);
-//                                    String stateId = resObject.getString(Constants.STATE_ID);
-//                                    String city_id = resObject.getString(Constants.CITY_ID);
-//                                    String categoryId = resObject.getString(Constants.CATEGORY_ID);
-//                                    String sts = resObject.getString(Constants.PRODUCT_STATUS);
-//                                    orderData.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-//                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
-
                                     list_view_order.setAdapter(odad);
                                 }
+                            }
                             }
                             else if (loginStatus.equalsIgnoreCase(Constants.RESULT_FAILED))
                             {

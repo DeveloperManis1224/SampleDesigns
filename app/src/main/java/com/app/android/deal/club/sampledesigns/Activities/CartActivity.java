@@ -25,8 +25,11 @@ import com.app.android.deal.club.sampledesigns.Adapters.ProductAdapter;
 import com.app.android.deal.club.sampledesigns.Adapters.RecentProductAdapter;
 import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
+import com.app.android.deal.club.sampledesigns.SplashScreen;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
 import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -146,7 +149,24 @@ public class CartActivity extends AppCompatActivity {
                                 JSONArray jsonArray = jsonObject.getJSONArray("products");
                                 if(jsonArray.length() == 0)
                                 {
-                                    Toast.makeText(CartActivity.this, "No Cart Added", Toast.LENGTH_SHORT).show();
+                                    new AwesomeSuccessDialog(CartActivity.this)
+                                            .setTitle("Empty Cart")
+                                            .setMessage("Your cart is empty.")
+                                            .setColoredCircle(R.color.colorAccent)
+                                            .setDialogIconAndColor(R.drawable.ic_dialog_info, R.color.white)
+                                            .setCancelable(true)
+                                            .setPositiveButtonText("Back")
+                                            .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+                                            .setPositiveButtonTextColor(R.color.white)
+                                            .setPositiveButtonClick(new Closure() {
+                                                @Override
+                                                public void exec() {
+                                                    Intent in = new Intent(CartActivity.this, HomeActivity.class);
+                                                    startActivity(in);
+                                                    finish();
+                                                }
+                                            })
+                                            .show();
                                     txtTotalCost.setText(getResources().getString(R.string.Rs)+" 0.00");
                                     totalAmount = "0.00";
                                 }
@@ -166,9 +186,22 @@ public class CartActivity extends AppCompatActivity {
                                         String image = resObject.getString(Constants.PRODUCT_IMAGE);
                                         String stateId = resObject.getString(Constants.STATE_ID);
                                         String city_id = resObject.getString(Constants.CITY_ID);
+                                        String offerType = resObject.getString(Constants.OFFER_TYPE);
+                                        String offerName = resObject.getString(Constants.OFFER_NAME);
+                                        String offerStatus = resObject.getString(Constants.OFFER_STATUS);
+                                        String offerQuantity = resObject.getString(Constants.OFFER_QUANTITY);
                                         String categoryId = resObject.getString(Constants.CATEGORY_ID);
+                                        String offerTotal = resObject.getString(Constants.OFFER_TOTAL);
                                         String sts = resObject.getString(Constants.PRODUCT_STATUS);
-                                        costList.add(totalCost);
+                                        if(offerStatus.equalsIgnoreCase("1"))
+                                        {
+                                            costList.add(offerTotal);
+                                        }
+                                        else
+                                        {
+                                            costList.add(totalCost);
+                                        }
+
                                         cartIdList.add(uId);
                                         if(i == 0 )
                                         {
@@ -180,12 +213,14 @@ public class CartActivity extends AppCompatActivity {
                                             productBuilder.append("," + uId);
                                         }
                                         cartDataList.add(new RecentPrdocutData(uId, productName, price, size, sft, type, printingCost, mountingCost
-                                                , totalCost, description, image, stateId, city_id, categoryId, sts));
+                                                , totalCost, description, image, stateId, city_id, categoryId, sts,offerType,offerQuantity,
+                                                offerStatus,offerName,offerTotal));
                                         radapter = new ProductAdapter(cartDataList);
                                         List_view.setAdapter(radapter);
                                     }
-                                    txtTotalCost.setText(getResources().getString(R.string.Rs)+" "+formatDecimal(getTotalAmount()));
                                     totalAmount =  getTotalAmount();
+                                    txtTotalCost.setText(getResources().getString(R.string.Rs)+" "+formatDecimal(getTotalAmount()));
+
                                 }
 
                                 Log.e("RESPONSE-HOME_Recent", "" + productBuilder.toString());
@@ -197,7 +232,6 @@ public class CartActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 }, new Response.ErrorListener() {
             @Override

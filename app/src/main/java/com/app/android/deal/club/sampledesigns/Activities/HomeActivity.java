@@ -42,8 +42,11 @@ import com.app.android.deal.club.sampledesigns.DataModels.MenuModel;
 import com.app.android.deal.club.sampledesigns.DataModels.PlaceModel;
 import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
+import com.app.android.deal.club.sampledesigns.SplashScreen;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
 import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.smarteist.autoimageslider.SliderLayout;
 import com.smarteist.autoimageslider.SliderView;
 import org.json.JSONArray;
@@ -78,6 +81,35 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        if(Constants.isOnline(HomeActivity.this))
+        {
+            Init();
+        }
+        else{
+            new AwesomeSuccessDialog(HomeActivity.this)
+                    .setTitle("No Internet Available!")
+                    .setMessage("There is no internet connection.please turn on your internet connection.")
+                    .setColoredCircle(R.color.colorAccent)
+                    .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
+                    .setCancelable(true)
+                    .setPositiveButtonText("Refresh")
+                    .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+                    .setPositiveButtonTextColor(R.color.white)
+                    .setPositiveButtonClick(new Closure() {
+                        @Override
+                        public void exec() {
+                            Intent in = new Intent(HomeActivity.this, SplashScreen.class);
+                            startActivity(in);
+                            finish();
+                        }
+                    })
+                    .show();
+        }
+
+    }
+
+    private void Init()
+    {
         session = new SessionManager();
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("please wait");
@@ -315,6 +347,7 @@ public class HomeActivity extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        //offer_type, offer, offer_status, offer_name
                         Log.e("RESPONSE-HOME_Recent",""+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -340,10 +373,16 @@ public class HomeActivity extends AppCompatActivity
                                     String image = resObject.getString(Constants.PRODUCT_IMAGE);
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
+                                    String offerType = resObject.getString(Constants.OFFER_TYPE);
+                                    String offerName = resObject.getString(Constants.OFFER_NAME);
+                                    String offerStatus = resObject.getString(Constants.OFFER_STATUS);
+                                    String offerQuantity = resObject.getString(Constants.OFFER_QUANTITY);
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
                                     String sts = resObject.getString(Constants.PRODUCT_STATUS);
+                                    String offerTotal = resObject.getString(Constants.OFFER_TOTAL);
+
                                     productDataList.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                    ,totalCost,description,image,stateId,city_id,categoryId,sts));
+                                    ,totalCost,description,image,stateId,city_id,categoryId,sts,offerType,offerQuantity,offerStatus,offerName, offerTotal));
                                     RecentProductAdapter radapter = new RecentProductAdapter(productDataList);
                                     List_view.setAdapter(radapter);
                                 }
@@ -404,10 +443,15 @@ public class HomeActivity extends AppCompatActivity
                                     String description = resObject.getString(Constants.PRODUCT_DESCRIPTION);
                                     String stateId = resObject.getString(Constants.STATE_ID);
                                     String city_id = resObject.getString(Constants.CITY_ID);
+                                    String offerType = resObject.getString(Constants.OFFER_TYPE);
+                                    String offerName = resObject.getString(Constants.OFFER_NAME);
+                                    String offerStatus = resObject.getString(Constants.OFFER_STATUS);
+                                    String offerQuantity = resObject.getString(Constants.OFFER_QUANTITY);
                                     String categoryId = resObject.getString(Constants.CATEGORY_ID);
                                     String sts = resObject.getString(Constants.PRODUCT_STATUS);
+                                    String offerTotal = resObject.getString(Constants.OFFER_TOTAL);
                                     bestDataList.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                            ,totalCost,description,image,stateId,city_id,categoryId,sts));
+                                            ,totalCost,description,image,stateId,city_id,categoryId,sts,offerType,offerQuantity,offerStatus,offerName,offerTotal));
                                     RecentProductAdapter radapter = new RecentProductAdapter(bestDataList);
                                     List_view1.setAdapter(radapter);
                                 }

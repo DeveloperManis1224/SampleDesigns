@@ -17,12 +17,18 @@ public class RecentPrdocutData {
     private String _cityId;
     private String _categoryId;
     private String _status;
+    private String _offerType;
+    private String _offerQuantity;
+    private String _offerStatus;
+    private String _offerName;
+    private String _offerTotal;
 
     public RecentPrdocutData(String _productId, String _productName, String _productPrice,
                              String _productSize, String _productSqrt, String _productType,
                              String _printingCost, String _mountingCost, String _totalCost,
                              String _description, String _image, String _stateId,
-                             String _cityId, String _categoryId, String _status) {
+                             String _cityId, String _categoryId, String _status, String _offerType,
+                             String _offerQuantity, String _offerStatus, String _offerName, String offerTotal) {
         this._productId = _productId;
         this._productName = _productName;
         this._productPrice = _productPrice;
@@ -38,6 +44,51 @@ public class RecentPrdocutData {
         this._cityId = _cityId;
         this._categoryId = _categoryId;
         this._status = _status;
+        this._offerType = _offerType;
+        this._offerStatus = _offerStatus;
+        this._offerName = _offerName;
+        this._offerQuantity = _offerQuantity;
+        this._offerTotal = offerTotal;
+    }
+
+    public String get_offerTotal() {
+        return _offerTotal;
+    }
+
+    public void set_offerTotal(String _offerTotal) {
+        this._offerTotal = _offerTotal;
+    }
+
+    public String get_offerType() {
+        return _offerType;
+    }
+
+    public void set_offerType(String _offerType) {
+        this._offerType = _offerType;
+    }
+
+    public String get_offerQuantity() {
+        return _offerQuantity;
+    }
+
+    public void set_offerQuantity(String _offerQuantity) {
+        this._offerQuantity = _offerQuantity;
+    }
+
+    public String get_offerStatus() {
+        return _offerStatus;
+    }
+
+    public void set_offerStatus(String _offerStatus) {
+        this._offerStatus = _offerStatus;
+    }
+
+    public String get_offerName() {
+        return _offerName;
+    }
+
+    public void set_offerName(String _offerName) {
+        this._offerName = _offerName;
     }
 
     public String get_productId() {

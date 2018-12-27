@@ -47,8 +47,11 @@ import com.app.android.deal.club.sampledesigns.Adapters.RecentProductAdapter;
 import com.app.android.deal.club.sampledesigns.DataModels.MenuModel;
 import com.app.android.deal.club.sampledesigns.DataModels.RecentPrdocutData;
 import com.app.android.deal.club.sampledesigns.R;
+import com.app.android.deal.club.sampledesigns.SplashScreen;
 import com.app.android.deal.club.sampledesigns.Utils.Constants;
 import com.app.android.deal.club.sampledesigns.Utils.SessionManager;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 import org.json.JSONArray;
@@ -106,6 +109,34 @@ public class PrdouctActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prdouct);
+        if(Constants.isOnline(PrdouctActivity.this)) {
+            Init();
+        }
+        else
+        {
+            new AwesomeSuccessDialog(PrdouctActivity.this)
+                    .setTitle("No Internet Available!")
+                    .setMessage("There is no internet connection.please turn on your internet connection.")
+                    .setColoredCircle(R.color.colorAccent)
+                    .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
+                    .setCancelable(true)
+                    .setPositiveButtonText("Refresh")
+                    .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+                    .setPositiveButtonTextColor(R.color.white)
+                    .setPositiveButtonClick(new Closure() {
+                        @Override
+                        public void exec() {
+                            Intent in = new Intent(PrdouctActivity.this, SplashScreen.class);
+                            startActivity(in);
+                            finish();
+                        }
+                    })
+                    .show();
+        }
+    }
+
+    private void Init()
+    {
         hum = findViewById(R.id.hum_icon);
         session = new SessionManager();
         progressDialog = new ProgressDialog(this);
@@ -223,24 +254,24 @@ public class PrdouctActivity extends AppCompatActivity
         });
 
         //getCategoryDetails("","","","","","","");
-try {
-    if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_MENU)) {
-        getCategoryDetails(getIntent().getExtras().getString(Constants.CATEGORY_ID), "0",
-                "0", "0", "120000", "1000", "");
-    } else if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_HOME)) {
-        getCategoryDetails(getIntent().getExtras().getString(Constants.CATEGORY_ID), "0",
-                "0", "0", "120000", "1000", "");
-    } else if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_PLACES)) {
-        getCategoryDetails("0",
-                "0", getIntent().getExtras().getString(Constants.STATE_ID), "0", "120000", "1000", "");
-    } else {
-        getCategoryDetails("", "", "", "", "", "", "");
-    }
-}catch (NullPointerException ex)
-{
-    ex.printStackTrace();
-    getCategoryDetails("0", "0", "0", "0", "120000", "1000", "");
-}
+        try {
+            if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_MENU)) {
+                getCategoryDetails(getIntent().getExtras().getString(Constants.CATEGORY_ID), "0",
+                        "0", "0", "120000", "1000", "");
+            } else if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_HOME)) {
+                getCategoryDetails(getIntent().getExtras().getString(Constants.CATEGORY_ID), "0",
+                        "0", "0", "120000", "1000", "");
+            } else if (getIntent().getExtras().getString(Constants.PAGE_FROM).equalsIgnoreCase(Constants.PAGE_PLACES)) {
+                getCategoryDetails("0",
+                        "0", getIntent().getExtras().getString(Constants.STATE_ID), "0", "120000", "1000", "");
+            } else {
+                getCategoryDetails("", "", "", "", "", "", "");
+            }
+        }catch (NullPointerException ex)
+        {
+            ex.printStackTrace();
+            getCategoryDetails("0", "0", "0", "0", "120000", "1000", "");
+        }
         //getCategoryDetails("","","","","1000","500000","");
 
 
@@ -828,7 +859,23 @@ try {
                                 JSONArray jsonArray = jsonObject.getJSONArray("products");
                                 if(jsonArray.length()==0)
                                 {
-                                    Toast.makeText(PrdouctActivity.this, "No Products", Toast.LENGTH_SHORT).show();
+                                    new AwesomeSuccessDialog(PrdouctActivity.this)
+                                            .setTitle("No Product!")
+                                            .setMessage("Your search did not match any products")
+                                            .setColoredCircle(R.color.colorAccent)
+                                            .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
+                                            .setCancelable(true)
+                                            .setPositiveButtonText("Refresh")
+                                            .setPositiveButtonbackgroundColor(R.color.colorPrimary)
+                                            .setPositiveButtonTextColor(R.color.white)
+                                            .setPositiveButtonClick(new Closure() {
+                                                @Override
+                                                public void exec() {
+
+                                                }
+                                            })
+                                            .show();
+                                    //Toast.makeText(PrdouctActivity.this, "No Products", Toast.LENGTH_SHORT).show();
                                 }else {
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject resObject = jsonArray.getJSONObject(i);
@@ -847,10 +894,16 @@ try {
 //                                    String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
                                         String stateId = resObject.getString(Constants.STATE_ID);
                                         String city_id = resObject.getString(Constants.CITY_ID);
+                                        String offerType = resObject.getString(Constants.OFFER_TYPE);
+                                        String offerName = resObject.getString(Constants.OFFER_NAME);
+                                        String offerStatus = resObject.getString(Constants.OFFER_STATUS);
+                                        String offerQuantity = resObject.getString(Constants.OFFER_QUANTITY);
                                         String categoryId = resObject.getString(Constants.CATEGORY_ID);
                                         String sts = resObject.getString(Constants.PRODUCT_STATUS);
+                                        String offerTotal = resObject.getString(Constants.OFFER_TOTAL);
                                         productData.add(new RecentPrdocutData(uId, productName, price, size, sft, type, printingCost, mountingCost
-                                                , totalCost, description, image, stateId, city_id, categoryId, sts));
+                                                , totalCost, description, image, stateId, city_id, categoryId, sts,offerType,
+                                                offerQuantity,offerStatus,offerName,offerTotal));
                                         RecentProductAdapter radapter = new RecentProductAdapter(productData);
                                         radapter.notifyDataSetChanged();
                                         list_view_product.setAdapter(radapter);
@@ -899,6 +952,7 @@ try {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

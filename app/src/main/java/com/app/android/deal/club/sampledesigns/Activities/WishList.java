@@ -95,11 +95,16 @@ public class WishList extends AppCompatActivity {
                                         JSONArray jsry = resObject.getJSONArray(Constants.PRODUCT_IMAGES);
                                         String image = jsry.getJSONObject(0).getString(Constants.PRODUCT_IMAGES);
                                         String stateId = resObject.getString("state_id");
+                                        String offerType = resObject.getString(Constants.OFFER_TYPE);
+                                        String offerName = resObject.getString(Constants.OFFER_NAME);
+                                        String offerStatus = resObject.getString(Constants.OFFER_STATUS);
+                                        String offerQuantity = resObject.getString(Constants.OFFER_QUANTITY);
                                         String city_id = resObject.getString("city_id");
                                         String categoryId = resObject.getString("category_id");
+                                        String offerTotal = resObject.getString(Constants.OFFER_TOTAL);
                                         String sts = resObject.getString("status");
                                         cartDataList.add(new RecentPrdocutData(uId,productName,price,size,sft,type,printingCost,mountingCost
-                                                ,totalCost,description,image,stateId,city_id,categoryId,sts));
+                                                ,totalCost,description,image,stateId,city_id,categoryId,sts,offerType,offerQuantity,offerStatus,offerName,offerTotal));
                                         RecentProductAdapter radapter = new RecentProductAdapter(cartDataList);
                                         List_view.setAdapter(radapter);
                                     }
