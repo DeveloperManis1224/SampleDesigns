@@ -37,7 +37,6 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activities.PrdouctActivity"
-
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.AboutUs"
@@ -67,12 +66,17 @@
             android:name=".Activities.CategoryProductView"
             android:label="Products"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.OrderDetails"
+        <activity
+            android:name=".Activities.OrderDetails"
             android:label="My Orders"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".Activities.InvoiceWebView"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Activities.InvoiceWebView"
             android:label="Invoice"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Activities.NotificationActivity"
+            android:label="Offers"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
