@@ -81,6 +81,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             holder.lyt_product.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     Intent in = new Intent (holder.lyt_product.getContext(), ProductDetails.class);
                     in.putExtra(Constants.PRODUCT_ID,obj_arr.get(position).get_productId());
                     in.putExtra(Constants.PRODUCT_NAME,obj_arr.get(position).get_productName());
