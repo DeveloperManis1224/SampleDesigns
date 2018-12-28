@@ -1,6 +1,7 @@
 package com.app.android.deal.club.sampledesigns.Adapters;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,7 +47,11 @@ public class RecentProductAdapter  extends RecyclerView.Adapter<RecentProductAda
             holder.productAddress.setText(obj_arr.get(position).get_productName());
             if(obj_arr.get(position).get_offerStatus().equalsIgnoreCase("1"))
             {
+                holder.productCostDashed.setText(getIndianRupee(obj_arr.get(position).get_totalCost()));
+                holder.productCostDashed.setPaintFlags(holder.productCostDashed.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 holder.productCost.setText(getIndianRupee(obj_arr.get(position).get_offerTotal()));
+                holder.productCostDashed.setVisibility(View.VISIBLE);
+                holder.textLabelOffer.setVisibility(View.VISIBLE);
             }
             else
             {
@@ -93,16 +98,18 @@ public class RecentProductAdapter  extends RecyclerView.Adapter<RecentProductAda
 
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
-        TextView productAddress,productCost;
+        TextView productAddress,productCost, productCostDashed, textLabelOffer;
         ImageView productImage;
         LinearLayout lyt;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            productCostDashed = itemView.findViewById(R.id.r_cost_dashed);
            productAddress = itemView.findViewById(R.id.r_address);
            productCost = itemView.findViewById(R.id.r_cost);
            productImage = itemView.findViewById(R.id.r_img);
            lyt = itemView.findViewById(R.id.lyt_card_linear);
+           textLabelOffer = itemView.findViewById(R.id.img_offer_label);
         }
     }
     public static String getIndianRupee(String value) {

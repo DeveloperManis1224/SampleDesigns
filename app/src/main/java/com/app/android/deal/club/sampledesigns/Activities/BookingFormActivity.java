@@ -384,6 +384,4 @@ public class BookingFormActivity extends AppCompatActivity {
          }
          return  val;
      }
-
-
 }
