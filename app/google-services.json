@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "607616787499",
+    "firebase_url": "https://adinn-outdoors.firebaseio.com",
+    "project_id": "adinn-outdoors",
+    "storage_bucket": "adinn-outdoors.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607616787499:android:92404cd8c4727830",
+        "android_client_info": {
+          "package_name": "com.app.adinn.outdoors.square_brace.adinn_outdoors"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607616787499-7anndt3hojsgmbc798ffc6uq2bcs954m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.adinn.outdoors.square_brace.adinn_outdoors",
+            "certificate_hash": "fcbfb683aaa36d8b68504524f2e7e3d53b3756f8"
+          }
+        },
+        {
+          "client_id": "607616787499-sifil6sshb83sv9ctcvj5kev700fsjne.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq0jLt7J3ZJ2oL8kw3HVHeADl4VkJfK-U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607616787499-sifil6sshb83sv9ctcvj5kev700fsjne.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

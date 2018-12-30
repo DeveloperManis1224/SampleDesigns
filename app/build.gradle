@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.app.android.deal.club.sampledesigns"
+        applicationId "com.app.adinn.outdoors.square_brace.adinn_outdoors"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
@@ -27,6 +27,8 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
     implementation 'com.github.smarteist:autoimageslider:1.1.1'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'org.florescu.android.rangeseekbar:rangeseekbar-library:0.3.0'
@@ -35,3 +37,4 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+apply plugin: 'com.google.gms.google-services'
