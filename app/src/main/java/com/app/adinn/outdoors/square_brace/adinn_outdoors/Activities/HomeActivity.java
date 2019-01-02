@@ -44,7 +44,6 @@ import com.app.adinn.outdoors.square_brace.adinn_outdoors.DataModels.MenuModel;
 import com.app.adinn.outdoors.square_brace.adinn_outdoors.DataModels.PlaceModel;
 import com.app.adinn.outdoors.square_brace.adinn_outdoors.DataModels.RecentPrdocutData;
 import com.app.adinn.outdoors.square_brace.adinn_outdoors.R;
-import com.app.adinn.outdoors.square_brace.adinn_outdoors.Services.Constant;
 import com.app.adinn.outdoors.square_brace.adinn_outdoors.SplashScreen;
 import com.app.adinn.outdoors.square_brace.adinn_outdoors.Utils.Constants;
 import com.app.adinn.outdoors.square_brace.adinn_outdoors.Utils.SessionManager;
@@ -579,6 +578,10 @@ public class HomeActivity extends AppCompatActivity
         headerList.add(menuModel);
         menuModel = new MenuModel(getResources().getDrawable(R.drawable.shop_cart), "My Orders", true, true, ""); //Menu of Python Tutorials
         headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_notification), "Notifications", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
+        menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_offer), "Offers", true, true, ""); //Menu of Python Tutorials
+        headerList.add(menuModel);
         menuModel = new MenuModel(getResources().getDrawable(R.drawable.icon_share), "Share", true, true, ""); //Menu of Python Tutorials
         headerList.add(menuModel);
         menuModel = new MenuModel(getResources().getDrawable(R.drawable.contact_icon), "Contact Us", true, true, ""); //Menu of Python Tutorials
@@ -617,7 +620,13 @@ public class HomeActivity extends AppCompatActivity
                         startActivity(new Intent(HomeActivity.this, CartActivity.class));
                     } else if (headerList.get(groupPosition).getName().equalsIgnoreCase("My Orders")) {
                         startActivity(new Intent(HomeActivity.this, OrderDetails.class));
-                    } else if (headerList.get(groupPosition).getName().equalsIgnoreCase("Share")) {
+                    }
+                    else if (headerList.get(groupPosition).getName().equalsIgnoreCase("Notifications")) {
+                        startActivity(new Intent(HomeActivity.this, NotificationActivity.class));
+                    }
+                    else if (headerList.get(groupPosition).getName().equalsIgnoreCase("Offers")) {
+                        startActivity(new Intent(HomeActivity.this, OfferActivity.class));
+                    }else if (headerList.get(groupPosition).getName().equalsIgnoreCase("Share")) {
                         Intent i = new Intent(android.content.Intent.ACTION_SEND);
                         i.setType("text/plain");
                         i.putExtra(android.content.Intent.EXTRA_SUBJECT, "Playstore link");

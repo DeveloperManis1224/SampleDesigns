@@ -4,7 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--FC:BF:B6:83:AA:A3:6D:8B:68:50:45:24:F2:E7:E3:D5:3B:37:56:F8-->
+
+    <!-- FC:BF:B6:83:AA:A3:6D:8B:68:50:45:24:F2:E7:E3:D5:3B:37:56:F8 -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
@@ -74,9 +75,11 @@
             android:name=".Activities.InvoiceWebView"
             android:label="Invoice"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.NotificationActivity"
-            android:label="Offers"
+        <activity
+            android:name=".Activities.NotificationActivity"
+            android:label="Notifications"
             android:theme="@style/AppTheme" />
+
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
@@ -84,12 +87,16 @@
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
 
-        <service
-            android:name=".Firebase.MyFirebaseInstanceIDService">
+        <service android:name=".Firebase.MyFirebaseInstanceIDService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".Activities.OfferActivity"
+            android:label="Offers"
+            android:theme="@style/AppTheme"/>
+
     </application>
 
 </manifest>

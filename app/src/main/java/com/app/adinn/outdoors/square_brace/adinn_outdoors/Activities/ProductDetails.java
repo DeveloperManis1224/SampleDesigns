@@ -59,6 +59,7 @@ public class ProductDetails extends AppCompatActivity {
     SessionManager session;
     SliderLayout sliderLayout;
 
+    String productTypeFinal;
     ArrayList<String> imgList = new ArrayList<>();
 
     @Override
@@ -151,10 +152,18 @@ public class ProductDetails extends AppCompatActivity {
         offerName = getIntent().getExtras().getString(Constants.OFFER_NAME);
         offerTotal = getIntent().getExtras().getString(Constants.OFFER_TOTAL) ;
 
+        if(productType.equalsIgnoreCase("1"))
+        {
+            productTypeFinal = "LIGHTING";
+        }else
+        {
+            productTypeFinal = "NON-LIGHTING";
+        }
+
 
 
         mProductName.setText(getString(R.string.filled_bullet) +" Location : "+productName);
-        mProductType.setText(getString(R.string.filled_bullet) +" TYPE : "+productType);
+        mProductType.setText(getString(R.string.filled_bullet) +" TYPE : "+productTypeFinal);
         mProductSft.setText(getString(R.string.filled_bullet) +" SFT : "+productSFT);
         mProductSize.setText(getString(R.string.filled_bullet) +" SIZE : "+productSize);
 //        mPrintingCost.setText(getString(R.string.filled_bullet) +" Printing Cost   :"+printingCost);
@@ -183,12 +192,13 @@ public class ProductDetails extends AppCompatActivity {
 //                .into(mProductImage);
 
         decriptionData.append(getString(R.string.filled_bullet) +" Location : "+productName+"\n \n");
-        decriptionData.append(getString(R.string.filled_bullet) +" Type : "+productType+"\n \n");
+
+        decriptionData.append(getString(R.string.filled_bullet) +" Type : "+productTypeFinal+"\n \n");
         decriptionData.append(getString(R.string.filled_bullet) +" Sft : "+productSFT+"\n \n");
         decriptionData.append(getString(R.string.filled_bullet) +" Size : "+productSize+"\n \n");
-        decriptionData.append(getString(R.string.filled_bullet) +" Printing Cost : "+printingCost+"\n \n");
-        decriptionData.append( getString(R.string.filled_bullet) +" Mounting Cost : "+mountingCost+"\n \n");
-        decriptionData.append(getString(R.string.filled_bullet)+" Total Cost : "+formatDecimal(totalCost)+"\n \n");
+        decriptionData.append(getString(R.string.filled_bullet) +" Printing Cost : "+getString(R.string.Rs)+" "+formatDecimal(printingCost)+"\n \n");
+        decriptionData.append( getString(R.string.filled_bullet) +" Mounting Cost : "+getString(R.string.Rs)+" "+formatDecimal(mountingCost)+"\n \n");
+        decriptionData.append(getString(R.string.filled_bullet)+" Total Cost : "+getString(R.string.Rs)+" "+formatDecimal(totalCost)+"\n \n");
 
 
         mButton.setOnLikeListener(new OnLikeListener() {

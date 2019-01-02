@@ -61,6 +61,9 @@ public class Constants  {
     public static final String RESULT_SUCCESS = "1";
     public static final String RESULT_FAILED = "0";
 
+    public static final String PRODUCT_OFFER_AVAILABLE= "2";
+
+
 
 
     public static boolean isOnline(Context cntx) {
