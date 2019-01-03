@@ -165,7 +165,8 @@ public class BookingFormActivity extends AppCompatActivity {
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
-            mStartDate.setText(day + "/" + month  + "/" + year);
+            int mm = month +1;
+            mStartDate.setText(day + "/" + mm  + "/" + year);
         }
 
     }
@@ -180,7 +181,7 @@ public class BookingFormActivity extends AppCompatActivity {
             String getfrom[] = getfromdate.split("/");
             int year,month,day;
             year= Integer.parseInt(getfrom[2]);
-            month = Integer.parseInt(getfrom[1]);
+            month = Integer.parseInt(getfrom[1])+1;
             day = Integer.parseInt(getfrom[0]);
             final Calendar c = Calendar.getInstance();
             c.set(year,month,day+1);
@@ -314,6 +315,7 @@ public class BookingFormActivity extends AppCompatActivity {
                 params.put("city_id",cityIdList.get(pos));
                 params.put("state_id","22");
                 params.put("country_id","1");
+                params.put("get_status","1");
                 params.put("start_date",mStartDate.getText().toString().trim());
                 params.put("end_date",mEndDate.getText().toString().trim());
                 params.put("post_code",mPostCode.getText().toString().trim());
