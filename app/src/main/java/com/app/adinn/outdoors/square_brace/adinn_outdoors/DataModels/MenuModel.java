@@ -2,6 +2,7 @@ package com.app.adinn.outdoors.square_brace.adinn_outdoors.DataModels;
 
 import android.graphics.drawable.Drawable;
 
+
 public class MenuModel {
 
     Drawable image;

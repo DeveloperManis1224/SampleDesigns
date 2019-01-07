@@ -37,51 +37,52 @@ public class MyFirebaseInstanceIDService extends FirebaseMessagingService {
 
         sendNotification(remoteMessage.getNotification().getBody());
 
-        String NOTIFICATION_CHANNEL_ID = "Nilesh_channel";
-
-        long pattern[] = {0, 1000, 500, 1000};
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Your Notifications",
-                    NotificationManager.IMPORTANCE_HIGH);
-
-            notificationChannel.setDescription("");
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.setVibrationPattern(pattern);
-            notificationChannel.enableVibration(true);
-            mNotificationManager.createNotificationChannel(notificationChannel);
-        }
-
-        // to diaplay notification in DND Mode
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = mNotificationManager.getNotificationChannel(NOTIFICATION_CHANNEL_ID);
-            channel.canBypassDnd();
-        }
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-
-        notificationBuilder.setAutoCancel(true)
-                .setColor(ContextCompat.getColor(this, R.color.colorAccent))
-                .setContentTitle(getString(R.string.app_name))
-//                .setContentText(remoteMessage.getNotification().getBody())
-
-                .setBadgeIconType(R.mipmap.app_icon)
-
-                .setContentText("Hello world!")
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setAutoCancel(true);
-
-
-        mNotificationManager.notify(1000, notificationBuilder.build());
+//        String NOTIFICATION_CHANNEL_ID = "Nilesh_channel";
+//
+//        long pattern[] = {0, 1000, 500, 1000};
+//
+//        NotificationManager mNotificationManager =
+//                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Your Notifications",
+//                    NotificationManager.IMPORTANCE_HIGH);
+//
+//            notificationChannel.setDescription("");
+//            notificationChannel.enableLights(true);
+//            notificationChannel.setLightColor(Color.RED);
+//            notificationChannel.setVibrationPattern(pattern);
+//            notificationChannel.enableVibration(true);
+//            mNotificationManager.createNotificationChannel(notificationChannel);
+//        }
+//
+//        // to diaplay notification in DND Mode
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel channel = mNotificationManager.getNotificationChannel(NOTIFICATION_CHANNEL_ID);
+//            channel.canBypassDnd();
+//        }
+//
+//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+//
+//        notificationBuilder.setAutoCancel(true)
+//                .setColor(ContextCompat.getColor(this, R.color.colorAccent))
+//                .setContentTitle(getString(R.string.app_name))
+////                .setContentText(remoteMessage.getNotification().getBody())
+//
+//                .setBadgeIconType(R.mipmap.app_icon)
+//
+//                .setContentText("Hello world!")
+//                .setDefaults(Notification.DEFAULT_ALL)
+//                .setWhen(System.currentTimeMillis())
+//                .setSmallIcon(R.drawable.ic_launcher_background)
+//                .setAutoCancel(true);
+//
+//
+//        mNotificationManager.notify(1000, notificationBuilder.build());
     }
 
     private void sendNotification(String msg) {
+        Log.e("SAMPLE MSG",""+msg);
         NotificationManager mNotificationManager;
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         long notificatioId = System.currentTimeMillis();
